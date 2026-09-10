@@ -640,12 +640,8 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
 <!-- 3. HERO -->
 <section class="hero" id="hero" aria-labelledby="heroTitle">
   <div class="ph warm" aria-hidden="true"><span class="ph-tag">Loading · Establishing shot</span></div>
-  <video class="hero-video desktop" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
-    <source src="WhatsApp%20Video%202026-09-02%20at%2017.07.43.mp4" type="video/mp4">
-  </video>
-  <video class="hero-video mobile" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
-    <source src="WhatsApp%20Video%202026-09-02%20at%2017.07.43_mm.mp4" type="video/mp4">
-  </video>
+  <img class="hero-video desktop" src="assets/video/hero-desktop.webp" data-poster="assets/video/hero-desktop-poster.jpg" alt="" aria-hidden="true">
+  <img class="hero-video mobile" src="assets/video/hero-mobile.webp" data-poster="assets/video/hero-mobile-poster.jpg" alt="" aria-hidden="true">
   <span class="sr-only" id="heroTitle">After Hours – Fableroom × Three Sixty, a leather collection for evenings worth dressing for</span>
 </section>
 
@@ -1066,11 +1062,8 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* Hero video: freeze on first frame for reduced-motion viewers */
-  $$('.hero-video').forEach(v => {
-    if (reduced) { v.removeAttribute('autoplay'); v.pause(); }
-    else v.play().catch(() => {});
-  });
+  /* Hero video (now an animated WebP `<img>` — no play/pause API, so reduced-motion swaps to a static poster frame instead) */
+  if (reduced) { $$('.hero-video').forEach(v => { if (v.dataset.poster) v.src = v.dataset.poster; }); }
 
   /* Promo bar: rotate + dismiss for the session */
   const promo = $('#promo');
