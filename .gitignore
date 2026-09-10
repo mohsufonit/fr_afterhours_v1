@@ -1,0 +1,19 @@
+# Raw source dumps and reference material — huge, not part of the deliverable.
+# The site only needs after-hours.html, brand-fonts.css, assets/img/, and CLAUDE.md.
+Fable Room-*/
+Fable Room-*.zip
+Renders -*/
+Renders -*.zip
+Fableroom-local-html-package-*.zip
+Untitled.zip
+prompt-master-main.zip
+*.mp4
+*.jpeg
+*.pdf
+Frame 3.png
+Frame 4.png
+skills/
+index.html
+index_v0.html
+After Hours Page Structure.html
+.claude/
