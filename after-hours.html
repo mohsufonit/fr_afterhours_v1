@@ -278,7 +278,7 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 /* ---------- Stat bar ---------- */
 .stats{position:relative;overflow:hidden;isolation:isolate;color:var(--bone);background:linear-gradient(90deg,rgba(20,6,8,.92),rgba(14,4,6,.8),rgba(20,6,8,.92)),url("assets/img/sub-storage-baskets.jpg") center 55%/cover no-repeat;margin:clamp(32px,4vw,56px) 0}
 .stats::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.06),transparent 38%,rgba(0,0,0,.28));pointer-events:none}
-.stats .wrap{position:relative;z-index:1;display:grid;grid-template-columns:repeat(4,1fr);gap:0;padding-left:var(--band-pad);padding-right:var(--band-pad)}
+.stats .wrap{position:relative;z-index:1;display:grid;grid-template-columns:repeat(4,1fr);gap:0;padding-left:clamp(24px,3vw,50px);padding-right:clamp(24px,3vw,50px)}
 .stat{position:relative;isolation:isolate;overflow:hidden;min-height:clamp(88px,8.4vw,125px);display:grid;align-content:center;justify-items:start;gap:clamp(8px,.85vw,13px);padding:clamp(14px,2.1vw,29px) clamp(13px,2.8vw,38px);border-left:1px solid rgba(217,210,191,.2);text-align:left}
 .stat:first-child{border-left:0}
 .stat::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.14),transparent);opacity:0;transform:translateX(-90%);transition:opacity .26s ease,transform .72s ease}
@@ -533,7 +533,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .sec-head .title{flex-direction:column;align-items:flex-start;gap:6px}
   .sec-head .num{margin:0}
   .chat{right:16px;bottom:16px}
-  .stats .wrap{padding-left:0;padding-right:0}
+  .stats .wrap{padding-left:20px;padding-right:20px}
   .stat{min-height:76px;padding:12px 11px;gap:6px}
   .stat .v{font-size:clamp(23px,7vw,32px)}
   .stat .l{font-size:clamp(11px,3.15vw,13px)}
@@ -1178,6 +1178,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
     cards.forEach(c => { c.hidden = f !== 'all' && c.dataset.material !== f; });
     const visible = cards.filter(c => !c.hidden).length;
     mfRow.classList.toggle('is-few', visible > 0 && visible <= 3);
+    mfRow.scrollLeft = 0;
     updateMfScrollbar();
   }));
 
