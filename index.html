@@ -271,7 +271,7 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
    still don't see that change"). Below this width the row simply fills 100% and the
    peek still shows naturally since content still exceeds the container. */
 #materials-filter .mf-row-wrap{max-width:calc(4.5 * clamp(180px,20vw,220px) + 4 * var(--space-sm))}
-.grp-content .mf-row-wrap{max-width:calc(3.5 * clamp(190px,22vw,230px) + 3 * var(--space-sm))}
+.grp-content .mf-row-wrap{max-width:calc(3.5 * clamp(130px,14.5vw,155px) + 3 * var(--space-sm))}
 .mf-row{display:flex;gap:var(--space-sm);overflow-x:auto;scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none;padding-bottom:6px}
 .mf-row.is-few{justify-content:center}
 .mf-row::-webkit-scrollbar{display:none}
@@ -322,19 +322,27 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 /* Shared across Hosting & Bar / Furniture / Leather Accessories — one value, not a per-section
    override, so the three category-split sections stay uniform in banner height, panel spacing,
    circle size and circle-to-card gap. Reduced 30% from the original clamp(360px,44vw,560px). */
-.cs-visual{position:relative;overflow:hidden;min-height:clamp(252px,30.8vw,392px)}
+.cs-visual{position:relative;overflow:hidden;min-height:clamp(189px,23.1vw,294px)}
 .cs-visual .ph{position:absolute;inset:0}
 /* min-width:0 is required: .cs-panel is a CSS Grid item, and a grid item's default
    min-width:auto uses its content's min-content size as a hard floor — the .grp-row
    carousel's un-scrolled content (5+ cards laid end to end) has a huge min-content
    width, which without this override forces the grid column to grow past its intended
    1.15fr share and collapses the .cs-visual banner column down to almost nothing. */
-.cs-panel{padding:clamp(36px,4.5vw,56px) var(--gutter);display:flex;flex-direction:column;justify-content:center;gap:clamp(15px,2vw,24px);min-width:0}
+.cs-panel{padding:clamp(20px,2.6vw,32px) var(--gutter);display:flex;flex-direction:column;justify-content:center;gap:clamp(10px,1.3vw,15px);min-width:0}
 .category-split.on-colored .cs-panel{background:var(--deep);color:var(--bone)}
 .category-split.on-colored .cs-sub{color:rgba(217,210,191,.72)}
 .category-split.on-colored .link-arrow{color:var(--bone)}
 .category-split.on-white .cs-panel{background:#fff;color:var(--ink)}
 .category-split.on-white .cs-sub{color:var(--grey)}
+/* CSS Grid auto-placement respects `order` for track assignment, not just paint position —
+   with order:2/order:1 alone, .cs-visual actually lands in the 2nd (1.15fr) grid track and
+   .cs-panel in the 1st (1fr) track, silently swapping which one gets the WIDER column. That
+   made the Accessories banner render ~15% wider than Hosting/Furniture's and the panel ~15%
+   narrower — reversing the column-width template here (in addition to the order swap) keeps
+   Accessories' banner/panel widths identical to the other two sections; only the screen
+   position (right vs left) changes. */
+#accessories .cs-grid{grid-template-columns:1.15fr 1fr}
 #accessories .cs-visual{order:2}
 #accessories .cs-panel{order:1}
 /* Accessories banner was cropped too tight by object-fit:cover — show the full framed shot instead, letterboxed on the white ground */
@@ -345,7 +353,7 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
    before so the product renders at a closer visual scale to Furniture's full-bleed image instead
    of looking smaller inside a wide letterboxed frame. */
 .accessories-visual .ph.img-cover{object-fit:contain;object-position:right center;box-sizing:border-box;padding:clamp(8px,1.5vw,24px);background:#fff}
-.cs-head h2{font-size:clamp(30px,3.2vw,46px);line-height:1.04;margin:9px 0 10px}
+.cs-head h2{font-size:clamp(22px,2.4vw,32px);line-height:1.04;margin:6px 0 7px}
 .cs-sub{font-size:14px;max-width:48ch}
 
 /* Group carousel – circular subcategory/group selector (birthstone-style: click a circle, the product
@@ -354,7 +362,7 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
    only "which group am I looking at" indicator, so the group name isn't shown twice. */
 .cs-groups{display:flex;flex-wrap:wrap;justify-content:center;gap:20px 32px}
 .grp-btn{display:flex;flex-direction:column;align-items:center;gap:10px;background:none;border:0;padding:4px;cursor:pointer;flex:0 0 auto}
-.grp-media{position:relative;width:78px;height:78px;border-radius:50%;overflow:hidden;transition:transform var(--t-med) var(--ease),box-shadow var(--t-med) var(--ease)}
+.grp-media{position:relative;width:66px;height:66px;border-radius:50%;overflow:hidden;transition:transform var(--t-med) var(--ease),box-shadow var(--t-med) var(--ease)}
 .grp-media img{width:100%;height:100%;object-fit:cover;display:block}
 .grp-label{font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;color:var(--grey);transition:color var(--t-fast)}
 .grp-btn[aria-selected="true"] .grp-media{transform:scale(1.12);box-shadow:0 0 0 2px #fff,0 0 0 4px var(--caramel)}
@@ -373,7 +381,7 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
    layout (~900-1030px available) rather than Shop by Texture's full-width section
    (~1300px), so it uses a smaller clamp to still land near the "several full cards + one
    partially cut off" carousel silhouette instead of showing barely 2 cards. */
-.grp-row .product-card{flex-basis:clamp(190px,22vw,230px)}
+.grp-row .product-card{flex-basis:clamp(130px,14.5vw,155px)}
 
 /* ---------- Reviews ---------- */
 .reviews{background:#fff;padding:clamp(10px,1.4vw,18px) 0 clamp(6px,1vw,12px)}
@@ -549,14 +557,14 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .mf-row-wrap{margin-top:16px}
   #catTitle{white-space:normal}
   #accessories .cs-visual,#accessories .cs-panel{order:0}
-  .cs-visual{min-height:126px}
+  .cs-visual{min-height:95px}
   .modal .dialog{grid-template-columns:1fr}
   .modal .media{min-height:300px}
   .mf-row .product-card{flex-basis:clamp(160px,32vw,220px)}
   /* grp-row cards stay smaller than Shop by Texture's on mobile too — the category-split
      panel is narrower and stacked below a banner image, so a large card here pushes the
      whole section well past one fold. */
-  .mf-row.grp-row .product-card{flex-basis:clamp(140px,40vw,180px)}
+  .mf-row.grp-row .product-card{flex-basis:clamp(105px,30vw,135px)}
   .nlc-row{grid-template-columns:1fr}
   .nl-form{max-width:none}
 }
@@ -569,13 +577,13 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .track{grid-auto-columns:78%}
   .sec-head{flex-direction:column;align-items:flex-start;gap:16px}
   .sec-head .num{margin-right:12px}
-  .cs-panel{padding:24px 20px;gap:12px}
+  .cs-panel{padding:18px 15px;gap:9px}
   /* All 4 group circles stay in one row on mobile instead of wrapping to 2x2 — each button gets an
      exact quarter-width column (min-width:0 lets flex shrink it below the label's intrinsic width so
      the label can wrap under a small circle instead of forcing the row wider than the screen). */
   .cs-groups{gap:8px;flex-wrap:nowrap}
   .grp-btn{flex:1 1 0;min-width:0}
-  .grp-media{width:48px;height:48px;margin:0 auto}
+  .grp-media{width:36px;height:36px;margin:0 auto}
   .grp-label{font-size:9.5px;line-height:1.25;white-space:normal}
   .product-card .wish{opacity:1;transform:none}
   .fgrid-foot{grid-template-columns:1fr 1fr}
@@ -603,7 +611,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .mf-tabs .tab:nth-child(3n+1):not(:first-child){border-right:0}
   .mf-tabs .tab:nth-last-child(-n+3){border-bottom:0}
   .mf-row .product-card{flex-basis:52vw}
-  .mf-row.grp-row .product-card{flex-basis:42vw}
+  .mf-row.grp-row .product-card{flex-basis:32vw}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}
