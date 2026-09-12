@@ -61,6 +61,13 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 .link-arrow:hover::after,.link-arrow:focus-visible::after{transform:scaleX(.4)}
 .link-arrow svg{width:16px;height:16px;transition:transform var(--t-med) var(--ease)}
 .link-arrow:hover svg{transform:translateX(4px)}
+/* Reusable pill modifier — a bordered, no-underline pill instead of the plain underlined
+   link style. First built for Shop by Texture's "Shop All" CTA (.mf-foot), now also used
+   for the category-split sections' "All of..." link, moved up beside the heading. */
+.link-arrow.pill{padding:10px 20px;border:1px solid var(--line);border-radius:999px;flex:none}
+.link-arrow.pill::after{content:none}
+.link-arrow.pill:hover{background:var(--caramel);border-color:var(--caramel);color:#fff}
+.category-split.on-colored .link-arrow.pill{border-color:var(--line-dark)}
 
 /* ---------- Image placeholders (swap for renders) ---------- */
 .ph{position:relative;overflow:hidden;background:#3a1a16;isolation:isolate}
@@ -271,7 +278,7 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
    still don't see that change"). Below this width the row simply fills 100% and the
    peek still shows naturally since content still exceeds the container. */
 #materials-filter .mf-row-wrap{max-width:calc(4.5 * clamp(180px,20vw,220px) + 4 * var(--space-sm))}
-.grp-content .mf-row-wrap{max-width:calc(3.5 * clamp(130px,14.5vw,155px) + 3 * var(--space-sm))}
+.grp-content .mf-row-wrap{max-width:calc(3.5 * clamp(190px,22vw,230px) + 3 * var(--space-sm))}
 .mf-row{display:flex;gap:var(--space-sm);overflow-x:auto;scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none;padding-bottom:6px}
 .mf-row.is-few{justify-content:center}
 .mf-row::-webkit-scrollbar{display:none}
@@ -318,18 +325,18 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 
 /* ---------- Category split (Hosting & Bar / Furniture / Leather Accessories) ---------- */
 .category-split{overflow:hidden}
-.cs-grid{display:grid;grid-template-columns:1fr 1.15fr}
+.cs-grid{display:grid;grid-template-columns:.85fr 1.15fr}
 /* Shared across Hosting & Bar / Furniture / Leather Accessories — one value, not a per-section
    override, so the three category-split sections stay uniform in banner height, panel spacing,
    circle size and circle-to-card gap. Reduced 30% from the original clamp(360px,44vw,560px). */
-.cs-visual{position:relative;overflow:hidden;min-height:clamp(189px,23.1vw,294px)}
+.cs-visual{position:relative;overflow:hidden;min-height:clamp(160px,19.6vw,250px)}
 .cs-visual .ph{position:absolute;inset:0}
 /* min-width:0 is required: .cs-panel is a CSS Grid item, and a grid item's default
    min-width:auto uses its content's min-content size as a hard floor — the .grp-row
    carousel's un-scrolled content (5+ cards laid end to end) has a huge min-content
    width, which without this override forces the grid column to grow past its intended
    1.15fr share and collapses the .cs-visual banner column down to almost nothing. */
-.cs-panel{padding:clamp(20px,2.6vw,32px) var(--gutter);display:flex;flex-direction:column;justify-content:center;gap:clamp(10px,1.3vw,15px);min-width:0}
+.cs-panel{padding:clamp(20px,2.6vw,32px) var(--gutter);display:flex;flex-direction:column;justify-content:center;gap:clamp(8px,1vw,12px);min-width:0}
 .category-split.on-colored .cs-panel{background:var(--deep);color:var(--bone)}
 .category-split.on-colored .cs-sub{color:rgba(217,210,191,.72)}
 .category-split.on-colored .link-arrow{color:var(--bone)}
@@ -342,7 +349,7 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
    narrower — reversing the column-width template here (in addition to the order swap) keeps
    Accessories' banner/panel widths identical to the other two sections; only the screen
    position (right vs left) changes. */
-#accessories .cs-grid{grid-template-columns:1.15fr 1fr}
+#accessories .cs-grid{grid-template-columns:1.15fr .85fr}
 #accessories .cs-visual{order:2}
 #accessories .cs-panel{order:1}
 /* Accessories banner was cropped too tight by object-fit:cover — show the full framed shot instead, letterboxed on the white ground */
@@ -354,6 +361,11 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
    of looking smaller inside a wide letterboxed frame. */
 .accessories-visual .ph.img-cover{object-fit:contain;object-position:right center;box-sizing:border-box;padding:clamp(8px,1.5vw,24px);background:#fff}
 .cs-head h2{font-size:clamp(22px,2.4vw,32px);line-height:1.04;margin:6px 0 7px}
+/* The "All of..." CTA now sits beside the heading/subheading instead of below the product
+   carousel — removes a whole row (link + its gap) from the panel's vertical stack, which is
+   part of how these sections got shorter without shrinking the product cards back down. */
+.cs-head-row{display:flex;justify-content:space-between;align-items:center;gap:var(--space-md)}
+.cs-head-row .cs-head{flex:1 1 auto;min-width:0}
 .cs-sub{font-size:14px;max-width:48ch}
 
 /* Group carousel – circular subcategory/group selector (birthstone-style: click a circle, the product
@@ -362,7 +374,7 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
    only "which group am I looking at" indicator, so the group name isn't shown twice. */
 .cs-groups{display:flex;flex-wrap:wrap;justify-content:center;gap:20px 32px}
 .grp-btn{display:flex;flex-direction:column;align-items:center;gap:10px;background:none;border:0;padding:4px;cursor:pointer;flex:0 0 auto}
-.grp-media{position:relative;width:66px;height:66px;border-radius:50%;overflow:hidden;transition:transform var(--t-med) var(--ease),box-shadow var(--t-med) var(--ease)}
+.grp-media{position:relative;width:58px;height:58px;border-radius:50%;overflow:hidden;transition:transform var(--t-med) var(--ease),box-shadow var(--t-med) var(--ease)}
 .grp-media img{width:100%;height:100%;object-fit:cover;display:block}
 .grp-label{font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;color:var(--grey);transition:color var(--t-fast)}
 .grp-btn[aria-selected="true"] .grp-media{transform:scale(1.12);box-shadow:0 0 0 2px #fff,0 0 0 4px var(--caramel)}
@@ -381,7 +393,7 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
    layout (~900-1030px available) rather than Shop by Texture's full-width section
    (~1300px), so it uses a smaller clamp to still land near the "several full cards + one
    partially cut off" carousel silhouette instead of showing barely 2 cards. */
-.grp-row .product-card{flex-basis:clamp(130px,14.5vw,155px)}
+.grp-row .product-card{flex-basis:clamp(190px,22vw,230px)}
 
 /* ---------- Reviews ---------- */
 .reviews{background:#fff;padding:clamp(10px,1.4vw,18px) 0 clamp(6px,1vw,12px)}
@@ -552,6 +564,11 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .stat:nth-child(3){border-left:0}
   .stat:nth-child(n+3){border-top:1px solid var(--line-dark)}
   .cs-grid{grid-template-columns:1fr}
+  /* #accessories .cs-grid{grid-template-columns:1.15fr .85fr} (desktop, ID+class) otherwise
+     beats the plain .cs-grid reset above on specificity alone, keeping a 2-column layout
+     squeezed into a mobile-width viewport — match its specificity here to actually reset it. */
+  #accessories .cs-grid{grid-template-columns:1fr}
+  .cs-head-row{flex-direction:column;align-items:flex-start;gap:12px}
   .mf-head h2{white-space:normal;font-size:clamp(21px,5vw,26px)}
   .mf-sub{font-size:12.5px;margin-top:8px;line-height:1.4}
   .mf-row-wrap{margin-top:16px}
@@ -564,7 +581,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   /* grp-row cards stay smaller than Shop by Texture's on mobile too — the category-split
      panel is narrower and stacked below a banner image, so a large card here pushes the
      whole section well past one fold. */
-  .mf-row.grp-row .product-card{flex-basis:clamp(105px,30vw,135px)}
+  .mf-row.grp-row .product-card{flex-basis:clamp(140px,40vw,180px)}
   .nlc-row{grid-template-columns:1fr}
   .nl-form{max-width:none}
 }
@@ -611,7 +628,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .mf-tabs .tab:nth-child(3n+1):not(:first-child){border-right:0}
   .mf-tabs .tab:nth-last-child(-n+3){border-bottom:0}
   .mf-row .product-card{flex-basis:52vw}
-  .mf-row.grp-row .product-card{flex-basis:32vw}
+  .mf-row.grp-row .product-card{flex-basis:42vw}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}
@@ -989,10 +1006,13 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
       <img class="ph img-cover" src="assets/img/sub-cocktail-sets.jpg" alt="Fableroom croco-print leather bar tools styled in use">
     </div>
     <div class="cs-panel">
-      <div class="cs-head reveal">
-        <span class="eyebrow">Hosting &amp; Bar</span>
-        <h2 class="display" id="hostTitle">The bar that means it.</h2>
-        <p class="cs-sub">Cocktail sets, serve trays, modular bar, tableware.</p>
+      <div class="cs-head-row">
+        <div class="cs-head reveal">
+          <span class="eyebrow">Hosting &amp; Bar</span>
+          <h2 class="display" id="hostTitle">The bar that means it.</h2>
+          <p class="cs-sub">Cocktail sets, serve trays, modular bar, tableware.</p>
+        </div>
+        <a class="link-arrow pill reveal" href="#">All of Hosting &amp; Bar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
       <div class="cs-groups reveal" data-delay="1" role="tablist" aria-label="Browse Hosting &amp; Bar by group">
         <button class="grp-btn" type="button" data-group="cocktail" data-heading="Cocktail Sets" data-desc="Croco-print bar tools built for the after-dinner hour." aria-selected="true"><span class="grp-media"><img src="assets/img/sub-cocktail-sets.jpg" alt="" loading="lazy"></span><span class="grp-label">Cocktail Sets</span></button>
@@ -1149,7 +1169,6 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
         <div class="mf-scrollbar" aria-hidden="true"><div class="mf-scrollbar-thumb" data-carousel-thumb></div></div>
       </div>
       </div>
-      <a class="link-arrow reveal" href="#">All of Hosting &amp; Bar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     </div>
   </div>
 </section>
@@ -1236,10 +1255,13 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
       <img class="ph img-cover" src="assets/img/furniture-banner.jpg" alt="Caldera dining chair in olive waxy leather">
     </div>
     <div class="cs-panel">
-      <div class="cs-head reveal">
-        <span class="eyebrow">Furniture</span>
-        <h2 class="display" id="furnTitle">The leather version of what you already chose.</h2>
-        <p class="cs-sub">Seating, tables, cushions, mirrors.</p>
+      <div class="cs-head-row">
+        <div class="cs-head reveal">
+          <span class="eyebrow">Furniture</span>
+          <h2 class="display" id="furnTitle">The leather version of what you already chose.</h2>
+          <p class="cs-sub">Seating, tables, cushions, mirrors.</p>
+        </div>
+        <a class="link-arrow pill reveal" href="#">All of Furniture <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
       <div class="cs-groups reveal" data-delay="1" role="tablist" aria-label="Browse Furniture by group">
         <button class="grp-btn" type="button" data-group="seating" data-heading="Seating" data-desc="Dining chairs and lounge seating, in olive waxy leather." aria-selected="true"><span class="grp-media"><img src="assets/img/sub-dining-chairs.jpg" alt="" loading="lazy"></span><span class="grp-label">Seating</span></button>
@@ -1396,7 +1418,6 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
         <div class="mf-scrollbar" aria-hidden="true"><div class="mf-scrollbar-thumb" data-carousel-thumb></div></div>
       </div>
       </div>
-      <a class="link-arrow reveal" href="#">All of Furniture <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     </div>
   </div>
 </section>
@@ -1408,10 +1429,13 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
       <img class="ph img-cover" src="assets/img/accessories-banner.jpg" alt="Leather desktop organiser set in croco-print leather">
     </div>
     <div class="cs-panel">
-      <div class="cs-head reveal">
-        <span class="eyebrow">Leather Accessories</span>
-        <h2 class="display" id="accTitle">The desk tells you everything.</h2>
-        <p class="cs-sub">Four collections, for a considered desk – full naming to follow.</p>
+      <div class="cs-head-row">
+        <div class="cs-head reveal">
+          <span class="eyebrow">Leather Accessories</span>
+          <h2 class="display" id="accTitle">The desk tells you everything.</h2>
+          <p class="cs-sub">Four collections, for a considered desk – full naming to follow.</p>
+        </div>
+        <a class="link-arrow pill reveal" href="#">All of Leather Accessories <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
       <div class="cs-groups reveal" data-delay="1" role="tablist" aria-label="Browse Leather Accessories by group">
         <button class="grp-btn" type="button" data-group="cat1" data-heading="Category 1" data-desc="Decorative and keepsake boxes, hand-finished." aria-selected="true"><span class="grp-media"><img src="assets/img/sub-decorative-boxes.jpg" alt="" loading="lazy"></span><span class="grp-label">Category 1</span></button>
@@ -1568,7 +1592,6 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
         <div class="mf-scrollbar" aria-hidden="true"><div class="mf-scrollbar-thumb" data-carousel-thumb></div></div>
       </div>
       </div>
-      <a class="link-arrow reveal" href="#">All of Leather Accessories <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     </div>
   </div>
 </section>
