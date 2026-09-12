@@ -257,10 +257,10 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 .mf-tabs .tab{background:none;border:0;border-bottom:1px solid transparent;padding:6px 2px;font-size:12px;letter-spacing:.16em;color:rgba(217,210,191,.7)}
 .mf-tabs .tab[aria-selected="true"]{background:none;color:var(--bone);border-bottom-color:var(--caramel)}
 .mf-row-wrap{position:relative;z-index:3;margin-top:clamp(-153px,-14.4vw,-99px)}
-.mf-row{display:flex;gap:var(--space-sm);overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:none;-ms-overflow-style:none;padding-bottom:6px}
+.mf-row{display:flex;gap:var(--space-sm);overflow-x:auto;scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none;padding-bottom:6px}
 .mf-row.is-few{justify-content:center}
 .mf-row::-webkit-scrollbar{display:none}
-.mf-row .product-card{flex:0 0 clamp(190px,21vw,258px);scroll-snap-align:start}
+.mf-row .product-card{flex:0 0 clamp(190px,21vw,258px)}
 .mf-row .product-card[hidden]{display:none}
 /* Branded scroll progress — replaces the native scrollbar with something that matches the page */
 .mf-scrollbar{position:relative;height:3px;max-width:200px;margin:20px auto 0;background:rgba(217,210,191,.18);border-radius:999px;overflow:hidden}
@@ -1176,9 +1176,12 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
     const f = t.dataset.filter;
     const cards = $$('.product-card', mfRow);
     cards.forEach(c => { c.hidden = f !== 'all' && c.dataset.material !== f; });
-    const visible = cards.filter(c => !c.hidden).length;
-    mfRow.classList.toggle('is-few', visible > 0 && visible <= 3);
+    mfRow.classList.remove('is-few');
     mfRow.scrollLeft = 0;
+    // Only center the row when the filtered cards actually fit with no scrolling —
+    // centering an overflowing scroller pushes the first card off the left edge with
+    // no way to scroll back to it (scrollLeft:0 is already the minimum).
+    if (mfRow.scrollWidth <= mfRow.clientWidth + 1) mfRow.classList.add('is-few');
     updateMfScrollbar();
   }));
 
