@@ -246,11 +246,11 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 /* ---------- Shop by Texture (formerly "Materials") — plain white section, no banner image behind the
    header (explicit client direction: this is an L3 product-discovery layer, not a hero-style lead-in),
    boxed tab bar with a solid active segment, and product cards instead of subcategory tiles ---------- */
-.material-filter{position:relative;background:var(--licorice);color:var(--bone);padding:clamp(48px,6vw,72px) 0 clamp(32px,4vw,48px)}
+.material-filter{position:relative;background:var(--licorice);color:var(--bone);padding:clamp(32px,4vw,48px) 0 clamp(24px,3vw,32px)}
 .mf-head{width:100%;text-align:center;max-width:960px;margin:0 auto}
 .mf-head .eyebrow{color:var(--caramel)}
-.mf-head h2{margin-top:14px;font-size:clamp(30px,3.6vw,52px);line-height:1.05;color:var(--bone);white-space:nowrap}
-.mf-sub{margin:14px auto 0;max-width:52ch;color:rgba(217,210,191,.72);font-size:15px;line-height:1.5}
+.mf-head h2{margin-top:10px;font-size:clamp(26px,3vw,42px);line-height:1.05;color:var(--bone);white-space:nowrap}
+.mf-sub{margin:10px auto 0;max-width:52ch;color:rgba(217,210,191,.72);font-size:14px;line-height:1.45}
 /* .tabs (base rule) sets flex-wrap:wrap and comes later in the cascade than a single-class .mf-tabs
    selector would, silently overriding nowrap — the two-class selector here wins on specificity so the
    tab bar reliably stays a single row instead of wrapping into an uneven, gap-leaving second line. */
@@ -259,11 +259,20 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 .mf-tabs .tab{flex:0 0 auto;min-width:92px;background:none;border:0;border-right:1px solid var(--line-dark);padding:15px 12px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--bone);white-space:nowrap;transition:background var(--t-fast),color var(--t-fast)}
 .mf-tabs .tab:last-child{border-right:0}
 .mf-tabs .tab[aria-selected="true"]{background:var(--caramel);color:#fff}
-.mf-row-wrap{position:relative;z-index:3;margin-top:var(--space-md)}
+.mf-row-wrap{position:relative;z-index:3;margin-top:var(--space-md);margin-left:auto;margin-right:auto}
+/* max-width caps each row to a fixed number of cards' worth of width so the carousel
+   ALWAYS shows a partial next card at the trailing edge on wide screens, instead of
+   leaving it to chance whether the section's full available width happens to fit an
+   exact number of cards (which produced no visible "peek" at some real browser widths —
+   flagged explicitly: "product cards at 100% zoom should be 5th card half visible, i
+   still don't see that change"). Below this width the row simply fills 100% and the
+   peek still shows naturally since content still exceeds the container. */
+#materials-filter .mf-row-wrap{max-width:calc(4.5 * clamp(230px,25vw,290px) + 4 * var(--space-sm))}
+.grp-content .mf-row-wrap{max-width:calc(3.5 * clamp(190px,22vw,230px) + 3 * var(--space-sm))}
 .mf-row{display:flex;gap:var(--space-sm);overflow-x:auto;scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none;padding-bottom:6px}
 .mf-row.is-few{justify-content:center}
 .mf-row::-webkit-scrollbar{display:none}
-.mf-row .product-card{flex:0 0 clamp(230px,25vw,340px)}
+.mf-row .product-card{flex:0 0 clamp(230px,25vw,290px)}
 .mf-row .product-card[hidden]{display:none}
 /* Branded scroll progress — replaces the native scrollbar with something that matches the page */
 .mf-scrollbar{position:relative;height:3px;max-width:200px;margin:20px auto 0;background:var(--line-dark);border-radius:999px;overflow:hidden}
@@ -278,7 +287,7 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 .mf-nav.prev{left:-8px;transform:translate(-100%,-50%)}
 .mf-nav.next{right:-8px;transform:translate(100%,-50%)}
 @media (max-width:1100px){.mf-nav{display:none}}
-.mf-foot{display:flex;justify-content:center;margin-top:clamp(28px,3.6vw,44px)}
+.mf-foot{display:flex;justify-content:center;margin-top:clamp(20px,2.5vw,28px)}
 .mf-foot .link-arrow.pill{padding:15px 28px;border:1px solid var(--line-dark);border-radius:999px;color:var(--bone)}
 .mf-foot .link-arrow.pill::after{content:none}
 .mf-foot .link-arrow.pill:hover{background:var(--caramel);border-color:var(--caramel);color:#fff}
@@ -583,10 +592,15 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .trust-break .item:nth-child(3){border-left:0}
   .trust-break .item:nth-child(n+3){border-top:1px solid var(--line-dark);padding-top:var(--space-lg)}
   .mf-head h2{max-width:15ch;margin-left:auto;margin-right:auto}
-  /* Mobile deliberately wraps to two rows instead of desktop's single scrollable line — a scrollable
-     row of filter tabs isn't discoverable on a touch screen, so all 7 stay visible without swiping. */
-  .tabs.mf-tabs{flex-wrap:wrap;justify-content:center;width:100%;max-width:100%}
-  .mf-tabs .tab{flex:1 1 auto;min-width:88px;padding:13px 10px;font-size:10.5px}
+  /* Mobile deliberately shows all 7 tabs at once instead of desktop's single scrollable line — a
+     scrollable row of filter tabs isn't discoverable on a touch screen. Laid out as a real 3-column
+     CSS Grid (not flex-wrap) so every row lines up cleanly with consistent borders, and the lone 7th
+     tab sits centered in the middle column of its own row instead of an oddly-sized leftover box
+     that doesn't line up with the two full rows above it. */
+  .tabs.mf-tabs{display:grid;grid-template-columns:repeat(3,1fr);width:100%;max-width:100%}
+  .mf-tabs .tab{min-width:0;border-right:1px solid var(--line-dark);border-bottom:1px solid var(--line-dark);padding:13px 8px;font-size:10.5px}
+  .mf-tabs .tab:nth-child(3n){border-right:0}
+  .mf-tabs .tab:last-child{grid-column:2;border-left:1px solid var(--line-dark);border-right:1px solid var(--line-dark);border-bottom:0}
   .mf-row .product-card{flex-basis:58vw}
   .mf-row.grp-row .product-card{flex-basis:42vw}
 }
