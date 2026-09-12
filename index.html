@@ -184,9 +184,9 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 /* ---------- Categories (The Shops) ---------- */
 .categories{background:var(--off);color:var(--ink);padding:var(--sec-pad) 0}
 .categories .wrap{display:grid;grid-template-columns:minmax(300px,1.15fr) 3fr;gap:var(--space-lg);align-items:start}
-#catTitle{white-space:nowrap}
+#catTitle{white-space:nowrap;color:var(--licorice)}
 .categories h2{font-size:clamp(30px,3.2vw,46px);line-height:1.05}
-.categories .intro{color:var(--grey);font-size:14px;margin-top:22px;max-width:30ch;font-weight:300}
+.categories .intro{color:var(--grey);font-size:14px;margin-top:22px;max-width:40ch;font-weight:300}
 .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-xs)}
 .tile{position:relative;aspect-ratio:3/4;overflow:hidden;display:block;color:var(--bone)}
 .tile .ph{position:absolute;inset:0;transition:transform 1.1s var(--ease-out)}
@@ -194,8 +194,8 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 /* Gradient overlay matching .product-card .media::before, so tile captions get the same
    legibility treatment as every product card on the page instead of a bespoke text-shadow. */
 .tile::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(0deg,rgba(28,8,16,.85) 0%,rgba(28,8,16,.38) 38%,rgba(28,8,16,.04) 62%,transparent 80%);pointer-events:none}
-.tile .cap{position:absolute;right:26px;bottom:26px;left:26px;z-index:2;text-align:right}
-.tile .cap h3{font-family:var(--font-display);font-size:clamp(27px,2.76vw,40px);font-weight:400;line-height:1.05}
+.tile .cap{position:absolute;left:26px;right:26px;bottom:26px;z-index:2;text-align:left}
+.tile .cap h3{font-family:var(--font-display);font-size:clamp(20px,2.1vw,30px);font-weight:400;line-height:1.05}
 .tile .cap .go{display:inline-flex;align-items:center;gap:8px;margin-top:12px;font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;text-decoration:underline;text-underline-offset:4px;color:var(--bone);opacity:.9;transition:opacity var(--t-med),transform var(--t-med) var(--ease)}
 .tile .cap .go svg{width:14px;height:14px}
 .tile:hover .cap .go{opacity:1;transform:translateX(4px)}
@@ -250,7 +250,7 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
    header (explicit client direction: this is an L3 product-discovery layer, not a hero-style lead-in),
    boxed tab bar with a solid active segment, and product cards instead of subcategory tiles ---------- */
 .material-filter{position:relative;background:var(--licorice);color:var(--bone);padding:clamp(20px,2.5vw,30px) 0 clamp(14px,1.8vw,20px)}
-.mf-head{width:100%;text-align:center;max-width:960px;margin:0 auto}
+.mf-head{width:100%;text-align:center;max-width:1020px;margin:0 auto}
 .mf-head .eyebrow{color:var(--caramel)}
 .mf-head h2{margin-top:8px;font-size:clamp(22px,2.6vw,34px);line-height:1.05;color:var(--bone);white-space:nowrap}
 .mf-sub{margin:8px auto 0;max-width:52ch;color:rgba(217,210,191,.72);font-size:13px;line-height:1.4}
@@ -259,7 +259,7 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
    tab bar reliably stays a single row instead of wrapping into an uneven, gap-leaving second line. */
 .tabs.mf-tabs{justify-content:flex-start;flex-wrap:nowrap;gap:0;margin:var(--space-md) auto 0;width:fit-content;max-width:100%;border:1px solid var(--line-dark);overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
 .mf-tabs::-webkit-scrollbar{display:none}
-.mf-tabs .tab{flex:0 0 auto;min-width:88px;background:none;border:0;border-right:1px solid var(--line-dark);padding:12px 10px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--bone);white-space:nowrap;transition:background var(--t-fast),color var(--t-fast)}
+.mf-tabs .tab{flex:0 0 auto;min-width:122px;background:none;border:0;border-right:1px solid var(--line-dark);padding:14px 25px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--bone);white-space:nowrap;transition:background var(--t-fast),color var(--t-fast)}
 .mf-tabs .tab:last-child{border-right:0}
 .mf-tabs .tab[aria-selected="true"]{background:var(--caramel);color:#fff}
 .mf-row-wrap{position:relative;z-index:3;margin-top:clamp(16px,2vw,22px);margin-left:auto;margin-right:auto}
@@ -298,7 +298,7 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 /* ---------- Stat bar ---------- */
 .stats{position:relative;overflow:hidden;isolation:isolate;color:var(--bone);background:linear-gradient(90deg,rgba(20,6,8,.92),rgba(14,4,6,.8),rgba(20,6,8,.92)),url("assets/img/sub-storage-baskets.jpg") center 55%/cover no-repeat;margin:clamp(32px,4vw,56px) 0}
 .stats::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.06),transparent 38%,rgba(0,0,0,.28));pointer-events:none}
-.stats .wrap{position:relative;z-index:1;display:grid;grid-template-columns:repeat(4,1fr);gap:0;padding-left:clamp(24px,3vw,50px);padding-right:clamp(24px,3vw,50px)}
+.stats .wrap{position:relative;z-index:1;display:grid;grid-template-columns:repeat(4,1fr);gap:0;padding-left:clamp(24px,4.2vw,80px);padding-right:clamp(24px,4.2vw,80px)}
 .stat{position:relative;isolation:isolate;overflow:hidden;min-height:clamp(88px,8.4vw,125px);display:grid;align-content:center;justify-items:start;gap:clamp(8px,.85vw,13px);padding:clamp(14px,2.1vw,29px) clamp(13px,2.8vw,38px);border-left:1px solid rgba(217,210,191,.2);text-align:left}
 .stat:first-child{border-left:0}
 .stat::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.14),transparent);opacity:0;transform:translateX(-90%);transition:opacity .26s ease,transform .72s ease}
@@ -306,14 +306,9 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 .stat .v{position:relative;z-index:1;font-family:var(--font-display);font-style:italic;font-size:clamp(27px,3.3vw,50px);line-height:.92;color:#fff;text-shadow:0 8px 24px rgba(0,0,0,.32);font-variant-numeric:tabular-nums}
 .stat .l{position:relative;z-index:1;margin-top:0;font-size:clamp(11px,1vw,14px);letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.86);text-shadow:0 4px 14px rgba(0,0,0,.3)}
 
-/* ---------- Trust break (section divider below Leather Accessories — short dark band between two white sections) ---------- */
-.trust-break{background:var(--licorice);color:var(--bone);padding:clamp(28px,3.4vw,44px) 0;margin:clamp(24px,3vw,40px) 0}
-.trust-break .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-lg);padding-left:var(--band-pad);padding-right:var(--band-pad)}
-.trust-break .item{display:flex;flex-direction:column;align-items:center;text-align:center;gap:var(--space-sm);padding:0 var(--space-sm);border-left:1px solid var(--line-dark)}
-.trust-break .item:first-child{border-left:0}
-.trust-break .ic{width:52px;height:52px;border-radius:999px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--caramel),#8a4f2a);box-shadow:0 8px 20px rgba(191,126,69,.28)}
-.trust-break svg{width:21px;height:21px;stroke:var(--licorice);fill:none;stroke-width:1.6}
-.trust-break span{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:rgba(217,210,191,.85);max-width:16ch}
+/* Trust break section intentionally removed — see CLAUDE.md section 8 (Open TODOs) for why
+   and what a replacement needs to account for. Do not re-add the old .trust-break CSS from
+   git history without reconsidering the design; it was removed by explicit request, not lost. */
 
 /* ---------- Filter tabs (shared base, used by Materials section) ---------- */
 .tabs{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 22px}
@@ -324,26 +319,33 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 /* ---------- Category split (Hosting & Bar / Furniture / Leather Accessories) ---------- */
 .category-split{overflow:hidden}
 .cs-grid{display:grid;grid-template-columns:1fr 1.15fr}
-.cs-visual{position:relative;overflow:hidden;min-height:clamp(360px,44vw,560px)}
+/* Shared across Hosting & Bar / Furniture / Leather Accessories — one value, not a per-section
+   override, so the three category-split sections stay uniform in banner height, panel spacing,
+   circle size and circle-to-card gap. Reduced 30% from the original clamp(360px,44vw,560px). */
+.cs-visual{position:relative;overflow:hidden;min-height:clamp(252px,30.8vw,392px)}
 .cs-visual .ph{position:absolute;inset:0}
 /* min-width:0 is required: .cs-panel is a CSS Grid item, and a grid item's default
    min-width:auto uses its content's min-content size as a hard floor — the .grp-row
    carousel's un-scrolled content (5+ cards laid end to end) has a huge min-content
    width, which without this override forces the grid column to grow past its intended
    1.15fr share and collapses the .cs-visual banner column down to almost nothing. */
-.cs-panel{padding:clamp(36px,4.5vw,56px) var(--gutter);display:flex;flex-direction:column;justify-content:center;gap:var(--space-md);min-width:0}
+.cs-panel{padding:clamp(36px,4.5vw,56px) var(--gutter);display:flex;flex-direction:column;justify-content:center;gap:clamp(15px,2vw,24px);min-width:0}
 .category-split.on-colored .cs-panel{background:var(--deep);color:var(--bone)}
 .category-split.on-colored .cs-sub{color:rgba(217,210,191,.72)}
 .category-split.on-colored .link-arrow{color:var(--bone)}
 .category-split.on-white .cs-panel{background:#fff;color:var(--ink)}
 .category-split.on-white .cs-sub{color:var(--grey)}
-#hosting .cs-visual{min-height:clamp(275px,33.7vw,428px)}
 #accessories .cs-visual{order:2}
 #accessories .cs-panel{order:1}
 /* Accessories banner was cropped too tight by object-fit:cover — show the full framed shot instead, letterboxed on the white ground */
 .accessories-visual{background:#fff}
-.accessories-visual .ph.img-cover{object-fit:contain;box-sizing:border-box;padding:clamp(16px,3vw,48px);background:#fff}
-.cs-head h2{font-size:clamp(30px,3.2vw,46px);line-height:1.04;margin:10px 0 12px}
+/* Furniture's banner is a full-bleed object-fit:cover photo (so it naturally reads as anchored
+   to the left, where its .cs-visual column sits). Accessories is mirrored (banner on the right),
+   so its object-fit:contain photo is right-anchored to match — and given less padding than
+   before so the product renders at a closer visual scale to Furniture's full-bleed image instead
+   of looking smaller inside a wide letterboxed frame. */
+.accessories-visual .ph.img-cover{object-fit:contain;object-position:right center;box-sizing:border-box;padding:clamp(8px,1.5vw,24px);background:#fff}
+.cs-head h2{font-size:clamp(30px,3.2vw,46px);line-height:1.04;margin:9px 0 10px}
 .cs-sub{font-size:14px;max-width:48ch}
 
 /* Group carousel – circular subcategory/group selector (birthstone-style: click a circle, the product
@@ -352,7 +354,7 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
    only "which group am I looking at" indicator, so the group name isn't shown twice. */
 .cs-groups{display:flex;flex-wrap:wrap;justify-content:center;gap:20px 32px}
 .grp-btn{display:flex;flex-direction:column;align-items:center;gap:10px;background:none;border:0;padding:4px;cursor:pointer;flex:0 0 auto}
-.grp-media{position:relative;width:92px;height:92px;border-radius:50%;overflow:hidden;transition:transform var(--t-med) var(--ease),box-shadow var(--t-med) var(--ease)}
+.grp-media{position:relative;width:78px;height:78px;border-radius:50%;overflow:hidden;transition:transform var(--t-med) var(--ease),box-shadow var(--t-med) var(--ease)}
 .grp-media img{width:100%;height:100%;object-fit:cover;display:block}
 .grp-label{font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;color:var(--grey);transition:color var(--t-fast)}
 .grp-btn[aria-selected="true"] .grp-media{transform:scale(1.12);box-shadow:0 0 0 2px #fff,0 0 0 4px var(--caramel)}
@@ -533,24 +535,21 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .site-header.is-stuck .nav-row{height:56px}
   .categories{padding:32px 0}
   .categories .wrap{grid-template-columns:1fr;gap:16px}
-  .categories .intro{max-width:none}
+  .categories .intro{max-width:none;font-size:11px;line-height:1.45;margin-top:14px}
+  .categories .wrap{gap:18px}
   .tiles{grid-template-columns:repeat(3,1fr)}
   .track{grid-auto-columns:calc((100% - var(--gap))/2)}
   .car-nav{display:none}
   .stats .wrap{grid-template-columns:1fr 1fr}
   .stat:nth-child(3){border-left:0}
   .stat:nth-child(n+3){border-top:1px solid var(--line-dark)}
-  .trust-break .wrap{grid-template-columns:1fr 1fr;row-gap:var(--space-lg)}
-  .trust-break .item:nth-child(3){border-left:0}
-  .trust-break .item:nth-child(n+3){border-top:1px solid var(--line-dark);padding-top:var(--space-lg)}
   .cs-grid{grid-template-columns:1fr}
   .mf-head h2{white-space:normal;font-size:clamp(21px,5vw,26px)}
   .mf-sub{font-size:12.5px;margin-top:8px;line-height:1.4}
   .mf-row-wrap{margin-top:16px}
   #catTitle{white-space:normal}
   #accessories .cs-visual,#accessories .cs-panel{order:0}
-  .cs-visual{min-height:180px}
-  #hosting .cs-visual{min-height:180px}
+  .cs-visual{min-height:126px}
   .modal .dialog{grid-template-columns:1fr}
   .modal .media{min-height:300px}
   .mf-row .product-card{flex-basis:clamp(160px,32vw,220px)}
@@ -570,13 +569,13 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .track{grid-auto-columns:78%}
   .sec-head{flex-direction:column;align-items:flex-start;gap:16px}
   .sec-head .num{margin-right:12px}
-  .cs-panel{padding:24px 20px;gap:16px}
+  .cs-panel{padding:24px 20px;gap:12px}
   /* All 4 group circles stay in one row on mobile instead of wrapping to 2x2 — each button gets an
      exact quarter-width column (min-width:0 lets flex shrink it below the label's intrinsic width so
      the label can wrap under a small circle instead of forcing the row wider than the screen). */
   .cs-groups{gap:8px;flex-wrap:nowrap}
   .grp-btn{flex:1 1 0;min-width:0}
-  .grp-media{width:56px;height:56px;margin:0 auto}
+  .grp-media{width:48px;height:48px;margin:0 auto}
   .grp-label{font-size:9.5px;line-height:1.25;white-space:normal}
   .product-card .wish{opacity:1;transform:none}
   .fgrid-foot{grid-template-columns:1fr 1fr}
@@ -590,11 +589,6 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .stat{min-height:76px;padding:12px 11px;gap:6px}
   .stat .v{font-size:clamp(23px,7vw,32px)}
   .stat .l{font-size:clamp(11px,3.15vw,13px)}
-  .trust-break{padding:clamp(24px,6vw,32px) 0}
-  .trust-break .wrap{grid-template-columns:1fr 1fr;row-gap:var(--space-lg);padding-left:var(--space-md);padding-right:var(--space-md)}
-  .trust-break .item{border-left:0!important}
-  .trust-break .item:nth-child(3){border-left:0}
-  .trust-break .item:nth-child(n+3){border-top:1px solid var(--line-dark);padding-top:var(--space-lg)}
   .mf-head h2{max-width:15ch;margin-left:auto;margin-right:auto}
   /* Mobile deliberately shows all 7 tabs at once instead of desktop's single scrollable line — a
      scrollable row of filter tabs isn't discoverable on a touch screen. Laid out as a real 3-column
@@ -1568,16 +1562,6 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
       </div>
       <a class="link-arrow reveal" href="#">All of Leather Accessories <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     </div>
-  </div>
-</section>
-
-<!-- 10b. TRUST BREAK → section divider below Leather Accessories -->
-<section class="trust-break" aria-label="Why Fableroom">
-  <div class="wrap">
-    <div class="item reveal"><span class="ic"><svg viewBox="0 0 24 24"><path d="M3 12l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></span><span>Natural materials</span></div>
-    <div class="item reveal" data-delay="1"><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="9"/></svg></span><span>Made in India</span></div>
-    <div class="item reveal" data-delay="2"><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 20l6-6M14 4l6 6-10 10H4v-6z"/></svg></span><span>Cut &amp; finished by hand</span></div>
-    <div class="item reveal" data-delay="3"><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 12h16"/><path d="M12 4l8 8-8 8"/></svg></span><span>Workshop to your door</span></div>
   </div>
 </section>
 
