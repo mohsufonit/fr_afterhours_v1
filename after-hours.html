@@ -199,28 +199,27 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 .tile .cap .go svg{width:14px;height:14px}
 .tile:hover .cap .go{opacity:1;transform:translateX(4px)}
 
-/* ---------- Product cards ---------- */
-.product-card{position:relative;display:flex;flex-direction:column;gap:10px;cursor:pointer}
-.product-card .media{position:relative;aspect-ratio:3/4;overflow:hidden;isolation:isolate}
+/* ---------- Product cards (Shop by Texture — white card, circular photo, matching the reference structure) ---------- */
+.product-card{position:relative;display:flex;flex-direction:column;align-items:center;gap:14px;cursor:pointer;background:#fff;border:1px solid var(--line);padding:24px 18px;text-align:center}
+.product-card .media{position:relative;aspect-ratio:1/1;overflow:hidden;isolation:isolate;width:100%;max-width:200px;border-radius:50%}
 .product-card .media .ph{position:absolute;inset:0;transition:transform 1s var(--ease-out)}
-.product-card:hover .media .ph{transform:scale(1.05)}
-.product-card .media::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(0deg,rgba(28,8,16,.9) 0%,rgba(28,8,16,.42) 34%,rgba(28,8,16,.05) 60%,transparent 78%);pointer-events:none}
-.product-card .badge{position:absolute;top:12px;left:12px;z-index:3;font-size:9px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;padding:6px 9px;background:var(--off);color:var(--deep)}
-.product-card .badge.caramel{background:var(--caramel)}
-.product-card .wish{position:absolute;top:10px;right:10px;z-index:3;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:rgba(245,242,236,.9);color:var(--deep);opacity:0;transform:translateY(-6px);transition:opacity var(--t-fast),transform var(--t-fast),color var(--t-fast)}
+.product-card:hover .media .ph{transform:scale(1.06)}
+.product-card .badge{position:absolute;top:8px;left:8px;z-index:3;font-size:9px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;padding:6px 9px;background:var(--off);color:var(--deep);border-radius:999px}
+.product-card .badge.caramel{background:var(--caramel);color:#fff}
+.product-card .wish{position:absolute;top:14px;right:14px;z-index:3;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:var(--off);color:var(--deep);opacity:0;transform:translateY(-6px);transition:opacity var(--t-fast),transform var(--t-fast),color var(--t-fast)}
 .product-card:hover .wish,.product-card:focus-within .wish,.product-card .wish[aria-pressed="true"]{opacity:1;transform:none}
 .product-card .wish[aria-pressed="true"]{color:var(--caramel)}
-.product-card .wish svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6}
+.product-card .wish svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.6}
 .product-card .wish[aria-pressed="true"] svg{fill:currentColor}
-.product-card .info{position:absolute;left:14px;right:14px;bottom:14px;z-index:2;display:flex;justify-content:space-between;gap:12px;align-items:flex-end}
-.product-card .name{font-size:14px;font-weight:400;line-height:1.35;color:var(--bone)}
-.product-card .name small{display:block;color:rgba(217,210,191,.75);font-size:12px;margin-top:2px}
-.product-card .price{font-size:14px;font-weight:500;white-space:nowrap;color:var(--bone)}
-.product-card .price s{color:rgba(217,210,191,.6);font-weight:300;margin-right:6px}
+.product-card .info{display:flex;flex-direction:column;align-items:center;gap:4px}
+.product-card .name{font-family:var(--font-display);font-size:17px;font-weight:400;line-height:1.3;color:var(--ink)}
+.product-card .name small{display:block;color:var(--grey);font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin-top:5px}
+.product-card .price{font-size:13px;font-weight:500;color:var(--ink)}
+.product-card .price s{color:var(--grey);font-weight:300;margin-right:6px}
 /* Quick actions sit below the card, in normal flow — never over the photo */
-.product-card .quick{display:flex;gap:8px}
-.product-card .quick .btn{flex:1;height:44px;padding:0 14px;font-size:10.5px;background:var(--deep);color:var(--bone)}
-.product-card .quick .btn:hover{background:var(--licorice)}
+.product-card .quick{display:flex;gap:8px;width:100%}
+.product-card .quick .btn{flex:1;height:44px;padding:0 14px;font-size:10.5px;background:var(--licorice);color:var(--bone)}
+.product-card .quick .btn:hover{background:var(--deep)}
 .product-card .quick .btn-ghost{background:var(--off);color:var(--deep);flex:0 0 44px;border:1px solid var(--line)}
 .product-card .quick .btn-ghost:hover{background:#fff;border-color:var(--deep)}
 .btn.is-added{background:var(--deep)!important;color:var(--bone)!important}
@@ -245,25 +244,27 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 .dots button i{display:block;width:100%;height:1.5px;background:rgba(28,8,16,.18);transition:background var(--t-med),transform var(--t-med)}
 .dots button[aria-current="true"] i{background:var(--deep)}
 
-/* ---------- Material filter (dark throughout — no off-white/"white feeling" anywhere in this section) ---------- */
-.material-filter{position:relative;background:var(--licorice);color:var(--bone);padding-bottom:clamp(40px,5vw,64px)}
-.mf-banner{position:relative;overflow:hidden;min-height:clamp(396px,45vw,558px);display:flex;align-items:flex-start;padding-top:clamp(50px,6.3vw,86px)}
-.mf-banner .ph{position:absolute;inset:0}
-.mf-fade{position:absolute;left:0;right:0;bottom:0;height:60%;background:linear-gradient(0deg,var(--licorice) 0%,rgba(38,11,15,.75) 30%,transparent 100%);z-index:1}
-.mf-head{position:relative;z-index:2;width:100%;text-align:center}
+/* ---------- Shop by Texture (formerly "Materials") — plain white section, no banner image behind the
+   header (explicit client direction: this is an L3 product-discovery layer, not a hero-style lead-in),
+   boxed tab bar with a solid active segment, and product cards instead of subcategory tiles ---------- */
+.material-filter{position:relative;background:#fff;color:var(--ink);padding:var(--sec-pad) 0}
+.mf-head{width:100%;text-align:center;max-width:640px;margin:0 auto}
 .mf-head .eyebrow{color:var(--caramel)}
-.mf-head h2{margin-top:14px;font-size:clamp(36px,5.76vw,94px);line-height:.96;color:var(--bone)}
-.mf-tabs{justify-content:center;flex-wrap:wrap;gap:20px;margin-top:var(--space-lg)}
-.mf-tabs .tab{background:none;border:0;border-bottom:1px solid transparent;padding:6px 2px;font-size:12px;letter-spacing:.16em;color:rgba(217,210,191,.7)}
-.mf-tabs .tab[aria-selected="true"]{background:none;color:var(--bone);border-bottom-color:var(--caramel)}
-.mf-row-wrap{position:relative;z-index:3;margin-top:clamp(-153px,-14.4vw,-99px)}
+.mf-head h2{margin-top:14px;font-size:clamp(36px,4.4vw,60px);line-height:1.02;color:var(--ink)}
+.mf-sub{margin:16px auto 0;max-width:52ch;color:var(--grey);font-size:15px;line-height:1.55}
+.mf-tabs{justify-content:center;flex-wrap:nowrap;gap:0;margin:var(--space-lg) auto 0;max-width:900px;border:1px solid var(--line);overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.mf-tabs::-webkit-scrollbar{display:none}
+.mf-tabs .tab{flex:1 1 0;min-width:104px;background:none;border:0;border-right:1px solid var(--line);padding:16px 14px;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);white-space:nowrap;transition:background var(--t-fast),color var(--t-fast)}
+.mf-tabs .tab:last-child{border-right:0}
+.mf-tabs .tab[aria-selected="true"]{background:var(--licorice);color:#fff}
+.mf-row-wrap{position:relative;z-index:3;margin-top:var(--space-lg)}
 .mf-row{display:flex;gap:var(--space-sm);overflow-x:auto;scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none;padding-bottom:6px}
 .mf-row.is-few{justify-content:center}
 .mf-row::-webkit-scrollbar{display:none}
 .mf-row .product-card{flex:0 0 clamp(190px,21vw,258px)}
 .mf-row .product-card[hidden]{display:none}
 /* Branded scroll progress — replaces the native scrollbar with something that matches the page */
-.mf-scrollbar{position:relative;height:3px;max-width:200px;margin:20px auto 0;background:rgba(217,210,191,.18);border-radius:999px;overflow:hidden}
+.mf-scrollbar{position:relative;height:3px;max-width:200px;margin:20px auto 0;background:var(--line);border-radius:999px;overflow:hidden}
 .mf-scrollbar-thumb{position:absolute;top:0;left:0;height:100%;width:40%;background:var(--caramel);border-radius:999px;transform:translateX(0);transition:transform .12s linear}
 /* Desktop-only prev/next arrows for the product row, reusing the site's .car-nav button language.
    Centered on the card height specifically (row-wrap also includes the scrollbar strip below the
@@ -274,9 +275,9 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 .mf-nav.next{right:-8px;transform:translate(100%,-50%)}
 @media (max-width:1100px){.mf-nav{display:none}}
 .mf-foot{display:flex;justify-content:center;margin-top:clamp(40px,5vw,64px)}
-.mf-foot .link-arrow.pill{padding:15px 28px;border:1px solid rgba(217,210,191,.35);border-radius:999px;color:var(--bone)}
+.mf-foot .link-arrow.pill{padding:15px 28px;border:1px solid var(--line);border-radius:999px;color:var(--ink)}
 .mf-foot .link-arrow.pill::after{content:none}
-.mf-foot .link-arrow.pill:hover{background:var(--caramel);border-color:var(--caramel);color:var(--licorice)}
+.mf-foot .link-arrow.pill:hover{background:var(--licorice);border-color:var(--licorice);color:#fff}
 
 /* ---------- Stat bar ---------- */
 .stats{position:relative;overflow:hidden;isolation:isolate;color:var(--bone);background:linear-gradient(90deg,rgba(20,6,8,.92),rgba(14,4,6,.8),rgba(20,6,8,.92)),url("assets/img/sub-storage-baskets.jpg") center 55%/cover no-repeat;margin:clamp(32px,4vw,56px) 0}
@@ -324,17 +325,19 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 .cs-head h2{font-size:clamp(30px,3.2vw,46px);line-height:1.04;margin:10px 0 12px}
 .cs-sub{font-size:14px;max-width:48ch}
 
-/* Subcategory tiles – 1:1, max 4 per row / 2 rows, count-aware via .cols-3 / .cols-4. Flex (not grid) so a trailing incomplete row centers instead of stretching/left-hugging. */
-.sub-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:var(--space-sm)}
+/* Subcategory tiles – portrait photo + plain caption below (not an on-image label), max 4 per row / 2 rows, count-aware via .cols-3 / .cols-4. Flex (not grid) so a trailing incomplete row centers instead of stretching/left-hugging. */
+.sub-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:var(--space-md) var(--space-sm)}
 .sub-grid.cols-3 .sub-tile{flex:0 0 calc((100% - 2*var(--space-sm))/3)}
 .sub-grid.cols-4 .sub-tile{flex:0 0 calc((100% - 3*var(--space-sm))/4)}
-.sub-tile{position:relative;aspect-ratio:1/1;overflow:hidden;display:block}
-.sub-tile .ph{position:absolute;inset:0;transition:transform 1s var(--ease-out)}
-.sub-tile:hover .ph,.sub-tile:focus-visible .ph{transform:scale(1.06)}
-.sub-tile .sub-label{position:absolute;left:12px;right:40px;bottom:12px;font-size:14.5px;font-weight:500;letter-spacing:.02em;color:var(--bone);line-height:1.25;text-shadow:0 1px 3px rgba(0,0,0,.6),0 2px 10px rgba(0,0,0,.5)}
-.sub-tile .arrow{position:absolute;right:10px;bottom:9px;z-index:1;width:26px;height:26px;border-radius:50%;background:rgba(28,8,16,.5);display:flex;align-items:center;justify-content:center;color:var(--bone);transition:transform var(--t-med) var(--ease),background var(--t-med)}
-.sub-tile .arrow svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.6}
-.sub-tile:hover .arrow,.sub-tile:focus-visible .arrow{background:var(--caramel);transform:translate(2px,-2px)}
+.sub-tile{display:flex;flex-direction:column;gap:14px}
+.sub-tile .sub-media{position:relative;aspect-ratio:3/4;overflow:hidden;border-radius:6px}
+.sub-tile .sub-media .ph{position:absolute;inset:0;transition:transform 1s var(--ease-out)}
+.sub-tile:hover .sub-media .ph,.sub-tile:focus-visible .sub-media .ph{transform:scale(1.06)}
+.sub-tile .sub-cap{font-size:14.5px;font-weight:500;letter-spacing:.01em;text-align:center;line-height:1.3}
+.sub-tile .sub-cap svg{width:13px;height:13px;display:inline-block;vertical-align:middle;margin-left:6px;stroke:currentColor;fill:none;stroke-width:1.6;transition:transform var(--t-med) var(--ease)}
+.sub-tile:hover .sub-cap svg,.sub-tile:focus-visible .sub-cap svg{transform:translateX(3px)}
+.category-split.on-colored .sub-tile .sub-cap{color:var(--bone)}
+.category-split.on-white .sub-tile .sub-cap{color:var(--ink)}
 
 /* ---------- Reviews ---------- */
 .reviews{background:#fff;padding:clamp(10px,1.4vw,18px) 0 clamp(6px,1vw,12px)}
@@ -510,8 +513,6 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .cs-visual{min-height:320px}
   .modal .dialog{grid-template-columns:1fr}
   .modal .media{min-height:300px}
-  .mf-banner{min-height:360px;padding-top:50px}
-  .mf-row-wrap{margin-top:-81px}
   .mf-row .product-card{flex-basis:clamp(160px,32vw,220px)}
   .nlc-row{grid-template-columns:1fr}
   .nl-form{max-width:none}
@@ -545,11 +546,9 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .trust-break .item{border-left:0!important}
   .trust-break .item:nth-child(3){border-left:0}
   .trust-break .item:nth-child(n+3){border-top:1px solid var(--line-dark);padding-top:var(--space-lg)}
-  .mf-banner{min-height:306px;padding-top:40px}
   .mf-head h2{max-width:15ch;margin-left:auto;margin-right:auto}
-  .mf-tabs{gap:16px 22px}
-  .mf-row-wrap{margin-top:-20px}
-  .mf-row .product-card{flex-basis:66vw}
+  .mf-tabs .tab{min-width:88px;padding:13px 10px;font-size:10.5px}
+  .mf-row .product-card{flex-basis:72vw}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}
@@ -672,80 +671,87 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   </div>
 </section>
 
-<!-- 5. MATERIALS → browsable by leather -->
+<!-- 5. SHOP BY TEXTURE → browsable by leather texture -->
 <section class="material-filter" id="materials-filter" aria-labelledby="mfTitle">
-  <div class="mf-banner">
-    <img class="ph img-cover" src="assets/img/sub-cocktail-sets.jpg" alt="" aria-hidden="true">
-    <div class="mf-fade" aria-hidden="true"></div>
-    <div class="wrap mf-head">
-      <span class="eyebrow">Materials</span>
-      <h2 class="display" id="mfTitle">Four leathers.<br><em>One craft.</em></h2>
-      <div class="tabs mf-tabs" role="tablist" aria-label="Filter by material" data-tabs data-tabs-scope="mf">
-        <button class="tab" role="tab" aria-selected="true" data-filter="all">All</button>
-        <button class="tab" role="tab" aria-selected="false" data-filter="Waxy">Waxy</button>
-        <button class="tab" role="tab" aria-selected="false" data-filter="Croco print">Croco print</button>
-        <button class="tab" role="tab" aria-selected="false" data-filter="Shagreen">Shagreen</button>
-        <button class="tab" role="tab" aria-selected="false" data-filter="Hair-on-hide">Hair-on-hide</button>
-      </div>
+  <div class="wrap mf-head">
+    <span class="eyebrow">Shop by Texture</span>
+    <h2 class="display" id="mfTitle">Six textures.<br><em>One craft.</em></h2>
+    <p class="mf-sub">Every piece is cut, shaped and finished by hand in a leather workshop in India — texture by texture, no two grains alike.</p>
+    <div class="tabs mf-tabs" role="tablist" aria-label="Filter by texture" data-tabs data-tabs-scope="mf">
+      <button class="tab" role="tab" aria-selected="true" data-filter="all">All</button>
+      <button class="tab" role="tab" aria-selected="false" data-filter="Croco">Croco</button>
+      <button class="tab" role="tab" aria-selected="false" data-filter="Split suede">Split Suede</button>
+      <button class="tab" role="tab" aria-selected="false" data-filter="Hair-on-hide">Hair On Hide</button>
+      <button class="tab" role="tab" aria-selected="false" data-filter="Plain">Plain</button>
+      <button class="tab" role="tab" aria-selected="false" data-filter="Fine-grained">Fine-Grained</button>
+      <button class="tab" role="tab" aria-selected="false" data-filter="Shagreen">Shagreen</button>
     </div>
   </div>
   <div class="wrap">
     <div class="mf-row-wrap reveal">
       <button class="car-nav mf-nav prev" data-mf-prev aria-label="Scroll to previous products"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
       <button class="car-nav mf-nav next" data-mf-next aria-label="Scroll to next products"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
-      <ul class="mf-row" data-mf-row aria-label="A piece in each leather">
-        <li class="product-card" data-product="Aurum Dining Chair" data-price="TBC" data-tone="olive" data-material="Waxy" data-img="assets/img/sub-storage-baskets.jpg" data-desc="A channel-stitched dining chair in waxy leather over a slim brass-finished frame. Built for the long dinner.">
-          <div class="media"><img class="ph img-cover" src="assets/img/sub-storage-baskets.jpg" alt="Waxy leather pieces styled in a living room">
+      <ul class="mf-row" data-mf-row aria-label="A piece in each texture">
+        <li class="product-card" data-product="Aurum Dining Chair" data-price="TBC" data-tone="olive" data-material="Split suede" data-img="assets/img/sub-storage-baskets.jpg" data-desc="A channel-stitched dining chair in split suede leather over a slim brass-finished frame. Built for the long dinner.">
+          <div class="media"><img class="ph img-cover" src="assets/img/sub-storage-baskets.jpg" alt="Split suede leather pieces styled in a living room">
             <button class="wish" aria-pressed="false" aria-label="Save Aurum Dining Chair"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
-                    <div class="info"><h3 class="name">Aurum Dining Chair<small>Waxy · Cognac</small></h3><span class="price">TBC</span></div></div>
+          </div>
+          <div class="info"><h3 class="name">Aurum Dining Chair<small>Split suede</small></h3><span class="price">TBC</span></div>
           <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Aurum Dining Chair"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
         </li>
-        <li class="product-card" data-product="Waxy Leather Mirror" data-price="TBC" data-tone="olive" data-material="Waxy" data-img="assets/img/sub-photo-frames.jpg" data-desc="A round wall mirror wrapped in waxy leather, brass horsebit detail at the base.">
-          <div class="media"><img class="ph img-cover" src="assets/img/sub-photo-frames.jpg" alt="Waxy leather homeware styled on a tabletop">
-            <button class="wish" aria-pressed="false" aria-label="Save Waxy Leather Mirror"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
-                    <div class="info"><h3 class="name">Waxy Leather Mirror<small>Waxy · Olive</small></h3><span class="price">TBC</span></div></div>
-          <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Waxy Leather Mirror"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
+        <li class="product-card" data-product="Round Leather Mirror" data-price="TBC" data-tone="olive" data-material="Plain" data-img="assets/img/sub-photo-frames.jpg" data-desc="A round wall mirror wrapped in plain-grain leather, brass horsebit detail at the base.">
+          <div class="media"><img class="ph img-cover" src="assets/img/sub-photo-frames.jpg" alt="Plain-grain leather homeware styled on a tabletop">
+            <button class="wish" aria-pressed="false" aria-label="Save Round Leather Mirror"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
+          </div>
+          <div class="info"><h3 class="name">Round Leather Mirror<small>Plain</small></h3><span class="price">TBC</span></div>
+          <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Round Leather Mirror"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
         </li>
-        <li class="product-card" data-product="Croco Z Nesting Tables" data-price="TBC" data-tone="croco" data-material="Croco print" data-img="assets/img/sub-cocktail-sets.jpg" data-desc="A set of three nesting tables wrapped in croco-print leather on brass legs. You already have the table. Here's what goes beside it.">
-          <div class="media"><span class="badge caramel">New</span><img class="ph img-cover" src="assets/img/sub-cocktail-sets.jpg" alt="Croco-print leather bar tools styled in use">
+        <li class="product-card" data-product="Croco Z Nesting Tables" data-price="TBC" data-tone="croco" data-material="Croco" data-img="assets/img/sub-cocktail-sets.jpg" data-desc="A set of three nesting tables wrapped in croco leather on brass legs. You already have the table. Here's what goes beside it.">
+          <div class="media"><span class="badge caramel">New</span><img class="ph img-cover" src="assets/img/sub-cocktail-sets.jpg" alt="Croco leather bar tools styled in use">
             <button class="wish" aria-pressed="false" aria-label="Save Croco Z Nesting Tables"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
-                    <div class="info"><h3 class="name">Croco Z Nesting Tables<small>Set of three · Croco print</small></h3><span class="price">TBC</span></div></div>
+          </div>
+          <div class="info"><h3 class="name">Croco Z Nesting Tables<small>Set of three · Croco</small></h3><span class="price">TBC</span></div>
           <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Croco Z Nesting Tables"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
         </li>
-        <li class="product-card" data-product="Modular Bar Trunk" data-price="TBC" data-tone="croco" data-material="Croco print" data-img="assets/img/sub-cocktail-sets.jpg" data-desc="A stacking croco-print bar trunk with brass fittings that opens into a full modular bar.">
-          <div class="media"><img class="ph img-cover" src="assets/img/sub-cocktail-sets.jpg" alt="Croco-print leather bar tools styled in use">
+        <li class="product-card" data-product="Modular Bar Trunk" data-price="TBC" data-tone="croco" data-material="Croco" data-img="assets/img/sub-cocktail-sets.jpg" data-desc="A stacking croco leather bar trunk with brass fittings that opens into a full modular bar.">
+          <div class="media"><img class="ph img-cover" src="assets/img/sub-cocktail-sets.jpg" alt="Croco leather bar tools styled in use">
             <button class="wish" aria-pressed="false" aria-label="Save Modular Bar Trunk"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
-                    <div class="info"><h3 class="name">Modular Bar Trunk<small>Croco print · Olive</small></h3><span class="price">TBC</span></div></div>
+          </div>
+          <div class="info"><h3 class="name">Modular Bar Trunk<small>Croco</small></h3><span class="price">TBC</span></div>
           <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Modular Bar Trunk"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
         </li>
         <li class="product-card" data-product="Shagreen Decorative Box" data-price="TBC" data-tone="shagreen" data-material="Shagreen" data-img="assets/img/sub-decorative-boxes.jpg" data-desc="A pair of shagreen-leather decorative boxes with brass pulls. Not every object needs to announce itself.">
           <div class="media"><img class="ph img-cover" src="assets/img/sub-decorative-boxes.jpg" alt="Shagreen leather decorative boxes styled on a console">
             <button class="wish" aria-pressed="false" aria-label="Save Shagreen Decorative Box"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
-                    <div class="info"><h3 class="name">Shagreen Decorative Box<small>Shagreen · Brass pull</small></h3><span class="price">TBC</span></div></div>
+          </div>
+          <div class="info"><h3 class="name">Shagreen Decorative Box<small>Shagreen</small></h3><span class="price">TBC</span></div>
           <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Shagreen Decorative Box"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
         </li>
-        <li class="product-card" data-product="Shagreen Keepsake Box" data-price="TBC" data-tone="shagreen" data-material="Shagreen" data-img="assets/img/sub-decorative-boxes.jpg" data-desc="A smaller shagreen-leather keepsake box, brass corner studs, felt-lined interior.">
-          <div class="media"><img class="ph img-cover" src="assets/img/sub-decorative-boxes.jpg" alt="Shagreen leather decorative boxes styled on a console">
-            <button class="wish" aria-pressed="false" aria-label="Save Shagreen Keepsake Box"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
-                    <div class="info"><h3 class="name">Shagreen Keepsake Box<small>Shagreen · Grey</small></h3><span class="price">TBC</span></div></div>
-          <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Shagreen Keepsake Box"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
+        <li class="product-card" data-product="Fine-Grain Keepsake Box" data-price="TBC" data-tone="shagreen" data-material="Fine-grained" data-img="assets/img/sub-decorative-boxes.jpg" data-desc="A smaller fine-grain leather keepsake box, brass corner studs, felt-lined interior.">
+          <div class="media"><img class="ph img-cover" src="assets/img/sub-decorative-boxes.jpg" alt="Fine-grain leather boxes styled on a console">
+            <button class="wish" aria-pressed="false" aria-label="Save Fine-Grain Keepsake Box"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
+          </div>
+          <div class="info"><h3 class="name">Fine-Grain Keepsake Box<small>Fine-grained</small></h3><span class="price">TBC</span></div>
+          <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Fine-Grain Keepsake Box"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
         </li>
         <li class="product-card" data-product="Hair-on-Hide Cushion" data-price="TBC" data-tone="hair" data-material="Hair-on-hide" data-img="assets/img/mf-hoh-cushion.jpg" data-desc="A cushion in natural hair-on-hide with a gold-foil edge. Made in India. At home anywhere.">
           <div class="media"><span class="badge">New</span><img class="ph img-cover" src="assets/img/mf-hoh-cushion.jpg" alt="Hair-on-hide cushion with gold foil edge">
             <button class="wish" aria-pressed="false" aria-label="Save Hair-on-Hide Cushion"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
-                    <div class="info"><h3 class="name">Hair-on-Hide Cushion<small>Gold foil edge</small></h3><span class="price">TBC</span></div></div>
+          </div>
+          <div class="info"><h3 class="name">Hair-on-Hide Cushion<small>Hair on hide</small></h3><span class="price">TBC</span></div>
           <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Hair-on-Hide Cushion"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
         </li>
         <li class="product-card" data-product="Hair-on-Hide Jewellery Case" data-price="TBC" data-tone="hair" data-material="Hair-on-hide" data-img="assets/img/accessories-tile.jpg" data-desc="A hair-on-hide jewellery case with a fitted felt tray and brass clasp.">
           <div class="media"><img class="ph img-cover" src="assets/img/accessories-tile.jpg" alt="Leather jewellery case in use">
             <button class="wish" aria-pressed="false" aria-label="Save Hair-on-Hide Jewellery Case"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
-                    <div class="info"><h3 class="name">Hair-on-Hide Jewellery Case<small>Hair-on-hide · Silver foil</small></h3><span class="price">TBC</span></div></div>
+          </div>
+          <div class="info"><h3 class="name">Hair-on-Hide Jewellery Case<small>Hair on hide</small></h3><span class="price">TBC</span></div>
           <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Hair-on-Hide Jewellery Case"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
         </li>
       </ul>
       <div class="mf-scrollbar" aria-hidden="true"><div class="mf-scrollbar-thumb" data-mf-thumb></div></div>
     </div>
-    <div class="mf-foot"><a class="link-arrow pill" href="#">Shop by material <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+    <div class="mf-foot"><a class="link-arrow pill" href="#">Shop by texture <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
   </div>
 </section>
 
@@ -772,12 +778,12 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
         <p class="cs-sub">Cocktail sets, serve trays, one modular bar.</p>
       </div>
       <div class="sub-grid cols-3 reveal" data-delay="1">
-        <a class="sub-tile" href="#"><img class="ph img-cover" src="assets/img/sub-cocktail-sets.jpg" alt="Cocktail sets"><span class="sub-label">Cocktail Sets</span><span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg></span></a>
-        <a class="sub-tile" href="#"><img class="ph img-cover" src="assets/img/accessories-tile.jpg" alt="Serve trays"><span class="sub-label">Serve Trays</span><span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg></span></a>
-        <a class="sub-tile" href="#"><img class="ph img-cover" src="assets/img/sub-photo-frames.jpg" alt="Modular bar"><span class="sub-label">Modular Bar</span><span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg></span></a>
-        <a class="sub-tile" href="#"><img class="ph img-cover" src="assets/img/sub-cocktail-sets.jpg" alt="Coasters"><span class="sub-label">Coasters</span><span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg></span></a>
-        <a class="sub-tile" href="#"><img class="ph img-cover" src="assets/img/sub-decorative-boxes.jpg" alt="Placemats"><span class="sub-label">Placemats</span><span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg></span></a>
-        <a class="sub-tile" href="#"><img class="ph img-cover" src="assets/img/sub-storage-baskets.jpg" alt="Napkin rings"><span class="sub-label">Napkin Rings</span><span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg></span></a>
+        <a class="sub-tile" href="#"><span class="sub-media"><img class="ph img-cover" src="assets/img/sub-cocktail-sets.jpg" alt="Cocktail sets"></span><span class="sub-cap">Cocktail Sets<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+        <a class="sub-tile" href="#"><span class="sub-media"><img class="ph img-cover" src="assets/img/accessories-tile.jpg" alt="Serve trays"></span><span class="sub-cap">Serve Trays<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+        <a class="sub-tile" href="#"><span class="sub-media"><img class="ph img-cover" src="assets/img/sub-photo-frames.jpg" alt="Modular bar"></span><span class="sub-cap">Modular Bar<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+        <a class="sub-tile" href="#"><span class="sub-media"><img class="ph img-cover" src="assets/img/sub-cocktail-sets.jpg" alt="Coasters"></span><span class="sub-cap">Coasters<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+        <a class="sub-tile" href="#"><span class="sub-media"><img class="ph img-cover" src="assets/img/sub-decorative-boxes.jpg" alt="Placemats"></span><span class="sub-cap">Placemats<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+        <a class="sub-tile" href="#"><span class="sub-media"><img class="ph img-cover" src="assets/img/sub-storage-baskets.jpg" alt="Napkin rings"></span><span class="sub-cap">Napkin Rings<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
       </div>
       <a class="link-arrow reveal" href="#">All of Hosting &amp; Bar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     </div>
@@ -872,11 +878,11 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
         <p class="cs-sub">Dining chairs, nesting tables, cushions, mirrors, ottomans.</p>
       </div>
       <div class="sub-grid cols-3 reveal" data-delay="1">
-        <a class="sub-tile" href="#"><img class="ph img-cover" src="assets/img/sub-dining-chairs.jpg" alt="Dining chairs"><span class="sub-label">Dining Chairs</span><span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg></span></a>
-        <a class="sub-tile" href="#"><img class="ph img-cover" src="assets/img/sub-nesting-tables.jpg" alt="Side and nesting tables"><span class="sub-label">Side &amp; Nesting Tables</span><span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg></span></a>
-        <a class="sub-tile" href="#"><img class="ph img-cover" src="assets/img/sub-cushions.jpg" alt="Cushions"><span class="sub-label">Cushions</span><span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg></span></a>
-        <a class="sub-tile" href="#"><img class="ph img-cover" src="assets/img/sub-mirrors.jpg" alt="Mirrors"><span class="sub-label">Mirrors</span><span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg></span></a>
-        <a class="sub-tile" href="#"><img class="ph img-cover" src="assets/img/sub-dining-chairs.jpg" alt="Ottomans"><span class="sub-label">Ottomans</span><span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg></span></a>
+        <a class="sub-tile" href="#"><span class="sub-media"><img class="ph img-cover" src="assets/img/sub-dining-chairs.jpg" alt="Dining chairs"></span><span class="sub-cap">Dining Chairs<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+        <a class="sub-tile" href="#"><span class="sub-media"><img class="ph img-cover" src="assets/img/sub-nesting-tables.jpg" alt="Side and nesting tables"></span><span class="sub-cap">Side &amp; Nesting Tables<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+        <a class="sub-tile" href="#"><span class="sub-media"><img class="ph img-cover" src="assets/img/sub-cushions.jpg" alt="Cushions"></span><span class="sub-cap">Cushions<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+        <a class="sub-tile" href="#"><span class="sub-media"><img class="ph img-cover" src="assets/img/sub-mirrors.jpg" alt="Mirrors"></span><span class="sub-cap">Mirrors<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+        <a class="sub-tile" href="#"><span class="sub-media"><img class="ph img-cover" src="assets/img/sub-dining-chairs.jpg" alt="Ottomans"></span><span class="sub-cap">Ottomans<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
       </div>
       <a class="link-arrow reveal" href="#">All of Furniture <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     </div>
@@ -896,14 +902,14 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
         <p class="cs-sub">Boxes, organisers, frames – for a considered desk.</p>
       </div>
       <div class="sub-grid cols-4 reveal" data-delay="1">
-        <a class="sub-tile" href="#"><img class="ph img-cover" src="assets/img/sub-decorative-boxes.jpg" alt="Decorative boxes"><span class="sub-label">Decorative Boxes</span><span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg></span></a>
-        <a class="sub-tile" href="#"><img class="ph img-cover" src="assets/img/accessories-tile.jpg" alt="Watch boxes"><span class="sub-label">Watch Boxes</span><span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg></span></a>
-        <a class="sub-tile" href="#"><img class="ph img-cover" src="assets/img/accessories-tile.jpg" alt="Jewellery boxes"><span class="sub-label">Jewellery Boxes</span><span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg></span></a>
-        <a class="sub-tile" href="#"><img class="ph img-cover" src="assets/img/sub-decorative-boxes.jpg" alt="Keepsake boxes"><span class="sub-label">Keepsake Boxes</span><span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg></span></a>
-        <a class="sub-tile" href="#"><img class="ph img-cover" src="assets/img/sub-photo-frames.jpg" alt="Photo frames"><span class="sub-label">Photo Frames</span><span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg></span></a>
-        <a class="sub-tile" href="#"><img class="ph img-cover" src="assets/img/sub-photo-frames.jpg" alt="Desktop organisers"><span class="sub-label">Desktop Organisers</span><span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg></span></a>
-        <a class="sub-tile" href="#"><img class="ph img-cover" src="assets/img/sub-storage-baskets.jpg" alt="Tissue holders"><span class="sub-label">Tissue Holders</span><span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg></span></a>
-        <a class="sub-tile" href="#"><img class="ph img-cover" src="assets/img/sub-storage-baskets.jpg" alt="Storage baskets and caddies"><span class="sub-label">Storage Baskets &amp; Caddies</span><span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg></span></a>
+        <a class="sub-tile" href="#"><span class="sub-media"><img class="ph img-cover" src="assets/img/sub-decorative-boxes.jpg" alt="Decorative boxes"></span><span class="sub-cap">Decorative Boxes<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+        <a class="sub-tile" href="#"><span class="sub-media"><img class="ph img-cover" src="assets/img/accessories-tile.jpg" alt="Watch boxes"></span><span class="sub-cap">Watch Boxes<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+        <a class="sub-tile" href="#"><span class="sub-media"><img class="ph img-cover" src="assets/img/accessories-tile.jpg" alt="Jewellery boxes"></span><span class="sub-cap">Jewellery Boxes<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+        <a class="sub-tile" href="#"><span class="sub-media"><img class="ph img-cover" src="assets/img/sub-decorative-boxes.jpg" alt="Keepsake boxes"></span><span class="sub-cap">Keepsake Boxes<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+        <a class="sub-tile" href="#"><span class="sub-media"><img class="ph img-cover" src="assets/img/sub-photo-frames.jpg" alt="Photo frames"></span><span class="sub-cap">Photo Frames<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+        <a class="sub-tile" href="#"><span class="sub-media"><img class="ph img-cover" src="assets/img/sub-photo-frames.jpg" alt="Desktop organisers"></span><span class="sub-cap">Desktop Organisers<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+        <a class="sub-tile" href="#"><span class="sub-media"><img class="ph img-cover" src="assets/img/sub-storage-baskets.jpg" alt="Tissue holders"></span><span class="sub-cap">Tissue Holders<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+        <a class="sub-tile" href="#"><span class="sub-media"><img class="ph img-cover" src="assets/img/sub-storage-baskets.jpg" alt="Storage baskets and caddies"></span><span class="sub-cap">Storage Baskets &amp; Caddies<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
       </div>
       <a class="link-arrow reveal" href="#">All of Leather Accessories <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     </div>
