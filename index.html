@@ -182,18 +182,21 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 .mf-row-wrap.reveal .product-card:nth-child(8){transition-delay:.42s}
 
 /* ---------- Categories (The Shops) ---------- */
-.categories{background:var(--deep);color:var(--bone);padding:var(--sec-pad) 0}
+.categories{background:var(--off);color:var(--ink);padding:var(--sec-pad) 0}
 .categories .wrap{display:grid;grid-template-columns:minmax(300px,1.15fr) 3fr;gap:var(--space-lg);align-items:start}
 #catTitle{white-space:nowrap}
 .categories h2{font-size:clamp(30px,3.2vw,46px);line-height:1.05}
-.categories .intro{color:rgba(217,210,191,.7);font-size:14px;margin-top:22px;max-width:30ch;font-weight:300}
+.categories .intro{color:var(--grey);font-size:14px;margin-top:22px;max-width:30ch;font-weight:300}
 .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-xs)}
 .tile{position:relative;aspect-ratio:3/4;overflow:hidden;display:block;color:var(--bone)}
 .tile .ph{position:absolute;inset:0;transition:transform 1.1s var(--ease-out)}
 .tile:hover .ph,.tile:focus-visible .ph{transform:scale(1.06)}
-.tile .cap{position:absolute;left:22px;right:22px;bottom:22px}
-.tile .cap h3{font-family:var(--font-display);font-size:clamp(27px,2.76vw,40px);font-weight:400;line-height:1.05;text-shadow:0 1px 3px rgba(0,0,0,.6),0 2px 10px rgba(0,0,0,.5)}
-.tile .cap .go{display:inline-flex;align-items:center;gap:8px;margin-top:12px;font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--bone);opacity:.9;text-shadow:0 1px 3px rgba(0,0,0,.6),0 2px 10px rgba(0,0,0,.5);transition:opacity var(--t-med),transform var(--t-med) var(--ease)}
+/* Gradient overlay matching .product-card .media::before, so tile captions get the same
+   legibility treatment as every product card on the page instead of a bespoke text-shadow. */
+.tile::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(0deg,rgba(28,8,16,.85) 0%,rgba(28,8,16,.38) 38%,rgba(28,8,16,.04) 62%,transparent 80%);pointer-events:none}
+.tile .cap{position:absolute;right:26px;bottom:26px;left:26px;z-index:2;text-align:right}
+.tile .cap h3{font-family:var(--font-display);font-size:clamp(27px,2.76vw,40px);font-weight:400;line-height:1.05}
+.tile .cap .go{display:inline-flex;align-items:center;gap:8px;margin-top:12px;font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;text-decoration:underline;text-underline-offset:4px;color:var(--bone);opacity:.9;transition:opacity var(--t-med),transform var(--t-med) var(--ease)}
 .tile .cap .go svg{width:14px;height:14px}
 .tile:hover .cap .go{opacity:1;transform:translateX(4px)}
 
@@ -246,20 +249,20 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 /* ---------- Shop by Texture (formerly "Materials") — plain white section, no banner image behind the
    header (explicit client direction: this is an L3 product-discovery layer, not a hero-style lead-in),
    boxed tab bar with a solid active segment, and product cards instead of subcategory tiles ---------- */
-.material-filter{position:relative;background:var(--licorice);color:var(--bone);padding:clamp(32px,4vw,48px) 0 clamp(24px,3vw,32px)}
+.material-filter{position:relative;background:var(--licorice);color:var(--bone);padding:clamp(20px,2.5vw,30px) 0 clamp(14px,1.8vw,20px)}
 .mf-head{width:100%;text-align:center;max-width:960px;margin:0 auto}
 .mf-head .eyebrow{color:var(--caramel)}
-.mf-head h2{margin-top:10px;font-size:clamp(26px,3vw,42px);line-height:1.05;color:var(--bone);white-space:nowrap}
-.mf-sub{margin:10px auto 0;max-width:52ch;color:rgba(217,210,191,.72);font-size:14px;line-height:1.45}
+.mf-head h2{margin-top:8px;font-size:clamp(22px,2.6vw,34px);line-height:1.05;color:var(--bone);white-space:nowrap}
+.mf-sub{margin:8px auto 0;max-width:52ch;color:rgba(217,210,191,.72);font-size:13px;line-height:1.4}
 /* .tabs (base rule) sets flex-wrap:wrap and comes later in the cascade than a single-class .mf-tabs
    selector would, silently overriding nowrap — the two-class selector here wins on specificity so the
    tab bar reliably stays a single row instead of wrapping into an uneven, gap-leaving second line. */
 .tabs.mf-tabs{justify-content:flex-start;flex-wrap:nowrap;gap:0;margin:var(--space-md) auto 0;width:fit-content;max-width:100%;border:1px solid var(--line-dark);overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
 .mf-tabs::-webkit-scrollbar{display:none}
-.mf-tabs .tab{flex:0 0 auto;min-width:92px;background:none;border:0;border-right:1px solid var(--line-dark);padding:15px 12px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--bone);white-space:nowrap;transition:background var(--t-fast),color var(--t-fast)}
+.mf-tabs .tab{flex:0 0 auto;min-width:88px;background:none;border:0;border-right:1px solid var(--line-dark);padding:12px 10px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--bone);white-space:nowrap;transition:background var(--t-fast),color var(--t-fast)}
 .mf-tabs .tab:last-child{border-right:0}
 .mf-tabs .tab[aria-selected="true"]{background:var(--caramel);color:#fff}
-.mf-row-wrap{position:relative;z-index:3;margin-top:var(--space-md);margin-left:auto;margin-right:auto}
+.mf-row-wrap{position:relative;z-index:3;margin-top:clamp(16px,2vw,22px);margin-left:auto;margin-right:auto}
 /* max-width caps each row to a fixed number of cards' worth of width so the carousel
    ALWAYS shows a partial next card at the trailing edge on wide screens, instead of
    leaving it to chance whether the section's full available width happens to fit an
@@ -267,12 +270,12 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
    flagged explicitly: "product cards at 100% zoom should be 5th card half visible, i
    still don't see that change"). Below this width the row simply fills 100% and the
    peek still shows naturally since content still exceeds the container. */
-#materials-filter .mf-row-wrap{max-width:calc(4.5 * clamp(230px,25vw,290px) + 4 * var(--space-sm))}
+#materials-filter .mf-row-wrap{max-width:calc(4.5 * clamp(180px,20vw,220px) + 4 * var(--space-sm))}
 .grp-content .mf-row-wrap{max-width:calc(3.5 * clamp(190px,22vw,230px) + 3 * var(--space-sm))}
 .mf-row{display:flex;gap:var(--space-sm);overflow-x:auto;scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none;padding-bottom:6px}
 .mf-row.is-few{justify-content:center}
 .mf-row::-webkit-scrollbar{display:none}
-.mf-row .product-card{flex:0 0 clamp(230px,25vw,290px)}
+.mf-row .product-card{flex:0 0 clamp(180px,20vw,220px)}
 .mf-row .product-card[hidden]{display:none}
 /* Branded scroll progress — replaces the native scrollbar with something that matches the page */
 .mf-scrollbar{position:relative;height:3px;max-width:200px;margin:20px auto 0;background:var(--line-dark);border-radius:999px;overflow:hidden}
@@ -287,7 +290,7 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 .mf-nav.prev{left:-8px;transform:translate(-100%,-50%)}
 .mf-nav.next{right:-8px;transform:translate(100%,-50%)}
 @media (max-width:1100px){.mf-nav{display:none}}
-.mf-foot{display:flex;justify-content:center;margin-top:clamp(20px,2.5vw,28px)}
+.mf-foot{display:flex;justify-content:center;margin-top:clamp(14px,1.8vw,20px)}
 .mf-foot .link-arrow.pill{padding:15px 28px;border:1px solid var(--line-dark);border-radius:999px;color:var(--bone)}
 .mf-foot .link-arrow.pill::after{content:none}
 .mf-foot .link-arrow.pill:hover{background:var(--caramel);border-color:var(--caramel);color:#fff}
@@ -357,7 +360,9 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 .category-split.on-colored .grp-label{color:rgba(217,210,191,.72)}
 .category-split.on-colored .grp-btn[aria-selected="true"] .grp-label{color:var(--bone)}
 .category-split.on-colored .grp-btn[aria-selected="true"] .grp-media{box-shadow:0 0 0 2px var(--deep),0 0 0 4px var(--caramel)}
-.grp-content{margin-top:var(--space-md)}
+/* No margin-top here — .cs-panel's own flex `gap` already spaces .grp-content from the
+   circle row above it. Adding a margin-top here too double-counted that gap (32px flex
+   gap + 32px margin = 64px, reported as "too much space between the circle and cards"). */
 /* .grp-row carries no layout rules of its own — it always appears combined with .mf-row
    (".mf-row grp-row"), which supplies the single-row horizontal-carousel layout, sizing,
    and [hidden] handling identically to Shop by Texture. See the carousel guideline in
@@ -539,8 +544,8 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .trust-break .item:nth-child(3){border-left:0}
   .trust-break .item:nth-child(n+3){border-top:1px solid var(--line-dark);padding-top:var(--space-lg)}
   .cs-grid{grid-template-columns:1fr}
-  .mf-head h2{white-space:normal;font-size:clamp(24px,5vw,32px)}
-  .mf-sub{font-size:13px;margin-top:10px}
+  .mf-head h2{white-space:normal;font-size:clamp(21px,5vw,26px)}
+  .mf-sub{font-size:12.5px;margin-top:8px;line-height:1.4}
   .mf-row-wrap{margin-top:16px}
   #catTitle{white-space:normal}
   #accessories .cs-visual,#accessories .cs-panel{order:0}
@@ -561,12 +566,11 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .mf-row .product-card .quick .btn{padding:0 10px;font-size:9.5px;letter-spacing:.12em;white-space:nowrap;height:40px}
   .mf-row .product-card .quick .btn-ghost{padding:0 12px}
   .tiles{grid-template-columns:1fr;gap:8px}
-  .tile{aspect-ratio:16/7}
+  .tile{aspect-ratio:16/10}
   .track{grid-auto-columns:78%}
   .sec-head{flex-direction:column;align-items:flex-start;gap:16px}
   .sec-head .num{margin-right:12px}
   .cs-panel{padding:24px 20px;gap:16px}
-  .grp-content{margin-top:8px}
   /* All 4 group circles stay in one row on mobile instead of wrapping to 2x2 — each button gets an
      exact quarter-width column (min-width:0 lets flex shrink it below the label's intrinsic width so
      the label can wrap under a small circle instead of forcing the row wider than the screen). */
@@ -597,11 +601,14 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
      CSS Grid (not flex-wrap) so every row lines up cleanly with consistent borders, and the lone 7th
      tab sits centered in the middle column of its own row instead of an oddly-sized leftover box
      that doesn't line up with the two full rows above it. */
+  /* "All" gets its own full-width row (it's a reset, not one of the 6 textures), then the
+     6 real textures fill a clean 3-column × 2-row grid below it. */
   .tabs.mf-tabs{display:grid;grid-template-columns:repeat(3,1fr);width:100%;max-width:100%}
   .mf-tabs .tab{min-width:0;border-right:1px solid var(--line-dark);border-bottom:1px solid var(--line-dark);padding:13px 8px;font-size:10.5px}
-  .mf-tabs .tab:nth-child(3n){border-right:0}
-  .mf-tabs .tab:last-child{grid-column:2;border-left:1px solid var(--line-dark);border-right:1px solid var(--line-dark);border-bottom:0}
-  .mf-row .product-card{flex-basis:58vw}
+  .mf-tabs .tab:first-child{grid-column:1/-1;border-right:0}
+  .mf-tabs .tab:nth-child(3n+1):not(:first-child){border-right:0}
+  .mf-tabs .tab:nth-last-child(-n+3){border-bottom:0}
+  .mf-row .product-card{flex-basis:52vw}
   .mf-row.grp-row .product-card{flex-basis:42vw}
 }
 @media (prefers-reduced-motion:reduce){
@@ -959,7 +966,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
       </ul>
       <div class="mf-scrollbar" aria-hidden="true"><div class="mf-scrollbar-thumb" data-carousel-thumb></div></div>
     </div>
-    <div class="mf-foot"><a class="link-arrow pill" href="#">Shop by texture <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+    <div class="mf-foot"><a class="link-arrow pill" href="#" data-mf-foot><span data-mf-foot-text>Shop All</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
   </div>
 </section>
 
@@ -1880,12 +1887,15 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
     }));
   });
 
-  /* Materials filter tabs – filters the product row by texture */
+  /* Materials filter tabs – filters the product row by texture, and updates the section's
+     own CTA pill to name the active texture ("Shop All" / "Shop Croco" / "Shop Shagreen"…) */
   const mfRow = $('#materials-filter [data-carousel-row]');
+  const mfFootText = $('[data-mf-foot-text]');
   $$('.mf-tabs .tab').forEach(t => t.addEventListener('click', () => {
     $$('.mf-tabs .tab').forEach(x => x.setAttribute('aria-selected', 'false')); t.setAttribute('aria-selected', 'true');
     const f = t.dataset.filter;
     refilterRow(mfRow, c => f !== 'all' && c.dataset.material !== f);
+    if (mfFootText) mfFootText.textContent = `Shop ${t.textContent.trim()}`;
   }));
 
   /* Newsletter */
