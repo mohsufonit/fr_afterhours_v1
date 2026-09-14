@@ -383,35 +383,46 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
    partially cut off" carousel silhouette instead of showing barely 2 cards. */
 .grp-row .product-card{flex-basis:clamp(190px,22vw,230px)}
 
-/* Hosting & Bar: "classic split, reframed" — a rounded, lifted, inset banner (from the
-   layout-options review) instead of a flush full-bleed rectangle, PLUS product cards resized
-   to exactly match Shop by Texture's (clamp(180px,20vw,220px), not the smaller shared
-   clamp(190px,22vw,230px) Furniture/Accessories still use). This is a deliberate, explicit
-   per-section divergence from the "all three category-split sections stay tightened together"
-   pattern above — Hosting & Bar only, not applied to Furniture/Accessories unless asked. */
-#hosting .cs-visual{margin:28px 0 28px 28px;border-radius:12px;overflow:hidden;box-shadow:0 24px 50px -26px rgba(38,11,15,.4)}
+/* SUPERSEDED — Hosting & Bar's banner is a plain full-bleed rectangle again, no rounded corners
+   or lifted-card shadow — that "framed" treatment was explicitly rejected. What it kept: the
+   banner no longer touches the true viewport edge with zero inset — it starts at var(--gutter),
+   the SAME left/right whitespace token every other page-wide section already uses, instead of
+   either a bespoke one-off margin or a hard 0. Applied as padding-left on `.cs-grid` (not a
+   margin on `.cs-visual` itself) so it reads as the section's own edge inset, not a box drawn
+   around the image. Product cards still match Shop by Texture's size (clamp(180px,20vw,220px),
+   not the smaller shared clamp(190px,22vw,230px) Furniture/Accessories use) — a deliberate,
+   explicit per-section divergence from the "all three category-split sections stay tightened
+   together" pattern above, Hosting & Bar only. */
+#hosting .cs-visual{margin-left:var(--gutter)}
 #hosting .grp-row .product-card{flex-basis:clamp(180px,20vw,220px)}
 #hosting .grp-content .mf-row-wrap{max-width:calc(3.5 * clamp(180px,20vw,220px) + 3 * var(--space-sm))}
 
-/* SUPERSEDED — Furniture: "banner strip on top, then a split" — not a full vertical stack.
-   The first pass stacked banner+heading+circles+carousel all in one column ("magazine" layout);
-   measured on the real page it came out to 1145px tall at 1920×1080 (Hosting & Bar's equivalent
-   split is 688px) because stacking makes every piece's height ADD to the total, whereas a
-   side-by-side split lets the banner's height come for free (it just stretches to match
-   whatever height the content column already needs — see the .cs-grid grid-stretch note below).
-   Fixed by keeping only ONE full-width element (a short panoramic banner) genuinely stacked on
-   top, then reverting to a proven two-column split for the heading+circles+carousel underneath
-   — same arithmetic as Hosting & Bar's split, plus a small, fixed addition for the banner strip.
-   Still reads distinctly from Hosting & Bar (which has no top banner at all) without risking the
-   one-viewport rule again. `.cs-grid` stays `display:block` so the banner sits in normal flow
-   above `.cs-row`, a fresh 2-column grid (not `.cs-grid` itself, which has its own banner+panel
-   ratio used elsewhere) holding `.cs-panel` (heading+circles, narrower) and `.grp-content`
-   (carousel, wider) side by side. */
-.cs-banner-top .cs-grid{display:block}
-.cs-banner-top .cs-visual{min-height:clamp(150px,9vw,190px)}
-.cs-row{display:grid;grid-template-columns:.6fr 1.4fr;gap:var(--gutter);align-items:start}
-.cs-row .cs-panel{padding:clamp(20px,2.6vw,32px) 0 clamp(20px,2.6vw,32px) var(--gutter)}
-.cs-row .grp-content{padding:clamp(20px,2.6vw,32px) var(--gutter) clamp(20px,2.6vw,32px) 0}
+/* SUPERSEDED (again) — Furniture: full-bleed photo backdrop with a frosted-glass content card,
+   no separate banner box at all — Concept 6 from the ten-layout-options review. History: (1) a
+   full vertical "magazine" stack measured 1145px tall (banner+heading+circles+carousel all
+   adding up); (2) a short banner strip + 2-column split fixed the height (648px) but still used
+   a conventional rectangular banner region. This pass removes the banner region as a concept
+   entirely — the photograph IS the section (`.cs-visual` is `position:absolute;inset:0`, behind
+   everything, dimmed by a gradient), and `.cs-glass` (a `backdrop-filter:blur()` card) floats on
+   top holding the heading, groups and carousel. Nothing to crop awkwardly because there's no
+   separate frame to crop into. Text recolours for the dark backdrop directly (not via
+   `.on-colored`, since this isn't a solid-fill panel) — don't add the `on-white`/`on-colored`
+   class here, `.cs-backdrop` owns its own palette. */
+.cs-backdrop{position:relative;overflow:hidden;background:var(--licorice);padding:clamp(28px,3.4vw,44px) var(--gutter)}
+.cs-backdrop .cs-visual{position:absolute;inset:0;z-index:0;margin:0;min-height:0}
+.cs-backdrop .cs-visual::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(28,8,16,.76) 0%,rgba(28,8,16,.52) 55%,rgba(28,8,16,.76) 100%)}
+.cs-glass{position:relative;z-index:1;max-width:720px;margin:0 auto;background:rgba(245,242,236,.1);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(217,210,191,.22);border-radius:16px;padding:clamp(20px,2.6vw,32px);display:flex;flex-direction:column;gap:clamp(10px,1.3vw,15px);color:var(--bone)}
+.cs-backdrop .cs-head h2{font-size:clamp(20px,2.1vw,28px);margin:5px 0 6px}
+.cs-backdrop .eyebrow{color:var(--caramel)}
+.cs-backdrop .cs-sub{color:rgba(217,210,191,.75)}
+.cs-backdrop .link-arrow{color:var(--bone)}
+.cs-backdrop .cs-head-row{flex-direction:column;align-items:center;text-align:center;gap:10px}
+.cs-backdrop .cs-groups{justify-content:center}
+.cs-backdrop .grp-label{color:rgba(217,210,191,.72)}
+.cs-backdrop .grp-btn[aria-selected="true"] .grp-label{color:var(--bone)}
+.cs-backdrop .grp-btn[aria-selected="true"] .grp-media{box-shadow:0 0 0 2px var(--licorice),0 0 0 4px var(--caramel)}
+.cs-backdrop .link-arrow.pill{border-color:rgba(217,210,191,.4)}
+.cs-backdrop .link-arrow.pill:hover{background:var(--caramel);border-color:var(--caramel);color:#fff}
 
 /* Leather Accessories: the 3 groups themselves are the hero — no banner image, no small circles.
    Reuses the same .cs-groups/.grp-btn markup and the same generic click-to-filter JS as the
@@ -613,22 +624,18 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .cs-grid{grid-template-columns:1fr}
   .cs-head-row{flex-direction:column;align-items:flex-start;gap:12px}
   .cs-tiles .cs-head-row{align-items:center}
-  /* Furniture's banner-strip-then-split reverts to a plain single column at mobile, same as
-     every other 2-column split on this page. */
-  .cs-row{display:block}
   .mf-head h2{white-space:normal;font-size:clamp(21px,5vw,26px)}
   .mf-sub{font-size:12.5px;margin-top:8px;line-height:1.4}
   .mf-row-wrap{margin-top:16px}
   #catTitle{white-space:normal}
-  /* A real, visible banner on mobile, not a cropped sliver — was 95px, which read as
-     pointless. .cs-banner-top (Furniture) needs its own equally-specific companion here: its
-     un-scoped desktop rule (`.cs-banner-top .cs-visual{min-height:clamp(150px,9vw,190px)}`)
-     otherwise beats this plain `.cs-visual` mobile reset on specificity regardless of source
-     order — the same class of bug documented elsewhere on this page. */
-  .cs-visual,.cs-banner-top .cs-visual{min-height:150px}
-  /* Hosting & Bar's "reframed" banner keeps its inset/rounded look at mobile too, just with a
-     tighter margin and a normal photo aspect ratio instead of the desktop grid-stretch height. */
-  #hosting .cs-visual{margin:14px 15px 0;border-radius:10px;height:160px;min-height:0}
+  .cs-visual{min-height:150px}
+  .cs-backdrop{padding:28px 15px}
+  .cs-backdrop .cs-visual{min-height:0}
+  .cs-glass{padding:20px;border-radius:12px;gap:10px}
+  /* Hosting & Bar's banner keeps the same-as-desktop gutter inset on the left at mobile too,
+     matching every other section's own mobile gutter (15px) — no rounding, no shadow, no card
+     treatment, just consistent whitespace. */
+  #hosting .cs-visual{margin-left:15px;height:160px;min-height:0}
   .modal .dialog{grid-template-columns:1fr}
   .modal .media{min-height:300px}
   .mf-row .product-card{flex-basis:clamp(160px,32vw,220px)}
@@ -657,14 +664,10 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .cs-head h2{font-size:19px;margin:4px 0 5px}
   .cs-sub{font-size:12px;line-height:1.35}
   .cs-head-row{gap:8px}
-  /* Same specificity leak as the banner fix above: `.cs-row .cs-panel`/`.cs-tiles .cs-panel`
-     are un-scoped (apply at every width), so their desktop side padding otherwise beats this
-     plain `.cs-panel` mobile reset — every category-split section must share one mobile
-     gutter. `.cs-row`'s panel/content asymmetric padding (no gutter on the side facing each
-     other, since they sit side by side at desktop) also needs resetting to normal full padding
-     now that `.cs-row` stacks them into one column. */
-  .cs-row .cs-panel,.cs-tiles .cs-panel{padding:18px 15px}
-  .cs-row .grp-content{padding:18px 15px}
+  /* Same specificity leak as the banner fix above: un-scoped section-modifier rules
+     (`.cs-tiles .cs-panel`) beat this plain `.cs-panel` mobile reset otherwise — every
+     category-split section must share one mobile gutter. */
+  .cs-tiles .cs-panel{padding:18px 15px}
   /* All 4 group circles stay in one row on mobile instead of wrapping to 2x2 — each button gets an
      exact quarter-width column (min-width:0 lets flex shrink it below the label's intrinsic width so
      the label can wrap under a small circle instead of forcing the row wider than the screen). */
@@ -1314,13 +1317,11 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
 </section>
 
 <!-- 9. FURNITURE (banner-left, SKU grid-right, white panel) -->
-<section class="category-split on-white cs-banner-top" id="furniture" aria-labelledby="furnTitle">
-  <div class="cs-grid">
-    <div class="cs-visual reveal">
-      <img class="ph img-cover" src="assets/img/furniture-banner.jpg" alt="Caldera dining chair in olive waxy leather">
-    </div>
-    <div class="cs-row">
-    <div class="cs-panel">
+<section class="category-split cs-backdrop" id="furniture" aria-labelledby="furnTitle">
+  <div class="cs-visual reveal">
+    <img class="ph img-cover" src="assets/img/furniture-banner.jpg" alt="Caldera dining chair in olive waxy leather">
+  </div>
+  <div class="cs-glass">
       <div class="cs-head-row">
         <div class="cs-head reveal">
           <span class="eyebrow">Furniture</span>
@@ -1335,7 +1336,6 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
         <button class="grp-btn" type="button" data-group="cushions" data-heading="Cushions" data-desc="Lounge cushions in tan oily leather." aria-selected="false"><span class="grp-media"><img src="assets/img/sub-cushions.jpg" alt="" loading="lazy"></span><span class="grp-label">Cushions</span></button>
         <button class="grp-btn" type="button" data-group="mirrors" data-heading="Mirrors" data-desc="Round wall mirrors, waxy leather frame." aria-selected="false"><span class="grp-media"><img src="assets/img/sub-mirrors.jpg" alt="" loading="lazy"></span><span class="grp-label">Mirror</span></button>
       </div>
-    </div>
     <div class="grp-content reveal" data-delay="2">
       <div class="mf-row-wrap reveal">
         <button class="car-nav mf-nav prev" data-carousel-prev aria-label="Scroll to previous products"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
@@ -1485,7 +1485,6 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
         <div class="mf-scrollbar" aria-hidden="true"><div class="mf-scrollbar-thumb" data-carousel-thumb></div></div>
       </div>
       </div>
-    </div>
     </div>
 </section>
 
@@ -1948,14 +1947,36 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
     const prev = $('[data-carousel-prev]', wrap);
     const next = $('[data-carousel-next]', wrap);
     if (!row) return null;
+    // Center the prev/next buttons on the product PHOTO, not the whole card — the card also
+    // carries name/price text and, below the card, the always-visible ATC/quick-view row and
+    // the scroll-progress bar, so centering on the card's or wrap's full height put the arrows
+    // noticeably below the image. The image's rendered height depends on the card's responsive
+    // clamp() width (via its 3:4 aspect-ratio), so this has to be measured, not a fixed CSS
+    // offset — inline `top` overrides the CSS default regardless of specificity.
+    function positionNavs() {
+      if (!prev && !next) return;
+      const media = row.querySelector('.product-card:not([hidden]) .media');
+      if (!media) return;
+      const wrapRect = wrap.getBoundingClientRect();
+      const mediaRect = media.getBoundingClientRect();
+      const centerY = Math.round(mediaRect.top - wrapRect.top + mediaRect.height / 2);
+      if (prev) prev.style.top = centerY + 'px';
+      if (next) next.style.top = centerY + 'px';
+    }
     function update() {
       row.classList.remove('is-few');
       // Only center the row when its content actually fits with no scrolling — centering an
       // overflowing scroller pushes the first card off the left edge with no way to scroll
       // back to it (scrollLeft:0 is already the minimum).
       if (row.scrollWidth <= row.clientWidth + 1) row.classList.add('is-few');
-      if (!thumb) return;
+      // The back arrow only does anything once you've actually scrolled right — disable (and
+      // dim, via the existing .car-nav:disabled rule) both ends at their respective limits
+      // instead of leaving a dead-looking-but-clickable button sitting at scrollLeft:0.
       const track = row.scrollWidth - row.clientWidth;
+      if (prev) prev.disabled = row.scrollLeft <= 1;
+      if (next) next.disabled = row.scrollLeft >= track - 1;
+      positionNavs();
+      if (!thumb) return;
       const pct = track > 0 ? row.scrollLeft / track : 0;
       const thumbWidth = Math.max(15, Math.min(100, (row.clientWidth / row.scrollWidth) * 100));
       thumb.style.width = thumbWidth + '%';
