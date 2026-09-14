@@ -413,7 +413,12 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 .cs-tiles .cs-sub{margin:0 auto}
 .tile-select{gap:var(--space-sm)}
 .tile-select .grp-btn{display:block;position:relative;padding:0;flex:1 1 0;min-width:0}
-.tile-select .grp-media{width:100%;height:auto;aspect-ratio:4/3;border-radius:6px;transform:none!important}
+/* display:block is required here — .grp-btn switches from flex to block for tiles (below), and
+   a flex item is block-level regardless of its own `display`, but once the parent is no longer
+   flex, this <span> reverts to its default inline display, under which width/height/aspect-ratio
+   don't apply at all (silently ignored) and it renders at the raw photo's intrinsic ratio
+   instead — this was the actual cause of Accessories' oversized group row, not the ratio value. */
+.tile-select .grp-media{display:block;width:100%;height:auto;aspect-ratio:4/3;border-radius:6px;transform:none!important}
 .tile-select .grp-media img{transition:transform var(--t-med) var(--ease),filter var(--t-fast)}
 .tile-select .grp-media::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(28,8,16,.82) 0%,rgba(28,8,16,.22) 46%,transparent 74%)}
 .tile-select .grp-btn:hover .grp-media img{transform:scale(1.06)}
@@ -598,7 +603,13 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .mf-sub{font-size:12.5px;margin-top:8px;line-height:1.4}
   .mf-row-wrap{margin-top:16px}
   #catTitle{white-space:normal}
-  .cs-visual{min-height:95px}
+  /* A real, visible banner on mobile, not a cropped sliver — was 95px, which read as
+     pointless. .cs-stacked (Furniture) needs its own equally-specific companion here: its
+     un-scoped desktop rule (`.cs-stacked .cs-visual{min-height:clamp(220px,20vw,340px)}`)
+     otherwise beats this plain `.cs-visual` mobile reset on specificity regardless of source
+     order — the same class of bug documented elsewhere on this page — leaving Furniture's
+     mobile banner stuck at its desktop clamp's 220px floor instead of matching Hosting's. */
+  .cs-visual,.cs-stacked .cs-visual{min-height:150px}
   .modal .dialog{grid-template-columns:1fr}
   .modal .media{min-height:300px}
   .mf-row .product-card{flex-basis:clamp(160px,32vw,220px)}
@@ -619,19 +630,38 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .sec-head{flex-direction:column;align-items:flex-start;gap:16px}
   .sec-head .num{margin-right:12px}
   .cs-panel{padding:18px 15px;gap:9px}
+  /* Trimmed to help the category-split sections fit one mobile viewport now that the banner
+     and product cards are both bigger — the heading was already at its desktop clamp's floor
+     (22px), which isn't small enough on its own at this width. */
+  .cs-head h2{font-size:19px;margin:4px 0 5px}
+  .cs-sub{font-size:12px;line-height:1.35}
+  .cs-head-row{gap:8px}
+  /* Same specificity leak as the banner fix above: `.cs-stacked .cs-panel`/`.cs-tiles .cs-panel`
+     are un-scoped (apply at every width), so their desktop `var(--gutter)` side padding
+     (~20px) otherwise beats this plain `.cs-panel` mobile reset — Furniture/Accessories
+     silently got 20px left/right instead of Hosting's 15px. Every category-split section
+     must share one mobile gutter. */
+  .cs-stacked .cs-panel,.cs-tiles .cs-panel{padding:18px 15px}
+  /* Furniture's carousel (.grp-content) sits OUTSIDE .cs-panel (see the "full-width magazine"
+     layout note in the CSS above), so the .cs-panel fix above doesn't reach it — it has its own
+     var(--gutter) padding that resolves to 20px at this width, not Hosting's 15px. */
+  .cs-stacked .grp-content{padding-left:15px;padding-right:15px}
   /* All 4 group circles stay in one row on mobile instead of wrapping to 2x2 — each button gets an
      exact quarter-width column (min-width:0 lets flex shrink it below the label's intrinsic width so
      the label can wrap under a small circle instead of forcing the row wider than the screen). */
   .cs-groups{gap:8px;flex-wrap:nowrap}
   .grp-btn{flex:1 1 0;min-width:0}
-  .grp-media{width:36px;height:36px;margin:0 auto}
-  .grp-label{font-size:9.5px;line-height:1.25;white-space:normal}
+  .grp-media{width:32px;height:32px;margin:0 auto}
+  .grp-label{font-size:9.5px;line-height:1.2;white-space:normal}
   /* .tile-select's rectangular photo tiles must override the circle sizing above — same
-     specificity trick used elsewhere on this page (an extra class beats source order). */
+     specificity trick used elsewhere on this page (an extra class beats source order).
+     Aspect ratio is NOT overridden here — it stays 4/3, same as desktop, instead of a taller
+     mobile-only 3/4: the tall crop made Accessories' group row ~100px taller than the other
+     two sections' circle row, which was the main reason it didn't fit one mobile viewport. */
   .tile-select{gap:6px}
-  .tile-select .grp-media{width:100%;height:auto;aspect-ratio:3/4;margin:0}
-  .tile-select .grp-label{left:8px;right:8px;bottom:8px;font-size:11.5px}
-  .tile-select .grp-label em{font-size:7.5px}
+  .tile-select .grp-media{width:100%;height:auto;margin:0}
+  .tile-select .grp-label{left:8px;right:8px;bottom:7px;font-size:10.5px}
+  .tile-select .grp-label em{font-size:7px;margin-top:1px}
   .product-card .wish{opacity:1;transform:none}
   .fgrid-foot{grid-template-columns:1fr 1fr}
   .fgrid-foot .brand{grid-column:1/-1}
@@ -658,7 +688,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .mf-tabs .tab:nth-child(3n+1):not(:first-child){border-right:0}
   .mf-tabs .tab:nth-last-child(-n+3){border-bottom:0}
   .mf-row .product-card{flex-basis:52vw}
-  .mf-row.grp-row .product-card{flex-basis:42vw}
+  .mf-row.grp-row .product-card{flex-basis:44vw}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}
