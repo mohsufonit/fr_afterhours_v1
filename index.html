@@ -410,10 +410,10 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
    class here, `.cs-backdrop` owns its own palette. */
 .cs-backdrop{position:relative;overflow:hidden;background:var(--licorice);padding:clamp(16px,2vw,24px) var(--gutter)}
 .cs-backdrop .grp-media{width:44px;height:44px}
-.cs-backdrop .cs-groups{gap:10px 20px;justify-content:flex-start}
+.cs-backdrop .cs-groups{gap:10px 20px;justify-content:center}
 .cs-backdrop .cs-visual{position:absolute;inset:0;z-index:0;margin:0;min-height:0}
 .cs-backdrop .cs-visual::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(28,8,16,.76) 0%,rgba(28,8,16,.52) 55%,rgba(28,8,16,.76) 100%)}
-.cs-glass{position:relative;z-index:1;max-width:1080px;margin:0 auto;background:rgba(245,242,236,.1);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(217,210,191,.22);border-radius:16px;padding:clamp(16px,2vw,24px) clamp(56px,4.5vw,64px);display:flex;flex-direction:column;gap:clamp(6px,.8vw,8px);color:var(--bone)}
+.cs-glass{position:relative;z-index:1;max-width:1080px;margin:0 auto;background:rgba(245,242,236,.1);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(217,210,191,.22);border-radius:16px;padding:clamp(16px,2vw,24px) clamp(56px,4.5vw,64px);display:flex;flex-direction:column;gap:clamp(12px,1.5vw,16px);color:var(--bone)}
 .cs-backdrop .cs-head h2{font-size:clamp(18px,1.9vw,24px);margin:4px 0 5px}
 .cs-backdrop .eyebrow{color:var(--caramel)}
 .cs-backdrop .cs-sub{color:rgba(217,210,191,.75);font-size:12px}
@@ -449,34 +449,29 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 .cs-backdrop .link-arrow.pill{border-color:rgba(217,210,191,.4)}
 .cs-backdrop .link-arrow.pill:hover{background:var(--caramel);border-color:var(--caramel);color:#fff}
 
-/* Leather Accessories: the 3 groups themselves are the hero — no banner image, no small circles.
-   Reuses the same .cs-groups/.grp-btn markup and the same generic click-to-filter JS as the
-   circle selector elsewhere (only the CSS changes), so .tile-select is a visual modifier only. */
-.cs-tiles .cs-panel{padding:clamp(28px,3.4vw,44px) var(--gutter);text-align:center}
-.cs-tiles .cs-head-row{flex-direction:column;align-items:center;gap:10px;max-width:640px;margin:0 auto}
-.cs-tiles .cs-head-row .cs-head{flex:none}
-.cs-tiles .cs-sub{margin:0 auto}
-.tile-select{gap:var(--space-sm)}
-.tile-select .grp-btn{display:block;position:relative;padding:0;flex:1 1 0;min-width:0}
-/* display:block is required here — .grp-btn switches from flex to block for tiles (below), and
-   a flex item is block-level regardless of its own `display`, but once the parent is no longer
-   flex, this <span> reverts to its default inline display, under which width/height/aspect-ratio
-   don't apply at all (silently ignored) and it renders at the raw photo's intrinsic ratio
-   instead — this was the actual cause of Accessories' oversized group row, not the ratio value. */
-/* A ratio-driven height (aspect-ratio:4/3 of the tile's own width) works at mobile, where 3
-   narrow tiles are naturally short — but at desktop each tile is ~600px+ wide, so the same
-   ratio produced a ~440px-tall tile row (measured), pushing the whole section to 1105px, well
-   past one viewport (Hosting & Bar's equivalent split is 688px). A capped height, not a ratio,
-   keeps tiles proportionate at any width. */
-.tile-select .grp-media{display:block;width:100%;height:clamp(150px,9vw,175px);border-radius:6px;transform:none!important}
-.tile-select .grp-media img{transition:transform var(--t-med) var(--ease),filter var(--t-fast)}
-.tile-select .grp-media::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(28,8,16,.82) 0%,rgba(28,8,16,.22) 46%,transparent 74%)}
-.tile-select .grp-btn:hover .grp-media img{transform:scale(1.06)}
-.tile-select .grp-btn[aria-selected="false"] .grp-media img{filter:grayscale(.12) brightness(.72)}
-.tile-select .grp-btn[aria-selected="true"] .grp-media{box-shadow:inset 0 0 0 3px var(--caramel)}
-.tile-select .grp-label{position:absolute;left:14px;right:14px;bottom:12px;text-align:left;color:var(--bone);font-family:var(--font-display);font-size:16px;font-weight:500;letter-spacing:normal;text-transform:none}
-.tile-select .grp-label em{display:block;font-style:normal;font-family:var(--font-body);font-size:10px;letter-spacing:.08em;text-transform:uppercase;opacity:.72;margin-top:3px;font-weight:500;color:inherit}
-.tile-select .grp-btn[aria-selected="true"] .grp-label{color:var(--bone)}
+/* SUPERSEDED — Leather Accessories: sidebar nav + banner-in-carousel (Concept 7 from the
+   layout-options review), replacing "group tiles as hero." The heading/groups/CTA move into a
+   dedicated left sidebar column; the old banner (`accessories-banner.jpg`, dropped when this
+   section was first rebuilt around tiles) returns as the FIRST, larger "hero" card inside the
+   same product carousel instead of occupying its own separate region — merges what used to be
+   two competing visual elements (a banner block + a tile row) into one. Reuses the same
+   `.cs-groups`/`.grp-btn` markup and the generic click-to-filter JS the circle/tile selectors
+   use elsewhere — `.side-select` is a CSS-only visual variant (a vertical icon+label list,
+   instead of a circle row or photo tiles), not a new component or new JS. */
+.cs-sidebar{display:grid;grid-template-columns:340px 1fr;align-items:stretch}
+.cs-sidebar .cs-side{background:var(--off);padding:clamp(28px,3vw,40px);display:flex;flex-direction:column;gap:18px;justify-content:center}
+.cs-sidebar .grp-content{padding:clamp(28px,3vw,40px) var(--gutter) clamp(28px,3vw,40px) clamp(28px,3vw,40px)}
+.side-select{display:flex;flex-direction:column;gap:6px}
+.side-select .grp-btn{flex-direction:row;align-items:center;justify-content:flex-start;gap:12px;width:100%;padding:8px;border-radius:8px;transition:background var(--t-fast)}
+.side-select .grp-btn:hover{background:rgba(38,11,15,.05)}
+.side-select .grp-btn[aria-selected="true"]{background:#fff;box-shadow:0 4px 14px -8px rgba(38,11,15,.25)}
+.side-select .grp-media{width:44px;height:44px;flex:none;transform:none!important}
+.side-select .grp-label{text-align:left;font-size:12px}
+/* The hero "card" reuses .product-card's own gradient-photo styling (media/info/gradient) just
+   bigger, with no price/ATC row since it isn't a real SKU — the shared carousel JS/CSS otherwise
+   treats it exactly like any other card, including being hidden/shown by the group filter. */
+.hero-card{flex:0 0 clamp(240px,27vw,290px)!important}
+.hero-card .name{font-family:var(--font-display);font-size:18px;font-weight:500}
 
 /* ---------- Reviews ---------- */
 .reviews{background:#fff;padding:clamp(10px,1.4vw,18px) 0 clamp(6px,1vw,12px)}
@@ -647,8 +642,8 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .stat:nth-child(3){border-left:0}
   .stat:nth-child(n+3){border-top:1px solid var(--line-dark)}
   .cs-grid{grid-template-columns:1fr}
+  .cs-sidebar{grid-template-columns:1fr}
   .cs-head-row{flex-direction:column;align-items:flex-start;gap:12px}
-  .cs-tiles .cs-head-row{align-items:center}
   .mf-head h2{white-space:normal;font-size:clamp(21px,5vw,26px)}
   .mf-sub{font-size:12.5px;margin-top:8px;line-height:1.4}
   .mf-row-wrap{margin-top:16px}
@@ -670,6 +665,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
      desktop rule above) — its cards match Shop by Texture's size at every breakpoint. */
   .mf-row.grp-row .product-card{flex-basis:clamp(140px,40vw,180px)}
   #hosting .mf-row.grp-row .product-card{flex-basis:clamp(160px,32vw,220px)}
+  .hero-card{flex-basis:clamp(180px,46vw,220px)!important}
   .nlc-row{grid-template-columns:1fr}
   .nl-form{max-width:none}
 }
@@ -690,9 +686,9 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .cs-sub{font-size:12px;line-height:1.35}
   .cs-head-row{gap:8px}
   /* Same specificity leak as the banner fix above: un-scoped section-modifier rules
-     (`.cs-tiles .cs-panel`) beat this plain `.cs-panel` mobile reset otherwise — every
-     category-split section must share one mobile gutter. */
-  .cs-tiles .cs-panel{padding:18px 15px}
+     (`.cs-sidebar .cs-side`/`.grp-content`) beat this plain `.cs-panel` mobile reset otherwise —
+     every category-split section must share one mobile gutter. */
+  .cs-sidebar .cs-side,.cs-sidebar .grp-content{padding:18px 15px}
   /* All 4 group circles stay in one row on mobile instead of wrapping to 2x2 — each button gets an
      exact quarter-width column (min-width:0 lets flex shrink it below the label's intrinsic width so
      the label can wrap under a small circle instead of forcing the row wider than the screen). */
@@ -705,15 +701,8 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
      plain `.grp-media` (1 class) regardless of which one is written second. */
   .cs-backdrop .grp-media{width:40px;height:40px;margin:0 auto}
   .grp-label{font-size:9.5px;line-height:1.2;white-space:normal;letter-spacing:.04em}
-  /* .tile-select's rectangular photo tiles must override the circle sizing above — same
-     specificity trick used elsewhere on this page (an extra class beats source order).
-     Aspect ratio is NOT overridden here — it stays 4/3, same as desktop, instead of a taller
-     mobile-only 3/4: the tall crop made Accessories' group row ~100px taller than the other
-     two sections' circle row, which was the main reason it didn't fit one mobile viewport. */
-  .tile-select{gap:6px}
-  .tile-select .grp-media{width:100%;height:auto;aspect-ratio:4/3;margin:0}
-  .tile-select .grp-label{left:8px;right:8px;bottom:7px;font-size:10.5px}
-  .tile-select .grp-label em{font-size:7px;margin-top:1px}
+  .side-select .grp-media{width:36px;height:36px}
+  .side-select .grp-label{font-size:11px}
   .product-card .wish{opacity:1;transform:none}
   .fgrid-foot{grid-template-columns:1fr 1fr}
   .fgrid-foot .brand{grid-column:1/-1}
@@ -1519,26 +1508,30 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
 </section>
 
 <!-- 10. LEATHER ACCESSORIES (no banner — the 3 groups themselves are the hero, tiles + full-width carousel) -->
-<section class="category-split on-white cs-tiles" id="accessories" aria-labelledby="accTitle">
-    <div class="cs-panel">
-      <div class="cs-head-row">
+<section class="category-split on-white cs-sidebar" id="accessories" aria-labelledby="accTitle">
+    <div class="cs-side">
         <div class="cs-head reveal">
           <span class="eyebrow">Leather Accessories</span>
           <h2 class="display" id="accTitle">The desk tells you everything.</h2>
           <p class="cs-sub">Boxes &amp; organisers, tissue box, photoframes.</p>
         </div>
-        <a class="link-arrow pill reveal" href="#">All of Leather Accessories <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      </div>
-      <div class="cs-groups tile-select reveal" data-delay="1" role="tablist" aria-label="Browse Leather Accessories by group">
+      <div class="cs-groups side-select reveal" data-delay="1" role="tablist" aria-label="Browse Leather Accessories by group">
         <button class="grp-btn" type="button" data-group="boxes" data-heading="Boxes &amp; Organisers" data-desc="Jewellery, watch, keepsake and desk boxes, hand-finished." aria-selected="true"><span class="grp-media"><img src="assets/img/sub-decorative-boxes.jpg" alt="" loading="lazy"></span><span class="grp-label">Boxes &amp; Organisers<em>14 pieces</em></span></button>
         <button class="grp-btn" type="button" data-group="tissue" data-heading="Tissue Box" data-desc="Tissue box covers and cases, in split suede." aria-selected="false"><span class="grp-media"><img src="assets/img/sub-storage-baskets.jpg" alt="" loading="lazy"></span><span class="grp-label">Tissue Box<em>5 pieces</em></span></button>
         <button class="grp-btn" type="button" data-group="frames" data-heading="Photoframes" data-desc="Photo and picture frames, in plain leather." aria-selected="false"><span class="grp-media"><img src="assets/img/sub-photo-frames.jpg" alt="" loading="lazy"></span><span class="grp-label">Photoframes<em>5 pieces</em></span></button>
       </div>
+        <a class="link-arrow pill reveal" href="#">All of Leather Accessories <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
       <div class="grp-content reveal" data-delay="2">
       <div class="mf-row-wrap reveal">
         <button class="car-nav mf-nav prev" data-carousel-prev aria-label="Scroll to previous products"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
         <button class="car-nav mf-nav next" data-carousel-next aria-label="Scroll to next products"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
         <ul class="mf-row grp-row" data-carousel-row aria-label="A piece in each Leather Accessories group">
+          <li class="product-card hero-card" data-group="boxes">
+            <div class="media"><img class="ph img-cover" src="assets/img/accessories-banner.jpg" alt="Leather desktop organiser set in croco-print leather">
+              <div class="info"><h3 class="name">Leather Accessories</h3></div>
+            </div>
+          </li>
           <li class="product-card" data-group="boxes" data-product="Leather Decorative Box" data-price="TBC" data-material="Shagreen" data-img="assets/img/sub-decorative-boxes.jpg" data-desc="A pair of shagreen leather decorative boxes with brass pulls.">
             <div class="media"><img class="ph img-cover" src="assets/img/sub-decorative-boxes.jpg" alt="Leather decorative box">
               <button class="wish" aria-pressed="false" aria-label="Save Leather Decorative Box"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
@@ -1711,7 +1704,6 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
         <div class="mf-scrollbar" aria-hidden="true"><div class="mf-scrollbar-thumb" data-carousel-thumb></div></div>
       </div>
       </div>
-    </div>
 </section>
 
 <!-- 11. THE COLLECTION → closing line -->
