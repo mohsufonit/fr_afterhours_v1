@@ -410,7 +410,7 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
    class here, `.cs-backdrop` owns its own palette. */
 .cs-backdrop{position:relative;overflow:hidden;background:var(--licorice);padding:clamp(16px,2vw,24px) var(--gutter)}
 .cs-backdrop .grp-media{width:44px;height:44px}
-.cs-backdrop .cs-groups{gap:10px 20px}
+.cs-backdrop .cs-groups{gap:10px 20px;justify-content:flex-start}
 .cs-backdrop .cs-visual{position:absolute;inset:0;z-index:0;margin:0;min-height:0}
 .cs-backdrop .cs-visual::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(28,8,16,.76) 0%,rgba(28,8,16,.52) 55%,rgba(28,8,16,.76) 100%)}
 .cs-glass{position:relative;z-index:1;max-width:1080px;margin:0 auto;background:rgba(245,242,236,.1);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(217,210,191,.22);border-radius:16px;padding:clamp(16px,2vw,24px);display:flex;flex-direction:column;gap:clamp(6px,.8vw,8px);color:var(--bone)}
@@ -418,29 +418,32 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 .cs-backdrop .eyebrow{color:var(--caramel)}
 .cs-backdrop .cs-sub{color:rgba(217,210,191,.75);font-size:12px}
 .cs-backdrop .link-arrow{color:var(--bone)}
-.cs-backdrop .cs-head-row{flex-direction:column;align-items:center;text-align:center;gap:8px}
-.cs-backdrop .cs-groups{justify-content:center}
+/* SUPERSEDED — the heading block is left-aligned with the "All of Furniture" CTA pinned right,
+   the same single-row `.cs-head-row` layout Hosting & Bar uses, not the centered/stacked column
+   this section used at first. The stacked-and-centered version cost a lot of extra height
+   (heading+sub+CTA all stacking vertically) for no real benefit once the actual complaint
+   surfaced — restoring that row layout is most of how the product cards below get to go back to
+   full size without blowing the one-viewport budget. Groups now also start from the left edge
+   (`justify-content:flex-start`, was `center`) to align under the now-left-aligned heading. */
 .cs-backdrop .grp-label{color:rgba(217,210,191,.72)}
 .cs-backdrop .grp-btn[aria-selected="true"] .grp-label{color:var(--bone)}
 .cs-backdrop .grp-btn[aria-selected="true"] .grp-media{box-shadow:0 0 0 2px var(--licorice),0 0 0 4px var(--caramel)}
-/* The shared 3.5-card cap (see the carousel guideline in section 3) was sized for the narrower
-   ~900-1030px panel column the split-layout sections use — .cs-glass is wider (1080px), so
-   reuse Shop by Texture's own 4.5-card formula here instead, otherwise the extra width just
-   became empty padding around a still-3-card-wide row. Cards themselves are also a size smaller
-   than the shared clamp (clamp(170px,19vw,205px) vs clamp(190px,22vw,230px)) — freeing up the
-   fixed side gutter the prev/next arrows need to sit fully inside the glass card (see below)
-   instead of poking out past its edge onto the raw backdrop photo. */
-.cs-backdrop .grp-row .product-card{flex-basis:clamp(145px,16vw,172px)}
+/* SUPERSEDED — Furniture's product cards are the shared, standard category-split size again
+   (`clamp(190px,22vw,230px)`) — a follow-up explicitly rejected the shrunk-down size from the
+   previous round ("product card size has to be same as it was earlier, right now it's too
+   bad... figure out elsewhere where you can cut space"). The height this gives back was found
+   by reverting the centered head-row above instead (see that note) — don't shrink the cards
+   again to solve a height problem; look at heading/padding/gap first, the same standing
+   instruction that already applies to Hosting & Bar/Accessories now applies here too. */
+.cs-backdrop .grp-content .mf-row-wrap{max-width:calc(4.5 * clamp(190px,22vw,230px) + 4 * var(--space-sm))}
+/* The arrows sit fully outside the row (the shared `.mf-nav` position — `left:-8px;
+   transform:translate(-100%,-50%)` — already does this, unchanged from every other carousel)
+   so they never overlap the product photo. What they needed was room to do that INSIDE the
+   glass card without poking past its edge onto the raw backdrop photo — `.grp-content`'s own
+   side padding below is that dedicated gutter; a prior attempt tried to solve this by instead
+   dropping the arrow's outward translate, which put it back on TOP of the first/last card
+   instead — the fix is spacing, not repositioning the arrow onto the row. */
 .cs-backdrop .grp-content{padding:0 clamp(40px,4.2vw,54px)}
-.cs-backdrop .grp-content .mf-row-wrap{max-width:calc(4.5 * clamp(145px,16vw,172px) + 4 * var(--space-sm))}
-/* The shared arrow position (`left:-8px;transform:translate(-100%,-50%)`) anchors OUTSIDE the
-   row entirely — fine everywhere else, since those carousels have no visual "edge" to spill
-   past, but here the row sits inside a bordered/blurred glass card, so an arrow positioned
-   there rendered outside the card, over the raw photo. `.grp-content`'s own side padding above
-   creates a dedicated gutter for it; this just drops the outward translate so the arrow sits
-   inside that gutter instead of past it. */
-.cs-backdrop .mf-nav.prev{left:-14px;transform:translateY(-50%)}
-.cs-backdrop .mf-nav.next{right:-14px;transform:translateY(-50%)}
 .cs-backdrop .link-arrow.pill{border-color:rgba(217,210,191,.4)}
 .cs-backdrop .link-arrow.pill:hover{background:var(--caramel);border-color:var(--caramel);color:#fff}
 
@@ -696,10 +699,15 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   /* All 4 group circles stay in one row on mobile instead of wrapping to 2x2 — each button gets an
      exact quarter-width column (min-width:0 lets flex shrink it below the label's intrinsic width so
      the label can wrap under a small circle instead of forcing the row wider than the screen). */
-  .cs-groups{gap:8px;flex-wrap:nowrap}
+  .cs-groups{gap:6px;flex-wrap:nowrap}
   .grp-btn{flex:1 1 0;min-width:0}
-  .grp-media,.cs-backdrop .grp-media{width:32px;height:32px;margin:0 auto}
-  .grp-label{font-size:9.5px;line-height:1.2;white-space:normal}
+  .grp-media{width:32px;height:32px;margin:0 auto}
+  /* Furniture's circles specifically were reported as "very small" on mobile — 25% bigger than
+     the shared 32px used elsewhere (Hosting & Bar). Needs its own rule (not folded into the
+     shared `.grp-media` line above) since `.cs-backdrop .grp-media` (2 classes) always beats a
+     plain `.grp-media` (1 class) regardless of which one is written second. */
+  .cs-backdrop .grp-media{width:40px;height:40px;margin:0 auto}
+  .grp-label{font-size:9.5px;line-height:1.2;white-space:normal;letter-spacing:.04em}
   /* .tile-select's rectangular photo tiles must override the circle sizing above — same
      specificity trick used elsewhere on this page (an extra class beats source order).
      Aspect ratio is NOT overridden here — it stays 4/3, same as desktop, instead of a taller
