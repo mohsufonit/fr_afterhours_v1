@@ -383,26 +383,25 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
    partially cut off" carousel silhouette instead of showing barely 2 cards. */
 .grp-row .product-card{flex-basis:clamp(190px,22vw,230px)}
 
-/* Furniture: full-width stacked "magazine" layout instead of the banner+panel split Hosting & Bar
-   still uses — approved out of a layout-options review where the client felt all three
-   category-split sections reading identically, back to back, was monotonous. Only Furniture's
-   structure changed this way; Hosting & Bar keeps the split, Accessories gets its own different
-   treatment below (tile hero, no banner at all). .cs-grid drops to a simple block flow so
-   .cs-visual/.cs-panel/.grp-content stack in DOM order — .grp-content had to move out from
-   inside .cs-panel to a sibling of it so the carousel can run the section's full width instead
-   of being capped to the panel's own padding. */
-.cs-stacked .cs-grid{display:block}
-/* A fixed aspect-ratio here reads fine in a narrow preview mockup but balloons on the real
-   full-bleed page — 21/9 at the section's true edge-to-edge width comes out ~3x taller than
-   every other .cs-visual on the page. Use the same min-height CLAMP the shared .cs-visual rule
-   uses (just a touch taller, since this one runs the full section width), not a ratio. */
-.cs-stacked .cs-visual{aspect-ratio:auto;min-height:clamp(220px,20vw,340px)}
-.cs-stacked .cs-panel{padding:clamp(28px,3.4vw,44px) var(--gutter);text-align:center}
-.cs-stacked .cs-head-row{flex-direction:column;align-items:center;gap:10px;max-width:640px;margin:0 auto}
-.cs-stacked .cs-head-row .cs-head{flex:none}
-.cs-stacked .cs-sub{margin:0 auto}
-.cs-stacked .cs-groups{justify-content:center}
-.cs-stacked .grp-content{margin-top:var(--space-md);padding:0 var(--gutter) clamp(28px,3.4vw,44px)}
+/* SUPERSEDED — Furniture: "banner strip on top, then a split" — not a full vertical stack.
+   The first pass stacked banner+heading+circles+carousel all in one column ("magazine" layout);
+   measured on the real page it came out to 1145px tall at 1920×1080 (Hosting & Bar's equivalent
+   split is 688px) because stacking makes every piece's height ADD to the total, whereas a
+   side-by-side split lets the banner's height come for free (it just stretches to match
+   whatever height the content column already needs — see the .cs-grid grid-stretch note below).
+   Fixed by keeping only ONE full-width element (a short panoramic banner) genuinely stacked on
+   top, then reverting to a proven two-column split for the heading+circles+carousel underneath
+   — same arithmetic as Hosting & Bar's split, plus a small, fixed addition for the banner strip.
+   Still reads distinctly from Hosting & Bar (which has no top banner at all) without risking the
+   one-viewport rule again. `.cs-grid` stays `display:block` so the banner sits in normal flow
+   above `.cs-row`, a fresh 2-column grid (not `.cs-grid` itself, which has its own banner+panel
+   ratio used elsewhere) holding `.cs-panel` (heading+circles, narrower) and `.grp-content`
+   (carousel, wider) side by side. */
+.cs-banner-top .cs-grid{display:block}
+.cs-banner-top .cs-visual{min-height:clamp(150px,9vw,190px)}
+.cs-row{display:grid;grid-template-columns:.6fr 1.4fr;gap:var(--gutter);align-items:start}
+.cs-row .cs-panel{padding:clamp(20px,2.6vw,32px) 0 clamp(20px,2.6vw,32px) var(--gutter)}
+.cs-row .grp-content{padding:clamp(20px,2.6vw,32px) var(--gutter) clamp(20px,2.6vw,32px) 0}
 
 /* Leather Accessories: the 3 groups themselves are the hero — no banner image, no small circles.
    Reuses the same .cs-groups/.grp-btn markup and the same generic click-to-filter JS as the
@@ -418,7 +417,12 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
    flex, this <span> reverts to its default inline display, under which width/height/aspect-ratio
    don't apply at all (silently ignored) and it renders at the raw photo's intrinsic ratio
    instead — this was the actual cause of Accessories' oversized group row, not the ratio value. */
-.tile-select .grp-media{display:block;width:100%;height:auto;aspect-ratio:4/3;border-radius:6px;transform:none!important}
+/* A ratio-driven height (aspect-ratio:4/3 of the tile's own width) works at mobile, where 3
+   narrow tiles are naturally short — but at desktop each tile is ~600px+ wide, so the same
+   ratio produced a ~440px-tall tile row (measured), pushing the whole section to 1105px, well
+   past one viewport (Hosting & Bar's equivalent split is 688px). A capped height, not a ratio,
+   keeps tiles proportionate at any width. */
+.tile-select .grp-media{display:block;width:100%;height:clamp(150px,9vw,175px);border-radius:6px;transform:none!important}
 .tile-select .grp-media img{transition:transform var(--t-med) var(--ease),filter var(--t-fast)}
 .tile-select .grp-media::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(28,8,16,.82) 0%,rgba(28,8,16,.22) 46%,transparent 74%)}
 .tile-select .grp-btn:hover .grp-media img{transform:scale(1.06)}
@@ -598,18 +602,20 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .stat:nth-child(n+3){border-top:1px solid var(--line-dark)}
   .cs-grid{grid-template-columns:1fr}
   .cs-head-row{flex-direction:column;align-items:flex-start;gap:12px}
-  .cs-stacked .cs-head-row,.cs-tiles .cs-head-row{align-items:center}
+  .cs-tiles .cs-head-row{align-items:center}
+  /* Furniture's banner-strip-then-split reverts to a plain single column at mobile, same as
+     every other 2-column split on this page. */
+  .cs-row{display:block}
   .mf-head h2{white-space:normal;font-size:clamp(21px,5vw,26px)}
   .mf-sub{font-size:12.5px;margin-top:8px;line-height:1.4}
   .mf-row-wrap{margin-top:16px}
   #catTitle{white-space:normal}
   /* A real, visible banner on mobile, not a cropped sliver — was 95px, which read as
-     pointless. .cs-stacked (Furniture) needs its own equally-specific companion here: its
-     un-scoped desktop rule (`.cs-stacked .cs-visual{min-height:clamp(220px,20vw,340px)}`)
+     pointless. .cs-banner-top (Furniture) needs its own equally-specific companion here: its
+     un-scoped desktop rule (`.cs-banner-top .cs-visual{min-height:clamp(150px,9vw,190px)}`)
      otherwise beats this plain `.cs-visual` mobile reset on specificity regardless of source
-     order — the same class of bug documented elsewhere on this page — leaving Furniture's
-     mobile banner stuck at its desktop clamp's 220px floor instead of matching Hosting's. */
-  .cs-visual,.cs-stacked .cs-visual{min-height:150px}
+     order — the same class of bug documented elsewhere on this page. */
+  .cs-visual,.cs-banner-top .cs-visual{min-height:150px}
   .modal .dialog{grid-template-columns:1fr}
   .modal .media{min-height:300px}
   .mf-row .product-card{flex-basis:clamp(160px,32vw,220px)}
@@ -636,16 +642,14 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .cs-head h2{font-size:19px;margin:4px 0 5px}
   .cs-sub{font-size:12px;line-height:1.35}
   .cs-head-row{gap:8px}
-  /* Same specificity leak as the banner fix above: `.cs-stacked .cs-panel`/`.cs-tiles .cs-panel`
-     are un-scoped (apply at every width), so their desktop `var(--gutter)` side padding
-     (~20px) otherwise beats this plain `.cs-panel` mobile reset — Furniture/Accessories
-     silently got 20px left/right instead of Hosting's 15px. Every category-split section
-     must share one mobile gutter. */
-  .cs-stacked .cs-panel,.cs-tiles .cs-panel{padding:18px 15px}
-  /* Furniture's carousel (.grp-content) sits OUTSIDE .cs-panel (see the "full-width magazine"
-     layout note in the CSS above), so the .cs-panel fix above doesn't reach it — it has its own
-     var(--gutter) padding that resolves to 20px at this width, not Hosting's 15px. */
-  .cs-stacked .grp-content{padding-left:15px;padding-right:15px}
+  /* Same specificity leak as the banner fix above: `.cs-row .cs-panel`/`.cs-tiles .cs-panel`
+     are un-scoped (apply at every width), so their desktop side padding otherwise beats this
+     plain `.cs-panel` mobile reset — every category-split section must share one mobile
+     gutter. `.cs-row`'s panel/content asymmetric padding (no gutter on the side facing each
+     other, since they sit side by side at desktop) also needs resetting to normal full padding
+     now that `.cs-row` stacks them into one column. */
+  .cs-row .cs-panel,.cs-tiles .cs-panel{padding:18px 15px}
+  .cs-row .grp-content{padding:18px 15px}
   /* All 4 group circles stay in one row on mobile instead of wrapping to 2x2 — each button gets an
      exact quarter-width column (min-width:0 lets flex shrink it below the label's intrinsic width so
      the label can wrap under a small circle instead of forcing the row wider than the screen). */
@@ -659,7 +663,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
      mobile-only 3/4: the tall crop made Accessories' group row ~100px taller than the other
      two sections' circle row, which was the main reason it didn't fit one mobile viewport. */
   .tile-select{gap:6px}
-  .tile-select .grp-media{width:100%;height:auto;margin:0}
+  .tile-select .grp-media{width:100%;height:auto;aspect-ratio:4/3;margin:0}
   .tile-select .grp-label{left:8px;right:8px;bottom:7px;font-size:10.5px}
   .tile-select .grp-label em{font-size:7px;margin-top:1px}
   .product-card .wish{opacity:1;transform:none}
@@ -1294,11 +1298,12 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
 </section>
 
 <!-- 9. FURNITURE (banner-left, SKU grid-right, white panel) -->
-<section class="category-split on-white cs-stacked" id="furniture" aria-labelledby="furnTitle">
+<section class="category-split on-white cs-banner-top" id="furniture" aria-labelledby="furnTitle">
   <div class="cs-grid">
     <div class="cs-visual reveal">
       <img class="ph img-cover" src="assets/img/furniture-banner.jpg" alt="Caldera dining chair in olive waxy leather">
     </div>
+    <div class="cs-row">
     <div class="cs-panel">
       <div class="cs-head-row">
         <div class="cs-head reveal">
@@ -1464,6 +1469,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
         <div class="mf-scrollbar" aria-hidden="true"><div class="mf-scrollbar-thumb" data-carousel-thumb></div></div>
       </div>
       </div>
+    </div>
     </div>
 </section>
 
