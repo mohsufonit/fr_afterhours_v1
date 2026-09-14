@@ -342,24 +342,11 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 .category-split.on-colored .link-arrow{color:var(--bone)}
 .category-split.on-white .cs-panel{background:#fff;color:var(--ink)}
 .category-split.on-white .cs-sub{color:var(--grey)}
-/* CSS Grid auto-placement respects `order` for track assignment, not just paint position —
-   with order:2/order:1 alone, .cs-visual actually lands in the 2nd (1.15fr) grid track and
-   .cs-panel in the 1st (1fr) track, silently swapping which one gets the WIDER column. That
-   made the Accessories banner render ~15% wider than Hosting/Furniture's and the panel ~15%
-   narrower — reversing the column-width template here (in addition to the order swap) keeps
-   Accessories' banner/panel widths identical to the other two sections; only the screen
-   position (right vs left) changes. */
-#accessories .cs-grid{grid-template-columns:1.15fr .85fr}
-#accessories .cs-visual{order:2}
-#accessories .cs-panel{order:1}
-/* Accessories banner was cropped too tight by object-fit:cover — show the full framed shot instead, letterboxed on the white ground */
-.accessories-visual{background:#fff}
-/* Furniture's banner is a full-bleed object-fit:cover photo (so it naturally reads as anchored
-   to the left, where its .cs-visual column sits). Accessories is mirrored (banner on the right),
-   so its object-fit:contain photo is right-anchored to match — and given less padding than
-   before so the product renders at a closer visual scale to Furniture's full-bleed image instead
-   of looking smaller inside a wide letterboxed frame. */
-.accessories-visual .ph.img-cover{object-fit:contain;object-position:right center;box-sizing:border-box;padding:clamp(8px,1.5vw,24px);background:#fff}
+/* REMOVED — #accessories no longer uses the banner+mirrored-panel .cs-grid pattern at all (see
+   the "group tiles as hero" rule below), so the old order-swap/track-width fix and the
+   .accessories-visual banner treatment it depended on are gone too. Don't reintroduce
+   #accessories .cs-grid/.cs-visual overrides without also bringing back a banner image —
+   there's nothing left for them to apply to. */
 .cs-head h2{font-size:clamp(22px,2.4vw,32px);line-height:1.04;margin:6px 0 7px}
 /* The "All of..." CTA now sits beside the heading/subheading instead of below the product
    carousel — removes a whole row (link + its gap) from the panel's vertical stack, which is
@@ -395,6 +382,46 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
    (~1300px), so it uses a smaller clamp to still land near the "several full cards + one
    partially cut off" carousel silhouette instead of showing barely 2 cards. */
 .grp-row .product-card{flex-basis:clamp(190px,22vw,230px)}
+
+/* Furniture: full-width stacked "magazine" layout instead of the banner+panel split Hosting & Bar
+   still uses — approved out of a layout-options review where the client felt all three
+   category-split sections reading identically, back to back, was monotonous. Only Furniture's
+   structure changed this way; Hosting & Bar keeps the split, Accessories gets its own different
+   treatment below (tile hero, no banner at all). .cs-grid drops to a simple block flow so
+   .cs-visual/.cs-panel/.grp-content stack in DOM order — .grp-content had to move out from
+   inside .cs-panel to a sibling of it so the carousel can run the section's full width instead
+   of being capped to the panel's own padding. */
+.cs-stacked .cs-grid{display:block}
+/* A fixed aspect-ratio here reads fine in a narrow preview mockup but balloons on the real
+   full-bleed page — 21/9 at the section's true edge-to-edge width comes out ~3x taller than
+   every other .cs-visual on the page. Use the same min-height CLAMP the shared .cs-visual rule
+   uses (just a touch taller, since this one runs the full section width), not a ratio. */
+.cs-stacked .cs-visual{aspect-ratio:auto;min-height:clamp(220px,20vw,340px)}
+.cs-stacked .cs-panel{padding:clamp(28px,3.4vw,44px) var(--gutter);text-align:center}
+.cs-stacked .cs-head-row{flex-direction:column;align-items:center;gap:10px;max-width:640px;margin:0 auto}
+.cs-stacked .cs-head-row .cs-head{flex:none}
+.cs-stacked .cs-sub{margin:0 auto}
+.cs-stacked .cs-groups{justify-content:center}
+.cs-stacked .grp-content{margin-top:var(--space-md);padding:0 var(--gutter) clamp(28px,3.4vw,44px)}
+
+/* Leather Accessories: the 3 groups themselves are the hero — no banner image, no small circles.
+   Reuses the same .cs-groups/.grp-btn markup and the same generic click-to-filter JS as the
+   circle selector elsewhere (only the CSS changes), so .tile-select is a visual modifier only. */
+.cs-tiles .cs-panel{padding:clamp(28px,3.4vw,44px) var(--gutter);text-align:center}
+.cs-tiles .cs-head-row{flex-direction:column;align-items:center;gap:10px;max-width:640px;margin:0 auto}
+.cs-tiles .cs-head-row .cs-head{flex:none}
+.cs-tiles .cs-sub{margin:0 auto}
+.tile-select{gap:var(--space-sm)}
+.tile-select .grp-btn{display:block;position:relative;padding:0;flex:1 1 0;min-width:0}
+.tile-select .grp-media{width:100%;height:auto;aspect-ratio:4/3;border-radius:6px;transform:none!important}
+.tile-select .grp-media img{transition:transform var(--t-med) var(--ease),filter var(--t-fast)}
+.tile-select .grp-media::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(28,8,16,.82) 0%,rgba(28,8,16,.22) 46%,transparent 74%)}
+.tile-select .grp-btn:hover .grp-media img{transform:scale(1.06)}
+.tile-select .grp-btn[aria-selected="false"] .grp-media img{filter:grayscale(.12) brightness(.72)}
+.tile-select .grp-btn[aria-selected="true"] .grp-media{box-shadow:inset 0 0 0 3px var(--caramel)}
+.tile-select .grp-label{position:absolute;left:14px;right:14px;bottom:12px;text-align:left;color:var(--bone);font-family:var(--font-display);font-size:16px;font-weight:500;letter-spacing:normal;text-transform:none}
+.tile-select .grp-label em{display:block;font-style:normal;font-family:var(--font-body);font-size:10px;letter-spacing:.08em;text-transform:uppercase;opacity:.72;margin-top:3px;font-weight:500;color:inherit}
+.tile-select .grp-btn[aria-selected="true"] .grp-label{color:var(--bone)}
 
 /* ---------- Reviews ---------- */
 .reviews{background:#fff;padding:clamp(10px,1.4vw,18px) 0 clamp(6px,1vw,12px)}
@@ -565,16 +592,12 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .stat:nth-child(3){border-left:0}
   .stat:nth-child(n+3){border-top:1px solid var(--line-dark)}
   .cs-grid{grid-template-columns:1fr}
-  /* #accessories .cs-grid{grid-template-columns:1.15fr .85fr} (desktop, ID+class) otherwise
-     beats the plain .cs-grid reset above on specificity alone, keeping a 2-column layout
-     squeezed into a mobile-width viewport — match its specificity here to actually reset it. */
-  #accessories .cs-grid{grid-template-columns:1fr}
   .cs-head-row{flex-direction:column;align-items:flex-start;gap:12px}
+  .cs-stacked .cs-head-row,.cs-tiles .cs-head-row{align-items:center}
   .mf-head h2{white-space:normal;font-size:clamp(21px,5vw,26px)}
   .mf-sub{font-size:12.5px;margin-top:8px;line-height:1.4}
   .mf-row-wrap{margin-top:16px}
   #catTitle{white-space:normal}
-  #accessories .cs-visual,#accessories .cs-panel{order:0}
   .cs-visual{min-height:95px}
   .modal .dialog{grid-template-columns:1fr}
   .modal .media{min-height:300px}
@@ -603,6 +626,12 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .grp-btn{flex:1 1 0;min-width:0}
   .grp-media{width:36px;height:36px;margin:0 auto}
   .grp-label{font-size:9.5px;line-height:1.25;white-space:normal}
+  /* .tile-select's rectangular photo tiles must override the circle sizing above — same
+     specificity trick used elsewhere on this page (an extra class beats source order). */
+  .tile-select{gap:6px}
+  .tile-select .grp-media{width:100%;height:auto;aspect-ratio:3/4;margin:0}
+  .tile-select .grp-label{left:8px;right:8px;bottom:8px;font-size:11.5px}
+  .tile-select .grp-label em{font-size:7.5px}
   .product-card .wish{opacity:1;transform:none}
   .fgrid-foot{grid-template-columns:1fr 1fr}
   .fgrid-foot .brand{grid-column:1/-1}
@@ -1011,15 +1040,14 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
         <div class="cs-head reveal">
           <span class="eyebrow">Hosting &amp; Bar</span>
           <h2 class="display" id="hostTitle">The bar that means it.</h2>
-          <p class="cs-sub">Cocktail sets, serve trays, modular bar, tableware.</p>
+          <p class="cs-sub">Cocktail sets, modular bar, tableware &amp; trays.</p>
         </div>
         <a class="link-arrow pill reveal" href="#">All of Hosting &amp; Bar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
       <div class="cs-groups reveal" data-delay="1" role="tablist" aria-label="Browse Hosting &amp; Bar by group">
         <button class="grp-btn" type="button" data-group="cocktail" data-heading="Cocktail Sets" data-desc="Croco-print bar tools built for the after-dinner hour." aria-selected="true"><span class="grp-media"><img src="assets/img/sub-cocktail-sets.jpg" alt="" loading="lazy"></span><span class="grp-label">Cocktail Sets</span></button>
-        <button class="grp-btn" type="button" data-group="trays" data-heading="Serve Trays" data-desc="Trays and cases for carrying it all, elegantly." aria-selected="false"><span class="grp-media"><img src="assets/img/accessories-tile.jpg" alt="" loading="lazy"></span><span class="grp-label">Serve Trays</span></button>
         <button class="grp-btn" type="button" data-group="bar" data-heading="Modular Bar" data-desc="One bar trunk, endless configurations." aria-selected="false"><span class="grp-media"><img src="assets/img/sub-photo-frames.jpg" alt="" loading="lazy"></span><span class="grp-label">Modular Bar</span></button>
-        <button class="grp-btn" type="button" data-group="tableware" data-heading="Tableware" data-desc="Coasters, placemats and napkin rings, together." aria-selected="false"><span class="grp-media"><img src="assets/img/sub-decorative-boxes.jpg" alt="" loading="lazy"></span><span class="grp-label">Tableware</span></button>
+        <button class="grp-btn" type="button" data-group="tableware" data-heading="Tableware &amp; Trays" data-desc="Serve trays, coasters, placemats and napkin rings, together." aria-selected="false"><span class="grp-media"><img src="assets/img/sub-decorative-boxes.jpg" alt="" loading="lazy"></span><span class="grp-label">Tableware &amp; Trays</span></button>
       </div>
       <div class="grp-content reveal" data-delay="2">
       <div class="mf-row-wrap reveal">
@@ -1061,40 +1089,33 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
             </div>
             <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Croco Muddler Set"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
           </li>
-          <li class="product-card" data-group="trays" data-product="Leather Serve Tray" data-price="TBC" data-material="Hair-on-hide" data-img="assets/img/accessories-tile.jpg" data-desc="A hand-stitched serving tray in hair-on-hide, brass corner caps." hidden>
+          <li class="product-card" data-group="tableware" data-product="Leather Serve Tray" data-price="TBC" data-material="Hair-on-hide" data-img="assets/img/accessories-tile.jpg" data-desc="A hand-stitched serving tray in hair-on-hide, brass corner caps." hidden>
             <div class="media"><img class="ph img-cover" src="assets/img/accessories-tile.jpg" alt="Leather serve tray">
               <button class="wish" aria-pressed="false" aria-label="Save Leather Serve Tray"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
               <div class="info"><h3 class="name">Leather Serve Tray<small>Hair on hide</small></h3><span class="price">TBC</span></div>
             </div>
             <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Leather Serve Tray"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
           </li>
-          <li class="product-card" data-group="trays" data-product="Leather Catch-All Tray" data-price="TBC" data-material="Hair-on-hide" data-img="assets/img/accessories-tile.jpg" data-desc="A smaller catch-all tray in the same hair-on-hide, for keys and cufflinks by the door." hidden>
+          <li class="product-card" data-group="tableware" data-product="Leather Catch-All Tray" data-price="TBC" data-material="Hair-on-hide" data-img="assets/img/accessories-tile.jpg" data-desc="A smaller catch-all tray in the same hair-on-hide, for keys and cufflinks by the door." hidden>
             <div class="media"><img class="ph img-cover" src="assets/img/accessories-tile.jpg" alt="Leather catch-all tray">
               <button class="wish" aria-pressed="false" aria-label="Save Leather Catch-All Tray"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
               <div class="info"><h3 class="name">Leather Catch-All Tray<small>Hair on hide</small></h3><span class="price">TBC</span></div>
             </div>
             <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Leather Catch-All Tray"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
           </li>
-          <li class="product-card" data-group="trays" data-product="Leather Round Tray" data-price="TBC" data-material="Hair-on-hide" data-img="assets/img/accessories-tile.jpg" data-desc="A round hair-on-hide serving tray, brass handles." hidden>
+          <li class="product-card" data-group="tableware" data-product="Leather Round Tray" data-price="TBC" data-material="Hair-on-hide" data-img="assets/img/accessories-tile.jpg" data-desc="A round hair-on-hide serving tray, brass handles." hidden>
             <div class="media"><img class="ph img-cover" src="assets/img/accessories-tile.jpg" alt="Round hair-on-hide serving tray">
               <button class="wish" aria-pressed="false" aria-label="Save Leather Round Tray"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
               <div class="info"><h3 class="name">Leather Round Tray<small>Hair-on-hide</small></h3><span class="price">TBC</span></div>
             </div>
             <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Leather Round Tray"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
           </li>
-          <li class="product-card" data-group="trays" data-product="Leather Mini Tray" data-price="TBC" data-material="Hair-on-hide" data-img="assets/img/accessories-tile.jpg" data-desc="A smaller hair-on-hide tray for two glasses." hidden>
+          <li class="product-card" data-group="tableware" data-product="Leather Mini Tray" data-price="TBC" data-material="Hair-on-hide" data-img="assets/img/accessories-tile.jpg" data-desc="A smaller hair-on-hide tray for two glasses." hidden>
             <div class="media"><img class="ph img-cover" src="assets/img/accessories-tile.jpg" alt="Small hair-on-hide serving tray">
               <button class="wish" aria-pressed="false" aria-label="Save Leather Mini Tray"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
               <div class="info"><h3 class="name">Leather Mini Tray<small>Hair-on-hide</small></h3><span class="price">TBC</span></div>
             </div>
             <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Leather Mini Tray"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
-          </li>
-          <li class="product-card" data-group="trays" data-product="Leather Bottle Coaster" data-price="TBC" data-material="Hair-on-hide" data-img="assets/img/accessories-tile.jpg" data-desc="A single hair-on-hide bottle coaster." hidden>
-            <div class="media"><img class="ph img-cover" src="assets/img/accessories-tile.jpg" alt="Hair-on-hide bottle coaster">
-              <button class="wish" aria-pressed="false" aria-label="Save Leather Bottle Coaster"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
-              <div class="info"><h3 class="name">Leather Bottle Coaster<small>Hair-on-hide</small></h3><span class="price">TBC</span></div>
-            </div>
-            <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Leather Bottle Coaster"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
           </li>
           <li class="product-card" data-group="bar" data-product="Leather Bar Cabinet" data-price="TBC" data-material="Plain" data-img="assets/img/sub-photo-frames.jpg" data-desc="A modular leather bar cabinet with felt-lined shelves and a fold-down worktop." hidden>
             <div class="media"><img class="ph img-cover" src="assets/img/sub-photo-frames.jpg" alt="Leather bar cabinet">
@@ -1109,13 +1130,6 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
               <div class="info"><h3 class="name">Modular Bar Trunk<small>Croco</small></h3><span class="price">TBC</span></div>
             </div>
             <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Modular Bar Trunk"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
-          </li>
-          <li class="product-card" data-group="bar" data-product="Bar Shelf Insert" data-price="TBC" data-material="Plain" data-img="assets/img/sub-photo-frames.jpg" data-desc="A leather-lined shelf insert for the modular bar cabinet." hidden>
-            <div class="media"><img class="ph img-cover" src="assets/img/sub-photo-frames.jpg" alt="Leather-lined bar shelf insert">
-              <button class="wish" aria-pressed="false" aria-label="Save Bar Shelf Insert"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
-              <div class="info"><h3 class="name">Bar Shelf Insert<small>Plain</small></h3><span class="price">TBC</span></div>
-            </div>
-            <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Bar Shelf Insert"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
           </li>
           <li class="product-card" data-group="bar" data-product="Bar Trunk Companion Case" data-price="TBC" data-material="Croco" data-img="assets/img/sub-cocktail-sets.jpg" data-desc="A companion case for the Modular Bar Trunk, holds six glasses." hidden>
             <div class="media"><img class="ph img-cover" src="assets/img/sub-cocktail-sets.jpg" alt="Croco leather bar trunk companion case">
@@ -1250,7 +1264,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
 </section>
 
 <!-- 9. FURNITURE (banner-left, SKU grid-right, white panel) -->
-<section class="category-split on-white" id="furniture" aria-labelledby="furnTitle">
+<section class="category-split on-white cs-stacked" id="furniture" aria-labelledby="furnTitle">
   <div class="cs-grid">
     <div class="cs-visual reveal">
       <img class="ph img-cover" src="assets/img/furniture-banner.jpg" alt="Caldera dining chair in olive waxy leather">
@@ -1260,17 +1274,18 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
         <div class="cs-head reveal">
           <span class="eyebrow">Furniture</span>
           <h2 class="display" id="furnTitle">The leather version of what you already chose.</h2>
-          <p class="cs-sub">Seating, tables, cushions, mirrors.</p>
+          <p class="cs-sub">Seating, side tables, cushions, mirrors.</p>
         </div>
         <a class="link-arrow pill reveal" href="#">All of Furniture <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
       <div class="cs-groups reveal" data-delay="1" role="tablist" aria-label="Browse Furniture by group">
         <button class="grp-btn" type="button" data-group="seating" data-heading="Seating" data-desc="Dining chairs and lounge seating, in olive waxy leather." aria-selected="true"><span class="grp-media"><img src="assets/img/sub-dining-chairs.jpg" alt="" loading="lazy"></span><span class="grp-label">Seating</span></button>
-        <button class="grp-btn" type="button" data-group="tables" data-heading="Tables" data-desc="Nesting and side tables in croco leather." aria-selected="false"><span class="grp-media"><img src="assets/img/sub-nesting-tables.jpg" alt="" loading="lazy"></span><span class="grp-label">Tables</span></button>
+        <button class="grp-btn" type="button" data-group="tables" data-heading="Side Table" data-desc="Nesting and side tables in croco leather." aria-selected="false"><span class="grp-media"><img src="assets/img/sub-nesting-tables.jpg" alt="" loading="lazy"></span><span class="grp-label">Side Table</span></button>
         <button class="grp-btn" type="button" data-group="cushions" data-heading="Cushions" data-desc="Lounge cushions in tan oily leather." aria-selected="false"><span class="grp-media"><img src="assets/img/sub-cushions.jpg" alt="" loading="lazy"></span><span class="grp-label">Cushions</span></button>
-        <button class="grp-btn" type="button" data-group="mirrors" data-heading="Mirrors" data-desc="Round wall mirrors, waxy leather frame." aria-selected="false"><span class="grp-media"><img src="assets/img/sub-mirrors.jpg" alt="" loading="lazy"></span><span class="grp-label">Mirrors</span></button>
+        <button class="grp-btn" type="button" data-group="mirrors" data-heading="Mirrors" data-desc="Round wall mirrors, waxy leather frame." aria-selected="false"><span class="grp-media"><img src="assets/img/sub-mirrors.jpg" alt="" loading="lazy"></span><span class="grp-label">Mirror</span></button>
       </div>
-      <div class="grp-content reveal" data-delay="2">
+    </div>
+    <div class="grp-content reveal" data-delay="2">
       <div class="mf-row-wrap reveal">
         <button class="car-nav mf-nav prev" data-carousel-prev aria-label="Scroll to previous products"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
         <button class="car-nav mf-nav next" data-carousel-next aria-label="Scroll to next products"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
@@ -1420,181 +1435,202 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
       </div>
       </div>
     </div>
-  </div>
 </section>
 
-<!-- 10. LEATHER ACCESSORIES (banner-right/tiles-left on desktop, white panel like Furniture) -->
-<section class="category-split on-white" id="accessories" aria-labelledby="accTitle">
-  <div class="cs-grid">
-    <div class="cs-visual reveal accessories-visual">
-      <img class="ph img-cover" src="assets/img/accessories-banner.jpg" alt="Leather desktop organiser set in croco-print leather">
-    </div>
+<!-- 10. LEATHER ACCESSORIES (no banner — the 3 groups themselves are the hero, tiles + full-width carousel) -->
+<section class="category-split on-white cs-tiles" id="accessories" aria-labelledby="accTitle">
     <div class="cs-panel">
       <div class="cs-head-row">
         <div class="cs-head reveal">
           <span class="eyebrow">Leather Accessories</span>
           <h2 class="display" id="accTitle">The desk tells you everything.</h2>
-          <p class="cs-sub">Four collections, for a considered desk – full naming to follow.</p>
+          <p class="cs-sub">Boxes &amp; organisers, tissue box, photoframes.</p>
         </div>
         <a class="link-arrow pill reveal" href="#">All of Leather Accessories <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
-      <div class="cs-groups reveal" data-delay="1" role="tablist" aria-label="Browse Leather Accessories by group">
-        <button class="grp-btn" type="button" data-group="cat1" data-heading="Category 1" data-desc="Decorative and keepsake boxes, hand-finished." aria-selected="true"><span class="grp-media"><img src="assets/img/sub-decorative-boxes.jpg" alt="" loading="lazy"></span><span class="grp-label">Category 1</span></button>
-        <button class="grp-btn" type="button" data-group="cat2" data-heading="Category 2" data-desc="Watch and jewellery cases, with fitted trays." aria-selected="false"><span class="grp-media"><img src="assets/img/accessories-tile.jpg" alt="" loading="lazy"></span><span class="grp-label">Category 2</span></button>
-        <button class="grp-btn" type="button" data-group="cat3" data-heading="Category 3" data-desc="Photo frames and desktop organisers." aria-selected="false"><span class="grp-media"><img src="assets/img/sub-photo-frames.jpg" alt="" loading="lazy"></span><span class="grp-label">Category 3</span></button>
-        <button class="grp-btn" type="button" data-group="cat4" data-heading="Category 4" data-desc="Storage baskets and tissue holders." aria-selected="false"><span class="grp-media"><img src="assets/img/sub-storage-baskets.jpg" alt="" loading="lazy"></span><span class="grp-label">Category 4</span></button>
+      <div class="cs-groups tile-select reveal" data-delay="1" role="tablist" aria-label="Browse Leather Accessories by group">
+        <button class="grp-btn" type="button" data-group="boxes" data-heading="Boxes &amp; Organisers" data-desc="Jewellery, watch, keepsake and desk boxes, hand-finished." aria-selected="true"><span class="grp-media"><img src="assets/img/sub-decorative-boxes.jpg" alt="" loading="lazy"></span><span class="grp-label">Boxes &amp; Organisers<em>14 pieces</em></span></button>
+        <button class="grp-btn" type="button" data-group="tissue" data-heading="Tissue Box" data-desc="Tissue box covers and cases, in split suede." aria-selected="false"><span class="grp-media"><img src="assets/img/sub-storage-baskets.jpg" alt="" loading="lazy"></span><span class="grp-label">Tissue Box<em>5 pieces</em></span></button>
+        <button class="grp-btn" type="button" data-group="frames" data-heading="Photoframes" data-desc="Photo and picture frames, in plain leather." aria-selected="false"><span class="grp-media"><img src="assets/img/sub-photo-frames.jpg" alt="" loading="lazy"></span><span class="grp-label">Photoframes<em>5 pieces</em></span></button>
       </div>
       <div class="grp-content reveal" data-delay="2">
       <div class="mf-row-wrap reveal">
         <button class="car-nav mf-nav prev" data-carousel-prev aria-label="Scroll to previous products"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
         <button class="car-nav mf-nav next" data-carousel-next aria-label="Scroll to next products"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
         <ul class="mf-row grp-row" data-carousel-row aria-label="A piece in each Leather Accessories group">
-          <li class="product-card" data-group="cat1" data-product="Leather Decorative Box" data-price="TBC" data-material="Shagreen" data-img="assets/img/sub-decorative-boxes.jpg" data-desc="A pair of shagreen leather decorative boxes with brass pulls.">
+          <li class="product-card" data-group="boxes" data-product="Leather Decorative Box" data-price="TBC" data-material="Shagreen" data-img="assets/img/sub-decorative-boxes.jpg" data-desc="A pair of shagreen leather decorative boxes with brass pulls.">
             <div class="media"><img class="ph img-cover" src="assets/img/sub-decorative-boxes.jpg" alt="Leather decorative box">
               <button class="wish" aria-pressed="false" aria-label="Save Leather Decorative Box"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
               <div class="info"><h3 class="name">Leather Decorative Box<small>Shagreen</small></h3><span class="price">TBC</span></div>
             </div>
             <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Leather Decorative Box"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
           </li>
-          <li class="product-card" data-group="cat1" data-product="Leather Keepsake Box" data-price="TBC" data-material="Fine-grained" data-img="assets/img/sub-decorative-boxes.jpg" data-desc="A smaller fine-grain leather keepsake box, felt-lined interior.">
+          <li class="product-card" data-group="boxes" data-product="Leather Keepsake Box" data-price="TBC" data-material="Fine-grained" data-img="assets/img/sub-decorative-boxes.jpg" data-desc="A smaller fine-grain leather keepsake box, felt-lined interior.">
             <div class="media"><img class="ph img-cover" src="assets/img/sub-decorative-boxes.jpg" alt="Leather keepsake box">
               <button class="wish" aria-pressed="false" aria-label="Save Leather Keepsake Box"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
               <div class="info"><h3 class="name">Leather Keepsake Box<small>Fine-grained</small></h3><span class="price">TBC</span></div>
             </div>
             <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Leather Keepsake Box"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
           </li>
-          <li class="product-card" data-group="cat1" data-product="Leather Trinket Box" data-price="TBC" data-material="Shagreen" data-img="assets/img/sub-decorative-boxes.jpg" data-desc="A petite shagreen leather trinket box.">
+          <li class="product-card" data-group="boxes" data-product="Leather Trinket Box" data-price="TBC" data-material="Shagreen" data-img="assets/img/sub-decorative-boxes.jpg" data-desc="A petite shagreen leather trinket box.">
             <div class="media"><img class="ph img-cover" src="assets/img/sub-decorative-boxes.jpg" alt="Shagreen leather trinket box">
               <button class="wish" aria-pressed="false" aria-label="Save Leather Trinket Box"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
               <div class="info"><h3 class="name">Leather Trinket Box<small>Shagreen</small></h3><span class="price">TBC</span></div>
             </div>
             <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Leather Trinket Box"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
           </li>
-          <li class="product-card" data-group="cat1" data-product="Leather Vanity Box" data-price="TBC" data-material="Fine-grained" data-img="assets/img/sub-decorative-boxes.jpg" data-desc="A fine-grain leather vanity box with a mirrored lid.">
+          <li class="product-card" data-group="boxes" data-product="Leather Vanity Box" data-price="TBC" data-material="Fine-grained" data-img="assets/img/sub-decorative-boxes.jpg" data-desc="A fine-grain leather vanity box with a mirrored lid.">
             <div class="media"><img class="ph img-cover" src="assets/img/sub-decorative-boxes.jpg" alt="Fine-grain leather vanity box">
               <button class="wish" aria-pressed="false" aria-label="Save Leather Vanity Box"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
               <div class="info"><h3 class="name">Leather Vanity Box<small>Fine-grained</small></h3><span class="price">TBC</span></div>
             </div>
             <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Leather Vanity Box"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
           </li>
-          <li class="product-card" data-group="cat1" data-product="Leather Ring Dish" data-price="TBC" data-material="Shagreen" data-img="assets/img/sub-decorative-boxes.jpg" data-desc="A small shagreen leather ring dish.">
+          <li class="product-card" data-group="boxes" data-product="Leather Ring Dish" data-price="TBC" data-material="Shagreen" data-img="assets/img/sub-decorative-boxes.jpg" data-desc="A small shagreen leather ring dish.">
             <div class="media"><img class="ph img-cover" src="assets/img/sub-decorative-boxes.jpg" alt="Shagreen leather ring dish">
               <button class="wish" aria-pressed="false" aria-label="Save Leather Ring Dish"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
               <div class="info"><h3 class="name">Leather Ring Dish<small>Shagreen</small></h3><span class="price">TBC</span></div>
             </div>
             <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Leather Ring Dish"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
           </li>
-          <li class="product-card" data-group="cat2" data-product="Leather Jewellery Case" data-price="TBC" data-material="Hair-on-hide" data-img="assets/img/accessories-tile.jpg" data-desc="A hair-on-hide jewellery case with a fitted felt tray and brass clasp." hidden>
+          <li class="product-card" data-group="boxes" data-product="Leather Jewellery Case" data-price="TBC" data-material="Hair-on-hide" data-img="assets/img/accessories-tile.jpg" data-desc="A hair-on-hide jewellery case with a fitted felt tray and brass clasp." hidden>
             <div class="media"><img class="ph img-cover" src="assets/img/accessories-tile.jpg" alt="Leather jewellery case">
               <button class="wish" aria-pressed="false" aria-label="Save Leather Jewellery Case"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
               <div class="info"><h3 class="name">Leather Jewellery Case<small>Hair on hide</small></h3><span class="price">TBC</span></div>
             </div>
             <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Leather Jewellery Case"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
           </li>
-          <li class="product-card" data-group="cat2" data-product="Leather Watch Case" data-price="TBC" data-material="Hair-on-hide" data-img="assets/img/accessories-tile.jpg" data-desc="A six-slot watch case in the same hair-on-hide, felt-lined rolls." hidden>
+          <li class="product-card" data-group="boxes" data-product="Leather Watch Case" data-price="TBC" data-material="Hair-on-hide" data-img="assets/img/accessories-tile.jpg" data-desc="A six-slot watch case in the same hair-on-hide, felt-lined rolls." hidden>
             <div class="media"><img class="ph img-cover" src="assets/img/accessories-tile.jpg" alt="Leather watch case">
               <button class="wish" aria-pressed="false" aria-label="Save Leather Watch Case"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
               <div class="info"><h3 class="name">Leather Watch Case<small>Hair on hide</small></h3><span class="price">TBC</span></div>
             </div>
             <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Leather Watch Case"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
           </li>
-          <li class="product-card" data-group="cat2" data-product="Leather Cufflink Case" data-price="TBC" data-material="Hair-on-hide" data-img="assets/img/accessories-tile.jpg" data-desc="A hair-on-hide cufflink case, felt-lined." hidden>
+          <li class="product-card" data-group="boxes" data-product="Leather Cufflink Case" data-price="TBC" data-material="Hair-on-hide" data-img="assets/img/accessories-tile.jpg" data-desc="A hair-on-hide cufflink case, felt-lined." hidden>
             <div class="media"><img class="ph img-cover" src="assets/img/accessories-tile.jpg" alt="Hair-on-hide cufflink case">
               <button class="wish" aria-pressed="false" aria-label="Save Leather Cufflink Case"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
               <div class="info"><h3 class="name">Leather Cufflink Case<small>Hair-on-hide</small></h3><span class="price">TBC</span></div>
             </div>
             <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Leather Cufflink Case"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
           </li>
-          <li class="product-card" data-group="cat2" data-product="Leather Ring Box" data-price="TBC" data-material="Hair-on-hide" data-img="assets/img/accessories-tile.jpg" data-desc="A single ring box in the same hair-on-hide." hidden>
+          <li class="product-card" data-group="boxes" data-product="Leather Ring Box" data-price="TBC" data-material="Hair-on-hide" data-img="assets/img/accessories-tile.jpg" data-desc="A single ring box in the same hair-on-hide." hidden>
             <div class="media"><img class="ph img-cover" src="assets/img/accessories-tile.jpg" alt="Hair-on-hide ring box">
               <button class="wish" aria-pressed="false" aria-label="Save Leather Ring Box"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
               <div class="info"><h3 class="name">Leather Ring Box<small>Hair-on-hide</small></h3><span class="price">TBC</span></div>
             </div>
             <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Leather Ring Box"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
           </li>
-          <li class="product-card" data-group="cat2" data-product="Leather Earring Case" data-price="TBC" data-material="Hair-on-hide" data-img="assets/img/accessories-tile.jpg" data-desc="A compact hair-on-hide earring case." hidden>
+          <li class="product-card" data-group="boxes" data-product="Leather Earring Case" data-price="TBC" data-material="Hair-on-hide" data-img="assets/img/accessories-tile.jpg" data-desc="A compact hair-on-hide earring case." hidden>
             <div class="media"><img class="ph img-cover" src="assets/img/accessories-tile.jpg" alt="Hair-on-hide earring case">
               <button class="wish" aria-pressed="false" aria-label="Save Leather Earring Case"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
               <div class="info"><h3 class="name">Leather Earring Case<small>Hair-on-hide</small></h3><span class="price">TBC</span></div>
             </div>
             <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Leather Earring Case"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
           </li>
-          <li class="product-card" data-group="cat3" data-product="Leather Photo Frame" data-price="TBC" data-material="Plain" data-img="assets/img/sub-photo-frames.jpg" data-desc="A round leather photo frame, brass horsebit detail at the base." hidden>
+          <li class="product-card" data-group="frames" data-product="Leather Photo Frame" data-price="TBC" data-material="Plain" data-img="assets/img/sub-photo-frames.jpg" data-desc="A round leather photo frame, brass horsebit detail at the base." hidden>
             <div class="media"><img class="ph img-cover" src="assets/img/sub-photo-frames.jpg" alt="Leather photo frame">
               <button class="wish" aria-pressed="false" aria-label="Save Leather Photo Frame"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
               <div class="info"><h3 class="name">Leather Photo Frame<small>Plain</small></h3><span class="price">TBC</span></div>
             </div>
             <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Leather Photo Frame"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
           </li>
-          <li class="product-card" data-group="cat3" data-product="Leather Desk Organiser" data-price="TBC" data-material="Plain" data-img="assets/img/sub-photo-frames.jpg" data-desc="A compartmentalised leather desk organiser in the same plain grain." hidden>
+          <li class="product-card" data-group="boxes" data-product="Leather Desk Organiser" data-price="TBC" data-material="Plain" data-img="assets/img/sub-photo-frames.jpg" data-desc="A compartmentalised leather desk organiser in the same plain grain." hidden>
             <div class="media"><img class="ph img-cover" src="assets/img/sub-photo-frames.jpg" alt="Leather desk organiser">
               <button class="wish" aria-pressed="false" aria-label="Save Leather Desk Organiser"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
               <div class="info"><h3 class="name">Leather Desk Organiser<small>Plain</small></h3><span class="price">TBC</span></div>
             </div>
             <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Leather Desk Organiser"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
           </li>
-          <li class="product-card" data-group="cat3" data-product="Leather Picture Frame Duo" data-price="TBC" data-material="Plain" data-img="assets/img/sub-photo-frames.jpg" data-desc="A pair of small plain-grain leather picture frames." hidden>
+          <li class="product-card" data-group="frames" data-product="Leather Picture Frame Duo" data-price="TBC" data-material="Plain" data-img="assets/img/sub-photo-frames.jpg" data-desc="A pair of small plain-grain leather picture frames." hidden>
             <div class="media"><img class="ph img-cover" src="assets/img/sub-photo-frames.jpg" alt="Plain leather picture frames">
               <button class="wish" aria-pressed="false" aria-label="Save Leather Picture Frame Duo"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
               <div class="info"><h3 class="name">Leather Picture Frame Duo<small>Plain</small></h3><span class="price">TBC</span></div>
             </div>
             <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Leather Picture Frame Duo"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
           </li>
-          <li class="product-card" data-group="cat3" data-product="Leather Pen Tray" data-price="TBC" data-material="Plain" data-img="assets/img/sub-photo-frames.jpg" data-desc="A plain-grain leather pen and pencil tray." hidden>
+          <li class="product-card" data-group="boxes" data-product="Leather Pen Tray" data-price="TBC" data-material="Plain" data-img="assets/img/sub-photo-frames.jpg" data-desc="A plain-grain leather pen and pencil tray." hidden>
             <div class="media"><img class="ph img-cover" src="assets/img/sub-photo-frames.jpg" alt="Plain leather pen tray">
               <button class="wish" aria-pressed="false" aria-label="Save Leather Pen Tray"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
               <div class="info"><h3 class="name">Leather Pen Tray<small>Plain</small></h3><span class="price">TBC</span></div>
             </div>
             <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Leather Pen Tray"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
           </li>
-          <li class="product-card" data-group="cat3" data-product="Leather Business Card Holder" data-price="TBC" data-material="Plain" data-img="assets/img/sub-photo-frames.jpg" data-desc="A plain-grain leather business card holder." hidden>
+          <li class="product-card" data-group="boxes" data-product="Leather Business Card Holder" data-price="TBC" data-material="Plain" data-img="assets/img/sub-photo-frames.jpg" data-desc="A plain-grain leather business card holder." hidden>
             <div class="media"><img class="ph img-cover" src="assets/img/sub-photo-frames.jpg" alt="Plain leather business card holder">
               <button class="wish" aria-pressed="false" aria-label="Save Leather Business Card Holder"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
               <div class="info"><h3 class="name">Leather Business Card Holder<small>Plain</small></h3><span class="price">TBC</span></div>
             </div>
             <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Leather Business Card Holder"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
           </li>
-          <li class="product-card" data-group="cat4" data-product="Leather Storage Basket" data-price="TBC" data-material="Split suede" data-img="assets/img/sub-storage-baskets.jpg" data-desc="A woven leather storage basket in split suede, tan." hidden>
+          <li class="product-card" data-group="boxes" data-product="Leather Storage Basket" data-price="TBC" data-material="Split suede" data-img="assets/img/sub-storage-baskets.jpg" data-desc="A woven leather storage basket in split suede, tan." hidden>
             <div class="media"><img class="ph img-cover" src="assets/img/sub-storage-baskets.jpg" alt="Leather storage basket">
               <button class="wish" aria-pressed="false" aria-label="Save Leather Storage Basket"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
               <div class="info"><h3 class="name">Leather Storage Basket<small>Split suede</small></h3><span class="price">TBC</span></div>
             </div>
             <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Leather Storage Basket"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
           </li>
-          <li class="product-card" data-group="cat4" data-product="Leather Tissue Holder" data-price="TBC" data-material="Split suede" data-img="assets/img/sub-storage-baskets.jpg" data-desc="A tissue box holder in the same split suede weave." hidden>
+          <li class="product-card" data-group="tissue" data-product="Leather Tissue Holder" data-price="TBC" data-material="Split suede" data-img="assets/img/sub-storage-baskets.jpg" data-desc="A tissue box holder in the same split suede weave." hidden>
             <div class="media"><img class="ph img-cover" src="assets/img/sub-storage-baskets.jpg" alt="Leather tissue holder">
               <button class="wish" aria-pressed="false" aria-label="Save Leather Tissue Holder"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
               <div class="info"><h3 class="name">Leather Tissue Holder<small>Split suede</small></h3><span class="price">TBC</span></div>
             </div>
             <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Leather Tissue Holder"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
           </li>
-          <li class="product-card" data-group="cat4" data-product="Leather Laundry Basket" data-price="TBC" data-material="Split suede" data-img="assets/img/sub-storage-baskets.jpg" data-desc="A larger split suede leather laundry basket." hidden>
-            <div class="media"><img class="ph img-cover" src="assets/img/sub-storage-baskets.jpg" alt="Split suede leather laundry basket">
-              <button class="wish" aria-pressed="false" aria-label="Save Leather Laundry Basket"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
-              <div class="info"><h3 class="name">Leather Laundry Basket<small>Split suede</small></h3><span class="price">TBC</span></div>
+          <li class="product-card" data-group="tissue" data-product="Leather Tissue Box, Square" data-price="TBC" data-material="Split suede" data-img="assets/img/sub-storage-baskets.jpg" data-desc="A square split suede leather tissue box cover." hidden>
+            <div class="media"><img class="ph img-cover" src="assets/img/sub-storage-baskets.jpg" alt="Split suede leather tissue box, square">
+              <button class="wish" aria-pressed="false" aria-label="Save Leather Tissue Box, Square"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
+              <div class="info"><h3 class="name">Leather Tissue Box, Square<small>Split suede</small></h3><span class="price">TBC</span></div>
             </div>
-            <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Leather Laundry Basket"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
+            <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Leather Tissue Box, Square"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
           </li>
-          <li class="product-card" data-group="cat4" data-product="Leather Magazine Rack" data-price="TBC" data-material="Split suede" data-img="assets/img/sub-storage-baskets.jpg" data-desc="A split suede leather magazine rack." hidden>
-            <div class="media"><img class="ph img-cover" src="assets/img/sub-storage-baskets.jpg" alt="Split suede leather magazine rack">
-              <button class="wish" aria-pressed="false" aria-label="Save Leather Magazine Rack"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
-              <div class="info"><h3 class="name">Leather Magazine Rack<small>Split suede</small></h3><span class="price">TBC</span></div>
+          <li class="product-card" data-group="tissue" data-product="Leather Tissue Box, Round" data-price="TBC" data-material="Split suede" data-img="assets/img/sub-storage-baskets.jpg" data-desc="A round split suede leather tissue box cover." hidden>
+            <div class="media"><img class="ph img-cover" src="assets/img/sub-storage-baskets.jpg" alt="Split suede leather tissue box, round">
+              <button class="wish" aria-pressed="false" aria-label="Save Leather Tissue Box, Round"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
+              <div class="info"><h3 class="name">Leather Tissue Box, Round<small>Split suede</small></h3><span class="price">TBC</span></div>
             </div>
-            <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Leather Magazine Rack"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
+            <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Leather Tissue Box, Round"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
           </li>
-          <li class="product-card" data-group="cat4" data-product="Leather Log Basket" data-price="TBC" data-material="Split suede" data-img="assets/img/sub-storage-baskets.jpg" data-desc="A larger split suede leather log/blanket basket." hidden>
-            <div class="media"><img class="ph img-cover" src="assets/img/sub-storage-baskets.jpg" alt="Split suede leather log basket">
-              <button class="wish" aria-pressed="false" aria-label="Save Leather Log Basket"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
-              <div class="info"><h3 class="name">Leather Log Basket<small>Split suede</small></h3><span class="price">TBC</span></div>
+          <li class="product-card" data-group="tissue" data-product="Leather Tissue Case, Travel" data-price="TBC" data-material="Split suede" data-img="assets/img/sub-storage-baskets.jpg" data-desc="A slim split suede leather travel tissue case." hidden>
+            <div class="media"><img class="ph img-cover" src="assets/img/sub-storage-baskets.jpg" alt="Split suede leather travel tissue case">
+              <button class="wish" aria-pressed="false" aria-label="Save Leather Tissue Case, Travel"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
+              <div class="info"><h3 class="name">Leather Tissue Case, Travel<small>Split suede</small></h3><span class="price">TBC</span></div>
             </div>
-            <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Leather Log Basket"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
+            <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Leather Tissue Case, Travel"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
+          </li>
+          <li class="product-card" data-group="tissue" data-product="Leather Tissue Box, Vanity" data-price="TBC" data-material="Split suede" data-img="assets/img/sub-storage-baskets.jpg" data-desc="A small vanity-size split suede leather tissue box cover." hidden>
+            <div class="media"><img class="ph img-cover" src="assets/img/sub-storage-baskets.jpg" alt="Split suede leather tissue box, vanity size">
+              <button class="wish" aria-pressed="false" aria-label="Save Leather Tissue Box, Vanity"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
+              <div class="info"><h3 class="name">Leather Tissue Box, Vanity<small>Split suede</small></h3><span class="price">TBC</span></div>
+            </div>
+            <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Leather Tissue Box, Vanity"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
+          </li>
+          <li class="product-card" data-group="frames" data-product="Leather Frame, Square" data-price="TBC" data-material="Plain" data-img="assets/img/sub-photo-frames.jpg" data-desc="A square plain-grain leather photo frame." hidden>
+            <div class="media"><img class="ph img-cover" src="assets/img/sub-photo-frames.jpg" alt="Plain leather photo frame, square">
+              <button class="wish" aria-pressed="false" aria-label="Save Leather Frame, Square"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
+              <div class="info"><h3 class="name">Leather Frame, Square<small>Plain</small></h3><span class="price">TBC</span></div>
+            </div>
+            <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Leather Frame, Square"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
+          </li>
+          <li class="product-card" data-group="frames" data-product="Leather Frame, Large" data-price="TBC" data-material="Plain" data-img="assets/img/sub-photo-frames.jpg" data-desc="A large plain-grain leather photo frame." hidden>
+            <div class="media"><img class="ph img-cover" src="assets/img/sub-photo-frames.jpg" alt="Plain leather photo frame, large">
+              <button class="wish" aria-pressed="false" aria-label="Save Leather Frame, Large"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
+              <div class="info"><h3 class="name">Leather Frame, Large<small>Plain</small></h3><span class="price">TBC</span></div>
+            </div>
+            <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Leather Frame, Large"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
+          </li>
+          <li class="product-card" data-group="frames" data-product="Leather Collage Frame" data-price="TBC" data-material="Plain" data-img="assets/img/sub-photo-frames.jpg" data-desc="A multi-aperture plain-grain leather collage frame." hidden>
+            <div class="media"><img class="ph img-cover" src="assets/img/sub-photo-frames.jpg" alt="Plain leather collage frame">
+              <button class="wish" aria-pressed="false" aria-label="Save Leather Collage Frame"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
+              <div class="info"><h3 class="name">Leather Collage Frame<small>Plain</small></h3><span class="price">TBC</span></div>
+            </div>
+            <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Leather Collage Frame"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
           </li>
         </ul>
         <div class="mf-scrollbar" aria-hidden="true"><div class="mf-scrollbar-thumb" data-carousel-thumb></div></div>
       </div>
       </div>
     </div>
-  </div>
 </section>
 
 <!-- 11. THE COLLECTION → closing line -->
