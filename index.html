@@ -413,7 +413,7 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 .cs-backdrop .cs-groups{gap:10px 20px;justify-content:flex-start}
 .cs-backdrop .cs-visual{position:absolute;inset:0;z-index:0;margin:0;min-height:0}
 .cs-backdrop .cs-visual::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(28,8,16,.76) 0%,rgba(28,8,16,.52) 55%,rgba(28,8,16,.76) 100%)}
-.cs-glass{position:relative;z-index:1;max-width:1080px;margin:0 auto;background:rgba(245,242,236,.1);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(217,210,191,.22);border-radius:16px;padding:clamp(16px,2vw,24px);display:flex;flex-direction:column;gap:clamp(6px,.8vw,8px);color:var(--bone)}
+.cs-glass{position:relative;z-index:1;max-width:1080px;margin:0 auto;background:rgba(245,242,236,.1);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(217,210,191,.22);border-radius:16px;padding:clamp(16px,2vw,24px) clamp(56px,4.5vw,64px);display:flex;flex-direction:column;gap:clamp(6px,.8vw,8px);color:var(--bone)}
 .cs-backdrop .cs-head h2{font-size:clamp(18px,1.9vw,24px);margin:4px 0 5px}
 .cs-backdrop .eyebrow{color:var(--caramel)}
 .cs-backdrop .cs-sub{color:rgba(217,210,191,.75);font-size:12px}
@@ -439,11 +439,13 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 /* The arrows sit fully outside the row (the shared `.mf-nav` position — `left:-8px;
    transform:translate(-100%,-50%)` — already does this, unchanged from every other carousel)
    so they never overlap the product photo. What they needed was room to do that INSIDE the
-   glass card without poking past its edge onto the raw backdrop photo — `.grp-content`'s own
-   side padding below is that dedicated gutter; a prior attempt tried to solve this by instead
-   dropping the arrow's outward translate, which put it back on TOP of the first/last card
-   instead — the fix is spacing, not repositioning the arrow onto the row. */
-.cs-backdrop .grp-content{padding:0 clamp(40px,4.2vw,54px)}
+   glass card without poking past its edge onto the raw backdrop photo — that room now comes
+   from `.cs-glass`'s own side padding (widened above, `clamp(56px,4.5vw,64px)`, specifically
+   sized to contain the arrow's ~56px outward reach) rather than a `.grp-content`-only gutter,
+   so the heading/CTA row and the carousel both start from the exact same left edge instead of
+   the carousel being inset further than the heading above it. A prior attempt tried fixing the
+   arrow overlap by dropping its outward translate instead, which put it back on TOP of the
+   first/last card — the fix is spacing, not repositioning the arrow onto the row. */
 .cs-backdrop .link-arrow.pill{border-color:rgba(217,210,191,.4)}
 .cs-backdrop .link-arrow.pill:hover{background:var(--caramel);border-color:var(--caramel);color:#fff}
 
@@ -655,11 +657,6 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .cs-backdrop{padding:28px 15px}
   .cs-backdrop .cs-visual{min-height:0}
   .cs-glass{padding:20px;border-radius:12px;gap:10px}
-  /* The desktop-only arrow gutter (.cs-backdrop .grp-content's side padding) is un-scoped and
-     would otherwise leak into mobile too, where the prev/next arrows are hidden entirely
-     (below 1100px) — reset it back to 0 so mobile doesn't waste width on empty space next to
-     the carousel for arrows that aren't even rendered. */
-  .cs-backdrop .grp-content{padding:0}
   /* Hosting & Bar's banner keeps the same-as-desktop gutter inset on the left at mobile too,
      matching every other section's own mobile gutter (15px) — no rounding, no shadow, no card
      treatment, just consistent whitespace. */
