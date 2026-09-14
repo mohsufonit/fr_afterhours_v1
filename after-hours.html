@@ -363,7 +363,7 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 .grp-btn{display:flex;flex-direction:column;align-items:center;gap:10px;background:none;border:0;padding:4px;cursor:pointer;flex:0 0 auto}
 .grp-media{position:relative;width:58px;height:58px;border-radius:50%;overflow:hidden;transition:transform var(--t-med) var(--ease),box-shadow var(--t-med) var(--ease)}
 .grp-media img{width:100%;height:100%;object-fit:cover;display:block}
-.grp-label{font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;color:var(--grey);transition:color var(--t-fast)}
+.grp-label{font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;color:var(--grey);transition:color var(--t-fast);text-align:center}
 .grp-btn[aria-selected="true"] .grp-media{transform:scale(1.12);box-shadow:0 0 0 2px #fff,0 0 0 4px var(--caramel)}
 .grp-btn[aria-selected="false"] .grp-media{transform:scale(.88)}
 .grp-btn[aria-selected="true"] .grp-label{color:var(--ink);font-weight:700}
@@ -408,17 +408,17 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
    separate frame to crop into. Text recolours for the dark backdrop directly (not via
    `.on-colored`, since this isn't a solid-fill panel) — don't add the `on-white`/`on-colored`
    class here, `.cs-backdrop` owns its own palette. */
-.cs-backdrop{position:relative;overflow:hidden;background:var(--licorice);padding:clamp(20px,2.6vw,32px) var(--gutter)}
-.cs-backdrop .grp-media{width:50px;height:50px}
-.cs-backdrop .cs-groups{gap:14px 24px}
+.cs-backdrop{position:relative;overflow:hidden;background:var(--licorice);padding:clamp(16px,2vw,24px) var(--gutter)}
+.cs-backdrop .grp-media{width:44px;height:44px}
+.cs-backdrop .cs-groups{gap:10px 20px}
 .cs-backdrop .cs-visual{position:absolute;inset:0;z-index:0;margin:0;min-height:0}
 .cs-backdrop .cs-visual::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(28,8,16,.76) 0%,rgba(28,8,16,.52) 55%,rgba(28,8,16,.76) 100%)}
-.cs-glass{position:relative;z-index:1;max-width:1080px;margin:0 auto;background:rgba(245,242,236,.1);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(217,210,191,.22);border-radius:16px;padding:clamp(18px,2.4vw,28px);display:flex;flex-direction:column;gap:clamp(8px,1.1vw,12px);color:var(--bone)}
-.cs-backdrop .cs-head h2{font-size:clamp(20px,2.1vw,28px);margin:5px 0 6px}
+.cs-glass{position:relative;z-index:1;max-width:1080px;margin:0 auto;background:rgba(245,242,236,.1);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(217,210,191,.22);border-radius:16px;padding:clamp(16px,2vw,24px);display:flex;flex-direction:column;gap:clamp(6px,.8vw,8px);color:var(--bone)}
+.cs-backdrop .cs-head h2{font-size:clamp(18px,1.9vw,24px);margin:4px 0 5px}
 .cs-backdrop .eyebrow{color:var(--caramel)}
-.cs-backdrop .cs-sub{color:rgba(217,210,191,.75)}
+.cs-backdrop .cs-sub{color:rgba(217,210,191,.75);font-size:12px}
 .cs-backdrop .link-arrow{color:var(--bone)}
-.cs-backdrop .cs-head-row{flex-direction:column;align-items:center;text-align:center;gap:10px}
+.cs-backdrop .cs-head-row{flex-direction:column;align-items:center;text-align:center;gap:8px}
 .cs-backdrop .cs-groups{justify-content:center}
 .cs-backdrop .grp-label{color:rgba(217,210,191,.72)}
 .cs-backdrop .grp-btn[aria-selected="true"] .grp-label{color:var(--bone)}
@@ -426,8 +426,21 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 /* The shared 3.5-card cap (see the carousel guideline in section 3) was sized for the narrower
    ~900-1030px panel column the split-layout sections use — .cs-glass is wider (1080px), so
    reuse Shop by Texture's own 4.5-card formula here instead, otherwise the extra width just
-   became empty padding around a still-3-card-wide row. */
-.cs-backdrop .grp-content .mf-row-wrap{max-width:calc(4.5 * clamp(190px,22vw,230px) + 4 * var(--space-sm))}
+   became empty padding around a still-3-card-wide row. Cards themselves are also a size smaller
+   than the shared clamp (clamp(170px,19vw,205px) vs clamp(190px,22vw,230px)) — freeing up the
+   fixed side gutter the prev/next arrows need to sit fully inside the glass card (see below)
+   instead of poking out past its edge onto the raw backdrop photo. */
+.cs-backdrop .grp-row .product-card{flex-basis:clamp(145px,16vw,172px)}
+.cs-backdrop .grp-content{padding:0 clamp(40px,4.2vw,54px)}
+.cs-backdrop .grp-content .mf-row-wrap{max-width:calc(4.5 * clamp(145px,16vw,172px) + 4 * var(--space-sm))}
+/* The shared arrow position (`left:-8px;transform:translate(-100%,-50%)`) anchors OUTSIDE the
+   row entirely — fine everywhere else, since those carousels have no visual "edge" to spill
+   past, but here the row sits inside a bordered/blurred glass card, so an arrow positioned
+   there rendered outside the card, over the raw photo. `.grp-content`'s own side padding above
+   creates a dedicated gutter for it; this just drops the outward translate so the arrow sits
+   inside that gutter instead of past it. */
+.cs-backdrop .mf-nav.prev{left:-14px;transform:translateY(-50%)}
+.cs-backdrop .mf-nav.next{right:-14px;transform:translateY(-50%)}
 .cs-backdrop .link-arrow.pill{border-color:rgba(217,210,191,.4)}
 .cs-backdrop .link-arrow.pill:hover{background:var(--caramel);border-color:var(--caramel);color:#fff}
 
@@ -639,6 +652,11 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .cs-backdrop{padding:28px 15px}
   .cs-backdrop .cs-visual{min-height:0}
   .cs-glass{padding:20px;border-radius:12px;gap:10px}
+  /* The desktop-only arrow gutter (.cs-backdrop .grp-content's side padding) is un-scoped and
+     would otherwise leak into mobile too, where the prev/next arrows are hidden entirely
+     (below 1100px) — reset it back to 0 so mobile doesn't waste width on empty space next to
+     the carousel for arrows that aren't even rendered. */
+  .cs-backdrop .grp-content{padding:0}
   /* Hosting & Bar's banner keeps the same-as-desktop gutter inset on the left at mobile too,
      matching every other section's own mobile gutter (15px) — no rounding, no shadow, no card
      treatment, just consistent whitespace. */
