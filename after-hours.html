@@ -317,6 +317,22 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 .stat .v{font-family:var(--font-display);font-style:italic;font-size:clamp(27px,3.3vw,50px);line-height:.92;color:var(--licorice);font-variant-numeric:tabular-nums}
 .stat .l{margin-top:0;font-size:clamp(11px,1vw,14px);letter-spacing:.14em;text-transform:uppercase;color:rgba(38,11,15,.68)}
 
+/* ---------- Fact strip (section breaker, between Furniture and Leather Accessories) ---------- */
+/* Exactly the footprint of .stats above (same min-height clamp, same margin, same 4-col/2-col/
+   2x2 breakpoint behaviour) — chosen from a set of artifact mockups reviewed with the user
+   ("Fact Strip — Words", concept 06 of 9). Photo-backed instead of flat colour, four short
+   hand-made facts instead of numeric stats — no counting animation, just a quiet craft-claim
+   pause between the two category sections. *Reason: explicit "let's go with this and keep it as
+   a section breaker between furniture and leather accessories."* */
+.fact-strip{position:relative;overflow:hidden;margin:clamp(32px,4vw,56px) 0}
+.fact-strip .ph{position:absolute;inset:0}
+.fact-strip::before{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(28,8,16,.74) 0%,rgba(28,8,16,.56) 100%)}
+.fact-strip .wrap{position:relative;z-index:1;display:grid;grid-template-columns:repeat(4,1fr);gap:0;padding-left:var(--gutter);padding-right:var(--gutter)}
+.fs-item{position:relative;min-height:clamp(88px,8.4vw,125px);display:grid;align-content:center;justify-items:start;gap:clamp(4px,.5vw,6px);padding:clamp(14px,2.1vw,29px) clamp(13px,2.8vw,38px);border-left:1px solid rgba(217,210,191,.3);text-align:left}
+.fs-item:first-child{border-left:0}
+.fs-item .v{font-family:var(--font-display);font-style:italic;font-size:clamp(16px,1.8vw,20px);line-height:1.1;color:var(--bone)}
+.fs-item .l{font-size:clamp(10px,.9vw,12px);line-height:1.35;color:rgba(217,210,191,.65)}
+
 /* Trust break section intentionally removed — see CLAUDE.md section 8 (Open TODOs) for why
    and what a replacement needs to account for. Do not re-add the old .trust-break CSS from
    git history without reconsidering the design; it was removed by explicit request, not lost. */
@@ -783,6 +799,9 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .stats .wrap{grid-template-columns:1fr 1fr}
   .stat:nth-child(3){border-left:0}
   .stat:nth-child(n+3){border-top:1px solid rgba(38,11,15,.16)}
+  .fact-strip .wrap{grid-template-columns:1fr 1fr}
+  .fs-item:nth-child(3){border-left:0}
+  .fs-item:nth-child(n+3){border-top:1px solid rgba(217,210,191,.3)}
   .cs-grid{grid-template-columns:1fr}
   .cs-head-row{flex-direction:column;align-items:flex-start;gap:12px}
   .mf-head h2{white-space:normal;font-size:clamp(21px,5vw,26px)}
@@ -930,6 +949,10 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .stat{min-height:76px;padding:12px 11px;gap:6px}
   .stat .v{font-size:clamp(23px,7vw,32px)}
   .stat .l{font-size:clamp(11px,3.15vw,13px)}
+  .fact-strip .wrap{padding-left:15px;padding-right:15px}
+  .fs-item{min-height:76px;padding:12px 11px;gap:3px}
+  .fs-item .v{font-size:14px}
+  .fs-item .l{font-size:9.5px}
   .mf-head h2{max-width:15ch;margin-left:auto;margin-right:auto}
   /* Mobile deliberately shows all 7 tabs at once instead of desktop's single scrollable line — a
      scrollable row of filter tabs isn't discoverable on a touch screen. Laid out as a real 3-column
@@ -1739,6 +1762,17 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
       </div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- 9b. FACT STRIP (section breaker) -->
+<section class="fact-strip reveal" aria-label="What sets After Hours apart">
+  <img class="ph img-cover" src="assets/img/closing-banner.jpg" alt="">
+  <div class="wrap">
+    <div class="fs-item"><div class="v">Hand cut</div><div class="l">Not machine-stamped</div></div>
+    <div class="fs-item"><div class="v">Hand shaped</div><div class="l">No two exactly alike</div></div>
+    <div class="fs-item"><div class="v">Hand finished</div><div class="l">Oiled &amp; edge-burnished by hand</div></div>
+    <div class="fs-item"><div class="v">One workshop</div><div class="l">Not outsourced</div></div>
   </div>
 </section>
 
