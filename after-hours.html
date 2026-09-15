@@ -303,15 +303,19 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 .mf-foot .link-arrow.pill:hover{background:var(--caramel);border-color:var(--caramel);color:#fff}
 
 /* ---------- Stat bar ---------- */
-.stats{position:relative;overflow:hidden;isolation:isolate;color:var(--bone);background:linear-gradient(90deg,rgba(20,6,8,.92),rgba(14,4,6,.8),rgba(20,6,8,.92)),url("assets/img/sub-storage-baskets.jpg") center 55%/cover no-repeat;margin:clamp(32px,4vw,56px) 0}
-.stats::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.06),transparent 38%,rgba(0,0,0,.28));pointer-events:none}
-.stats .wrap{position:relative;z-index:1;display:grid;grid-template-columns:repeat(4,1fr);gap:0;padding-left:clamp(32px,5.5vw,110px);padding-right:clamp(32px,5.5vw,110px)}
-.stat{position:relative;isolation:isolate;overflow:hidden;min-height:clamp(88px,8.4vw,125px);display:grid;align-content:center;justify-items:start;gap:clamp(8px,.85vw,13px);padding:clamp(14px,2.1vw,29px) clamp(13px,2.8vw,38px);border-left:1px solid rgba(217,210,191,.2);text-align:left}
+/* SUPERSEDED — the full-bleed dark photo band is gone; this is now a plain white, licorice-text
+   "table" of numbers, using the same left/right gutter as every regular content section
+   (`var(--gutter)`, not the wider `--band-pad`-style inset the photo-band version used). Borders
+   are licorice at low opacity instead of the old bone/white ones, matching the section's own
+   text colour instead of standing out against a photo. *Reason: explicit "remove the background
+   and change the colour of the text to licorice... left and right the gutter as the page/section
+   below it has... the table colour also to be licorice."* */
+.stats{position:relative;overflow:hidden;color:var(--licorice);background:#fff;margin:clamp(32px,4vw,56px) 0}
+.stats .wrap{position:relative;z-index:1;display:grid;grid-template-columns:repeat(4,1fr);gap:0;padding-left:var(--gutter);padding-right:var(--gutter)}
+.stat{position:relative;min-height:clamp(88px,8.4vw,125px);display:grid;align-content:center;justify-items:start;gap:clamp(8px,.85vw,13px);padding:clamp(14px,2.1vw,29px) clamp(13px,2.8vw,38px);border-left:1px solid rgba(38,11,15,.16);text-align:left}
 .stat:first-child{border-left:0}
-.stat::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.14),transparent);opacity:0;transform:translateX(-90%);transition:opacity .26s ease,transform .72s ease}
-.stat:hover::after,.stat:focus-within::after{opacity:1;transform:translateX(90%)}
-.stat .v{position:relative;z-index:1;font-family:var(--font-display);font-style:italic;font-size:clamp(27px,3.3vw,50px);line-height:.92;color:#fff;text-shadow:0 8px 24px rgba(0,0,0,.32);font-variant-numeric:tabular-nums}
-.stat .l{position:relative;z-index:1;margin-top:0;font-size:clamp(11px,1vw,14px);letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.86);text-shadow:0 4px 14px rgba(0,0,0,.3)}
+.stat .v{font-family:var(--font-display);font-style:italic;font-size:clamp(27px,3.3vw,50px);line-height:.92;color:var(--licorice);font-variant-numeric:tabular-nums}
+.stat .l{margin-top:0;font-size:clamp(11px,1vw,14px);letter-spacing:.14em;text-transform:uppercase;color:rgba(38,11,15,.68)}
 
 /* Trust break section intentionally removed — see CLAUDE.md section 8 (Open TODOs) for why
    and what a replacement needs to account for. Do not re-add the old .trust-break CSS from
@@ -625,7 +629,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .car-nav{display:none}
   .stats .wrap{grid-template-columns:1fr 1fr}
   .stat:nth-child(3){border-left:0}
-  .stat:nth-child(n+3){border-top:1px solid var(--line-dark)}
+  .stat:nth-child(n+3){border-top:1px solid rgba(38,11,15,.16)}
   .cs-grid{grid-template-columns:1fr}
   /* #accessories .cs-grid (ID+class) otherwise beats this plain mobile reset regardless of
      source order — the exact specificity bug this file has flagged before with other
@@ -719,7 +723,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .sec-head .title{flex-direction:column;align-items:flex-start;gap:6px}
   .sec-head .num{margin:0}
   .chat{right:16px;bottom:16px}
-  .stats .wrap{padding-left:32px;padding-right:32px}
+  .stats .wrap{padding-left:15px;padding-right:15px}
   .stat{min-height:76px;padding:12px 11px;gap:6px}
   .stat .v{font-size:clamp(23px,7vw,32px)}
   .stat .l{font-size:clamp(11px,3.15vw,13px)}
