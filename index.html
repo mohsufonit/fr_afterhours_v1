@@ -653,7 +653,13 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
 .modal.is-open{pointer-events:auto}
 .modal.is-open .scrim{opacity:1}
 .modal.is-open .dialog{opacity:1;transform:none}
-.modal .media{position:relative;min-height:420px;background:#3a1a16}
+/* min-width:0 is required: `.media` is a CSS Grid item (`.dialog` is the grid), and a grid
+   item's default min-width:auto uses its content's min-content size as a floor — the mobile
+   `.qv-track`'s fixed-width, non-shrinking slides have a large min-content width, which without
+   this override silently stretches `.media` (and the whole dialog) past its intended column
+   width instead of letting the track scroll internally. Same gotcha already documented for
+   `.cs-panel` elsewhere on this page. */
+.modal .media{position:relative;min-height:420px;min-width:0;background:#3a1a16}
 .modal .media .ph{position:absolute;inset:0}
 .modal .body{padding:clamp(24px,3vw,44px);display:flex;flex-direction:column;gap:var(--space-sm)}
 .modal .title-row{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
@@ -704,6 +710,9 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
 /* Clicking the quick-view photo opens the full lightbox (zoom/pan) — the button is a plain,
    full-bleed transparent overlay on top of the image, not a visible control of its own. */
 .qv-zoom-trigger{position:absolute;inset:0;border:0;padding:0;margin:0;background:none;cursor:zoom-in;display:block;width:100%;height:100%;z-index:1}
+/* Mobile-only "dot pager" gallery (desktop keeps the single static image + arrows above,
+   unaffected) — hidden by default, switched on inside the 900px breakpoint below. */
+.qv-gallery{display:none}
 /* Desktop-only prev/next arrows to move between a product's images, reusing the site's shared
    `.car-nav` circular-button look. Hidden via the `hidden` attribute in the markup whenever a
    product has 1 image (every SKU today) — JS un-hides them once a product has more than one. */
@@ -789,18 +798,47 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
      the existing .scrim. Desktop is untouched (still the centered 2-column dialog). */
   .modal{align-items:flex-end;padding:0}
   .modal .dialog{grid-template-columns:1fr;width:100%;max-width:100%;max-height:82vh;border-radius:20px 20px 0 0;margin-top:auto}
-  /* SUPERSEDED — the gallery was shrunk twice (300px -> 220px -> 176px) and letterboxed
-     (a narrow, left-anchored 3:4 box floating in a cream void) to make room for
-     name/description/price/variant to all sit in the first view without scrolling — explicitly
-     reversed: "the product image should be scaled more, right now it's really bad." A full-bleed
-     `object-fit:cover` image (inheriting the base `.modal .media .ph{inset:0}` rule, no mobile
-     override needed) reads far better than a small letterboxed crop, and it's fine for
-     "Product details" (the collapsed accordion at the very bottom of the body) to end up below
-     the fold, requiring a scroll — that was the actual fix for the cramped feeling, not fitting
-     everything above the fold at the cost of a tiny image. *Reason: explicit "the gallery
-     carousel in mobile... too small... the product image should be scaled more... move product
-     detail out of the view when scrolled, it can be visible but not like this."* */
-  .modal .media{height:min(46vh,340px);min-height:0}
+  /* SUPERSEDED (again) — mobile now shows a real swipeable "dot pager" gallery (reference:
+     Quick View Redesign, Concept 01), not the single full-bleed static image from the previous
+     pass. History: (1) a small letterboxed 3:4 box; (2) a full-bleed single `object-fit:cover`
+     image, fixing the "too small" complaint but leaving no way to browse multiple images and
+     showing a redundant single-thumbnail rail (removed entirely, see the earlier SUPERSEDED note
+     on `.qv-thumbs`). This pass: the desktop single-image `#qvImg`/`.qv-zoom-trigger` is hidden
+     on mobile, replaced by `.qv-gallery` — a horizontally-scrolling, scroll-snap `.qv-track` of
+     each image at its own true `3:4` width (so real photos are never cropped by a mismatched
+     box), inset with left padding so the next photo visibly peeks at the trailing edge, plus
+     small `.qv-dots` tracking swipe position (both built by `qvBuildTrack()`, scaling from 1 to
+     several images the same way the arrows already did — with one photo per SKU today, the dots
+     are hidden and there's nothing to peek at, same "ready for more, not there yet" pattern as
+     the arrows). *Reason: explicit reference to the "01 Dot pager" concept — "in mobile we need
+     to have that kind of a product gallery... desktop can have arrows to go to the next image...
+     rest of the elements added stays as in the current file."* Desktop is unaffected — still the
+     single image plus `#qvPrev`/`#qvNext` arrows. */
+  .modal .media{height:min(46vh,340px);min-height:0;background:#000}
+  .modal .media>.qv-zoom-trigger{display:none}
+  .qv-gallery{display:block;position:relative;width:100%;height:100%}
+  /* No leading padding-left here (unlike the reference mockup's inset peek) — combining leading
+     padding with `scroll-snap-align:start` on the first slide is a known quirk elsewhere on this
+     page: the browser auto-snaps on load and forces a non-zero initial scrollLeft to align the
+     slide's edge, silently eating the padding. Each slide is already narrower than the viewport
+     (its own true 3:4 width vs. the full-width track), so the next photo still peeks at the
+     trailing edge without needing an inset. */
+  .qv-track{display:flex;gap:8px;height:100%;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-ms-overflow-style:none}
+  .qv-track::-webkit-scrollbar{display:none}
+  .qv-track .qv-slide{flex:none;height:100%;aspect-ratio:3/4;padding:0;border:0;background:#000;cursor:zoom-in;scroll-snap-align:start}
+  .qv-track .qv-slide img{width:100%;height:100%;object-fit:cover;display:block}
+  /* With exactly one photo (every product today) a fixed 3:4 slide leaves an empty black void
+     beside it — there's nothing to peek at, so the lone slide fills the full track width instead
+     of the aspect-derived width the multi-image peek relies on. Toggled via qvBuildTrack(). */
+  .qv-track.is-single{overflow-x:hidden}
+  .qv-track.is-single .qv-slide{flex:1 1 100%;width:100%;aspect-ratio:auto}
+  .qv-dots{position:absolute;left:0;right:0;bottom:10px;display:flex;justify-content:center;gap:5px;z-index:2}
+  /* [hidden] and this class-selector display rule are equal specificity, and author styles beat
+     the UA default `[hidden]{display:none}` regardless of specificity — so `hidden` alone does
+     nothing here unless re-declared explicitly at at least the same specificity. */
+  .qv-dots[hidden]{display:none}
+  .qv-dots span{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.5);transition:background .2s,width .2s}
+  .qv-dots span.is-on{background:#fff;width:14px;border-radius:3px}
   .mf-row .product-card{flex-basis:clamp(160px,32vw,220px)}
   /* grp-row cards stay smaller than Shop by Texture's on mobile too — the category-split
      panel is narrower and stacked below a banner image, so a large card here pushes the
@@ -1993,6 +2031,15 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
       <button class="qv-zoom-trigger" id="qvZoomTrigger" type="button" aria-label="View larger image">
         <img class="ph img-cover" id="qvImg" src="" alt="">
       </button>
+      <!-- Mobile-only swipeable "dot pager" gallery — a horizontally-scrolling, scroll-snap
+           track of full images (each one's own true 3:4 width, not a cropped full-bleed cover),
+           with a peek of the next photo at the trailing edge and small dot indicators tracking
+           position, replacing the single static image on mobile. Desktop keeps the single image
+           above plus the prev/next arrows. Built by qvBuildTrack() in the <script> below. -->
+      <div class="qv-gallery" id="qvGallery">
+        <div class="qv-track" id="qvTrack" data-qv-track></div>
+        <div class="qv-dots" id="qvDots" data-qv-dots></div>
+      </div>
       <button class="car-nav qv-nav prev" id="qvPrev" type="button" aria-label="Previous image" hidden><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
       <button class="car-nav qv-nav next" id="qvNext" type="button" aria-label="Next image" hidden><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
     </div>
@@ -2284,6 +2331,33 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
      everywhere today — the prev/next arrows and thumbs are built to scale to more images once
      they exist, not a bug that they're hidden now. */
   let qvImages = [], qvIndex = 0, qvName = '';
+  /* Mobile "dot pager" gallery — builds one slide per image (each its own zoom trigger, opening
+     the lightbox at that index) plus one dot per image, scaling from 1 to several the same way
+     the desktop prev/next arrows already do. Rebuilt fresh every time a product opens, since the
+     image list/count differs per product. */
+  const qvTrack = $('#qvTrack'), qvDots = $('#qvDots');
+  function qvBuildTrack() {
+    qvTrack.innerHTML = ''; qvDots.innerHTML = ''; qvTrack.scrollLeft = 0;
+    qvTrack.classList.toggle('is-single', qvImages.length <= 1);
+    qvImages.forEach((src, i) => {
+      const slide = document.createElement('button');
+      slide.type = 'button'; slide.className = 'qv-slide';
+      slide.setAttribute('aria-label', `${qvName} — view image ${i + 1} larger`);
+      slide.innerHTML = `<img src="${src}" alt="${qvName}">`;
+      slide.addEventListener('click', () => { qvIndex = i; openLightbox(); });
+      qvTrack.appendChild(slide);
+      const dot = document.createElement('span'); if (i === 0) dot.classList.add('is-on');
+      qvDots.appendChild(dot);
+    });
+    qvDots.hidden = qvImages.length <= 1;
+  }
+  qvTrack.addEventListener('scroll', () => {
+    const slides = [...qvTrack.children]; if (!slides.length) return;
+    let idx = 0, closest = Infinity;
+    slides.forEach((s, i) => { const d = Math.abs(s.offsetLeft - qvTrack.scrollLeft); if (d < closest) { closest = d; idx = i; } });
+    qvIndex = idx;
+    $$('#qvDots span').forEach((d, i) => d.classList.toggle('is-on', i === idx));
+  });
   function qvSetImage(i) {
     if (!qvImages.length) return;
     qvIndex = (i + qvImages.length) % qvImages.length;
@@ -2300,6 +2374,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
     $('#qvTitle').textContent = card.dataset.product; $('#qvPrice').textContent = card.dataset.price; $('#qvDesc').textContent = card.dataset.desc; $('#qvMat').textContent = card.dataset.material;
     const list = card.dataset.images ? card.dataset.images.split(',').map(s => s.trim()).filter(Boolean) : (card.dataset.img ? [card.dataset.img] : []);
     qvImages = list;
+    qvBuildTrack();
     qvSetImage(0);
     $('#qvAdd').textContent = 'Add to bag'; $('#qvAdd').classList.remove('is-added');
     /* Estimated delivery date — computed as "today + a rolling handling/shipping window", not a
