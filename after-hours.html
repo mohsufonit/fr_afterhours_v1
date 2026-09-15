@@ -895,14 +895,15 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
      group circles below it on mobile, reported as "too close." *Reason: explicit "ensure the
      spacing between the CTA text in the subcategory section... is natural enough."* */
   .cs-panel{padding:18px 15px}
-  /* Trimmed to help the category-split sections fit one mobile viewport now that the banner
-     and product cards are both bigger — the heading was already at its desktop clamp's floor
-     (22px), which isn't small enough on its own at this width. Sizes nudged back up slightly
-     (19->21, 12->13) alongside the desktop bump — "each and every category... inc its font
-     slightly." */
-  .cs-head h2{font-size:21px;margin:4px 0 5px}
-  .cs-sub{font-size:13px;line-height:1.35}
-  .cs-head-row{gap:8px}
+  /* Sized to exact spec, given as a fully worked-out spacing table after direct measurement:
+     eyebrow 12px, h2 25px, sub 15px — eyebrow-to-heading 10px, heading-to-subheading 8px,
+     subheading-to-CTA 10px (all measured edge-to-edge, not just the CSS margin value, since
+     line-height/font metrics mean the rendered gap and the margin number don't match 1:1). */
+  .cs-head .eyebrow{font-size:12px}
+  .cs-head h2{font-size:25px;margin:7px 0 8px}
+  .cs-sub{font-size:15px;line-height:1.35}
+  .cs-head-row{gap:10px}
+  .grp-content{margin-top:15px}
   /* The "All of..." CTA (a plain underlined .link-arrow, not a pill) was reading as too visually
      heavy against the h2/sub above it — its 12px base size plus wide .2em letter-spacing made it
      look nearly as prominent as the heading itself instead of a secondary action. Sized down and
