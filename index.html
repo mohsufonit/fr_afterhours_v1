@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>After Hours. – Fableroom × Three Sixty</title>
-<meta name="description" content="After Hours. A leather collection for evenings worth dressing for. 28 styles. Handmade in India. Fableroom × Three Sixty.">
+<title>After Hours. – Fableroom</title>
+<meta name="description" content="After Hours. A leather collection for evenings worth dressing for. 28 styles. Handmade in India.">
 <link rel="stylesheet" href="brand-fonts.css">
 <style>
 :root{
@@ -541,15 +541,24 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
   .rcard p{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 }
 
-/* ---------- Closing ---------- */
-.closing{background:#fff;padding:var(--sec-pad-lg) 0;text-align:center}
-.closing .wrap{max-width:860px}
-.closing h2{font-size:clamp(34px,4.4vw,62px);line-height:1.02;margin:18px 0 28px}
-.closing p{color:var(--ink-soft);font-size:clamp(15px,1.2vw,17px);line-height:1.7;max-width:62ch;margin:0 auto}
-.closing .sign{margin-top:32px;font-family:var(--font-display);font-style:italic;font-size:22px;color:var(--caramel)}
-.closing .care{display:flex;justify-content:center;gap:clamp(24px,4vw,56px);margin-top:44px;flex-wrap:wrap}
-.closing .care span{display:flex;flex-direction:column;align-items:center;gap:10px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--grey)}
-.closing .care svg{width:40px;height:40px;stroke:var(--deep);fill:none;stroke-width:1.2}
+/* ---------- Closing ("Quiet split" — image fills one half, short copy sits in a narrow column
+   in the other, left-aligned, not centered. SUPERSEDED — was a single centered text-only column
+   (no image at all); redesigned to tell the "hand-finished, not machine-made" story with one
+   real photo instead, and the copy trimmed from three sentences to one. Chosen from 5 layout
+   options reviewed via an artifact. "Three Sixty" (the workshop's name) is no longer mentioned
+   anywhere on the page — explicit "we don't mention any three sixty thing in the website" — so
+   the copy now says "our workshop" instead of naming it. ) ---------- */
+.closing{background:#fff}
+.closing-grid{display:grid;grid-template-columns:1fr 1fr;min-height:clamp(360px,44vw,520px)}
+.closing-visual{position:relative;overflow:hidden}
+.closing-visual .ph{position:absolute;inset:0}
+.closing-copy{display:flex;flex-direction:column;justify-content:center;padding:clamp(32px,5vw,72px) var(--gutter)}
+.closing h2{font-size:clamp(26px,3.2vw,44px);line-height:1.1;margin:14px 0 18px;text-align:left}
+.closing p{color:var(--ink-soft);font-size:15px;line-height:1.65;max-width:42ch;margin:0}
+.closing .sign{margin-top:22px;font-family:var(--font-display);font-style:italic;font-size:19px;color:var(--caramel)}
+.closing .care{display:flex;justify-content:flex-start;gap:clamp(18px,2.6vw,32px);margin-top:26px;flex-wrap:wrap}
+.closing .care span{display:flex;align-items:center;gap:8px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--grey)}
+.closing .care svg{width:19px;height:19px;stroke:var(--caramel);fill:none;stroke-width:1.6}
 
 /* ---------- Newsletter (compact) ---------- */
 .newsletter-compact{padding:clamp(18px,2vw,26px) 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
@@ -720,6 +729,9 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
 }
 @media (max-width:900px){
   :root{--nav-h:64px}
+  .closing-grid{grid-template-columns:1fr}
+  .closing-visual{height:240px}
+  .closing-copy{padding:28px 15px 36px}
   .nav-left .desk,.nav-cats{display:none}
   .burger{display:block}
   .nav-row{grid-template-columns:auto 1fr auto}
@@ -865,7 +877,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
 <!-- 1. PROMO BAR -->
 <div class="promo" id="promo" role="region" aria-label="Announcement">
   <div class="promo-msgs" aria-live="polite">
-    <span class="is-on"><b>After Hours</b> · Fableroom × Three Sixty · <a href="#categories">Now live</a></span>
+    <span class="is-on"><b>After Hours</b> · Fableroom · <a href="#categories">Now live</a></span>
     <span>Handmade in India in one batch. <a href="#closing">No restock planned</a>.</span>
     <span>Home Circle members: <a href="#newsletter">early access to every drop</a>.</span>
   </div>
@@ -945,7 +957,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   <div class="ph warm" aria-hidden="true"><span class="ph-tag">Loading · Establishing shot</span></div>
   <img class="hero-video desktop" src="assets/video/hero-desktop.webp" data-poster="assets/video/hero-desktop-poster.jpg" alt="" aria-hidden="true">
   <img class="hero-video mobile" src="assets/video/hero-mobile.webp" data-poster="assets/video/hero-mobile-poster.jpg" alt="" aria-hidden="true">
-  <span class="sr-only" id="heroTitle">After Hours – Fableroom × Three Sixty, a leather collection for evenings worth dressing for</span>
+  <span class="sr-only" id="heroTitle">After Hours – Fableroom, a leather collection for evenings worth dressing for</span>
 </section>
 
 <!-- 4. THE SHOPS → three categories -->
@@ -1848,17 +1860,23 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   </div>
 </section>
 
-<!-- 11. THE COLLECTION → closing line -->
+<!-- 11. THE COLLECTION → closing line ("Quiet split": image fills one half, short copy sits in
+     the other — see CLAUDE.md for the layout history and the artifact this was chosen from) -->
 <section class="closing" id="closing" aria-labelledby="closeTitle">
-  <div class="wrap reveal">
-    <span class="eyebrow">Fableroom × Three Sixty</span>
-    <h2 class="display" id="closeTitle"><em>Most leather is finished by machine.</em><br>Not this.</h2>
-    <p>Three Sixty is a leather workshop in India working across four materials – croco print, waxy, shagreen and hair-on-hide. Every piece in this collection is cut, shaped and finished by hand. It goes directly from their workshop to yours. No middlemen. Nothing removed but the markup.</p>
-    <div class="sign">Thoughtfully made. Fairly priced.</div>
-    <div class="care" aria-label="Care">
-      <span><svg viewBox="0 0 24 24"><path d="M4 12l8-7 8 7v8H4z"/><path d="M9 20v-5h6v5"/></svg>Dry cloth</span>
-      <span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 6c-3 4-4 6-4 8a4 4 0 008 0c0-2-1-4-4-8z"/><path d="M4 4l16 16"/></svg>No water</span>
-      <span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/></svg>Avoid sun</span>
+  <div class="closing-grid">
+    <div class="closing-visual reveal">
+      <img class="ph img-cover" src="assets/img/closing-banner.jpg" alt="Croco leather bar tools styled with an olive leather chair">
+    </div>
+    <div class="closing-copy reveal" data-delay="1">
+      <span class="eyebrow">Fableroom</span>
+      <h2 class="display" id="closeTitle"><em>Most leather is finished by machine.</em><br>Not this.</h2>
+      <p>Cut, shaped and finished entirely by hand in our workshop in India. No middlemen. Nothing removed but the markup.</p>
+      <div class="sign">Thoughtfully made. Fairly priced.</div>
+      <div class="care" aria-label="Care">
+        <span><svg viewBox="0 0 24 24"><path d="M4 12l8-7 8 7v8H4z"/><path d="M9 20v-5h6v5"/></svg>Dry cloth</span>
+        <span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 6c-3 4-4 6-4 8a4 4 0 008 0c0-2-1-4-4-8z"/><path d="M4 4l16 16"/></svg>No water</span>
+        <span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/></svg>Avoid sun</span>
+      </div>
     </div>
   </div>
 </section>
@@ -1903,7 +1921,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
       </div>
       <div>
         <h4>About us</h4>
-        <ul><li><a href="#">Our story</a></li><li><a href="#">Contact us</a></li><li><a href="#">Blog</a></li><li><a href="#">FAQs</a></li><li><a href="#closing">Three Sixty workshop</a></li></ul>
+        <ul><li><a href="#">Our story</a></li><li><a href="#">Contact us</a></li><li><a href="#">Blog</a></li><li><a href="#">FAQs</a></li><li><a href="#closing">Our workshop</a></li></ul>
       </div>
       <div>
         <h4>We care</h4>
@@ -1988,7 +2006,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
       <button class="details-toggle" type="button" aria-expanded="false" data-qv-details-toggle>Product details<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 9l6 6 6-6"/></svg></button>
       <div class="details-panel" data-qv-details-panel>
         <div class="spec">
-          <div><b>Made in</b>India, Three Sixty workshop</div>
+          <div><b>Made in</b>India, in our workshop</div>
           <div><b>Finish</b>Cut, shaped and finished by hand</div>
           <div><b>Care</b>Dry cloth. No water. Avoid sun.</div>
           <div><b>Batch</b>Handmade in one batch. No restock planned.</div>
@@ -2239,7 +2257,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   chatBtn.addEventListener('click', e => { e.stopPropagation(); toggleChat(); });
   chatPanel.addEventListener('click', e => e.stopPropagation());
   document.addEventListener('click', () => { if (chat.classList.contains('is-open')) toggleChat(false); });
-  const replies = { 'Which leather is most durable?': 'Waxy and croco print take daily handling best – they develop a patina rather than wearing out. Shagreen and hair-on-hide prefer a dry cloth and a spot out of direct sun.', 'Delivery times': 'Every After Hours piece ships from our UK hub. You\'ll see your exact delivery window at checkout before you pay.', 'Is there a restock?': 'No. The collection was handmade in one batch at Three Sixty and there\'s no restock planned. Real scarcity – not manufactured.' };
+  const replies = { 'Which leather is most durable?': 'Waxy and croco print take daily handling best – they develop a patina rather than wearing out. Shagreen and hair-on-hide prefer a dry cloth and a spot out of direct sun.', 'Delivery times': 'Every After Hours piece ships from our UK hub. You\'ll see your exact delivery window at checkout before you pay.', 'Is there a restock?': 'No. The collection was handmade in one batch and there\'s no restock planned. Real scarcity – not manufactured.' };
   const reply = $('#chatReply');
   $$('[data-chat-opts] button').forEach(b => b.addEventListener('click', () => { $$('[data-chat-opts] button').forEach(x => x.classList.remove('is-picked')); b.classList.add('is-picked'); reply.hidden = false; reply.textContent = replies[b.textContent]; }));
   $('#chatForm').addEventListener('submit', e => { e.preventDefault(); const t = $('#chatText'); if (!t.value.trim()) return; reply.hidden = false; reply.textContent = `Thanks – we've got your message: "${t.value.trim()}". Someone from the team will reply here shortly.`; t.value = ''; });
