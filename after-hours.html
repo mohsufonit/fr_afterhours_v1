@@ -561,6 +561,20 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
    `.closing`/`.closing-grid`/`.closing-visual`/`.closing-copy` from git history without a fresh
    explicit ask. */
 
+/* ---------- Recommended for you (product rail, between Leather Accessories and FAQ) ---------- */
+.recommended{background:#fff;padding:var(--sec-pad) 0}
+.recommended .head{max-width:640px;margin-bottom:clamp(28px,3vw,40px)}
+.recommended .head .eyebrow{color:var(--caramel)}
+.recommended h2{margin-top:8px;font-size:clamp(28px,3.2vw,44px);line-height:1.05;color:var(--ink)}
+.recommended .sub{margin-top:10px;color:var(--grey);font-size:14px;max-width:48ch}
+#recommended .mf-row-wrap{max-width:calc(4.5 * clamp(180px,20vw,220px) + 4 * var(--space-sm))}
+/* Product-card name/price default to bone (for the licorice sections they normally sit on) — this
+   rail is on white, so it needs the same light-background override the reference showed. */
+#recommended .product-card .name{color:var(--ink)}
+#recommended .product-card .name small{color:var(--grey)}
+#recommended .product-card .price{color:var(--ink)}
+#recommended .product-card .quick .btn-ghost{border-color:var(--line)}
+
 /* ---------- FAQ ---------- */
 .faq{background:#fff;padding:var(--sec-pad) 0}
 .faq-head{max-width:640px;margin:0 auto;text-align:center}
@@ -1815,6 +1829,53 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   </div>
 </section>
 
+<!-- 11. RECOMMENDED FOR YOU (cross-category product rail, reusing the shared carousel + product-card pattern, no group filter) -->
+<section class="recommended" id="recommended" aria-labelledby="recTitle">
+  <div class="wrap">
+    <div class="head reveal">
+      <span class="eyebrow">Recommended for you</span>
+      <h2 class="display" id="recTitle">More, considered for you.</h2>
+      <p class="sub">A few more pieces from across the collection, picked to go with what you've already chosen.</p>
+    </div>
+    <div class="mf-row-wrap reveal">
+      <button class="car-nav mf-nav prev" data-carousel-prev aria-label="Scroll to previous products"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <button class="car-nav mf-nav next" data-carousel-next aria-label="Scroll to next products"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+      <ul class="mf-row" data-carousel-row aria-label="Recommended pieces">
+        <li class="product-card" data-product="Croco Cocktail Set" data-price="TBC" data-material="Croco" data-img="assets/img/sub-cocktail-sets.jpg" data-images="assets/img/sub-cocktail-sets.jpg,assets/img/furniture-banner.jpg,assets/img/sub-dining-chairs.jpg" data-desc="A croco-print cocktail set with brass jigger and strainer, cased in a fitted leather box.">
+          <div class="media"><img class="ph img-cover" src="assets/img/sub-cocktail-sets.jpg" alt="Croco-print leather cocktail set">
+            <button class="wish" aria-pressed="false" aria-label="Save Croco Cocktail Set"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button></div>
+          <div class="info"><h3 class="name">Croco Cocktail Set<small>Croco</small></h3><span class="price">TBC</span></div>
+          <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Croco Cocktail Set"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
+        </li>
+        <li class="product-card" data-product="Caldera Dining Chair" data-price="TBC" data-material="Plain" data-img="assets/img/sub-dining-chairs.jpg" data-images="assets/img/sub-dining-chairs.jpg,assets/img/mf-hoh-cushion.jpg,assets/img/sub-decorative-boxes.jpg" data-desc="A channel-stitched dining chair in olive waxy leather over a slim black frame.">
+          <div class="media"><img class="ph img-cover" src="assets/img/sub-dining-chairs.jpg" alt="Caldera dining chair in olive waxy leather">
+            <button class="wish" aria-pressed="false" aria-label="Save Caldera Dining Chair"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button></div>
+          <div class="info"><h3 class="name">Caldera Dining Chair<small>Plain</small></h3><span class="price">TBC</span></div>
+          <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Caldera Dining Chair"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
+        </li>
+        <li class="product-card" data-product="Leather Decorative Box" data-price="TBC" data-material="Shagreen" data-img="assets/img/sub-decorative-boxes.jpg" data-images="assets/img/sub-decorative-boxes.jpg,assets/img/sub-nesting-tables.jpg,assets/img/sub-cushions.jpg" data-desc="A pair of shagreen leather decorative boxes with brass pulls.">
+          <div class="media"><img class="ph img-cover" src="assets/img/sub-decorative-boxes.jpg" alt="Shagreen leather decorative boxes">
+            <button class="wish" aria-pressed="false" aria-label="Save Leather Decorative Box"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button></div>
+          <div class="info"><h3 class="name">Leather Decorative Box<small>Shagreen</small></h3><span class="price">TBC</span></div>
+          <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Leather Decorative Box"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
+        </li>
+        <li class="product-card" data-product="Round Leather Mirror" data-price="TBC" data-material="Solid" data-img="assets/img/sub-photo-frames.jpg" data-images="assets/img/sub-photo-frames.jpg,assets/img/furniture-tile.jpg,assets/img/furniture-banner.jpg" data-desc="A round wall mirror wrapped in solid-grain leather, brass horsebit detail at the base.">
+          <div class="media"><img class="ph img-cover" src="assets/img/sub-photo-frames.jpg" alt="Round leather mirror">
+            <button class="wish" aria-pressed="false" aria-label="Save Round Leather Mirror"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button></div>
+          <div class="info"><h3 class="name">Round Leather Mirror<small>Solid</small></h3><span class="price">TBC</span></div>
+          <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Round Leather Mirror"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
+        </li>
+        <li class="product-card" data-product="Leather Storage Basket" data-price="TBC" data-material="Split suede" data-img="assets/img/sub-storage-baskets.jpg" data-images="assets/img/sub-storage-baskets.jpg,assets/img/sub-cocktail-sets.jpg,assets/img/mf-hoh-cushion.jpg" data-desc="A woven leather storage basket in split suede, tan.">
+          <div class="media"><img class="ph img-cover" src="assets/img/sub-storage-baskets.jpg" alt="Woven leather storage basket">
+            <button class="wish" aria-pressed="false" aria-label="Save Leather Storage Basket"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button></div>
+          <div class="info"><h3 class="name">Leather Storage Basket<small>Split suede</small></h3><span class="price">TBC</span></div>
+          <div class="quick"><button class="btn btn-dark" data-add>Add to bag</button><button class="btn btn-ghost" data-quickview aria-label="Quick view Leather Storage Basket"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/></svg></button></div>
+        </li>
+      </ul>
+      <div class="mf-scrollbar" aria-hidden="true"><div class="mf-scrollbar-thumb" data-carousel-thumb></div></div>
+    </div>
+  </div>
+</section>
 
 <!-- 11b. FAQ -->
 <section class="faq" id="faq" aria-labelledby="faqTitle">
