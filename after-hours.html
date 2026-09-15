@@ -226,7 +226,7 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 .product-card .price s{color:rgba(217,210,191,.6);font-weight:300;margin-right:6px}
 /* Quick actions sit below the card, in normal flow — never over the photo */
 .product-card .quick{display:flex;gap:8px}
-.product-card .quick .btn{flex:1;height:44px;padding:0 14px;font-size:10.5px;background:var(--deep);color:var(--bone)}
+.product-card .quick .btn{flex:1;height:44px;padding:0 14px;font-size:12px;background:var(--deep);color:var(--bone)}
 .product-card .quick .btn:hover{background:var(--licorice)}
 .product-card .quick .btn-ghost{background:var(--off);color:var(--deep);flex:0 0 44px;border:1px solid var(--line)}
 .product-card .quick .btn-ghost:hover{background:#fff;border-color:var(--deep)}
@@ -363,10 +363,17 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 .cs-grid{display:grid;grid-template-columns:.85fr 1.15fr;margin:clamp(40px,5vw,64px) 0}
 .cs-visual{position:relative;overflow:hidden;min-height:clamp(160px,19.6vw,250px)}
 .cs-visual .ph{position:absolute;inset:0}
-/* Mobile-only "Explore" CTA overlaid on the category banner — hidden on desktop (that banner
-   stays plain/no-text per its own locked decision), shown via the 600px breakpoint below. */
-.cs-visual-cta{display:none;position:absolute;left:16px;bottom:16px;z-index:2;align-items:center;gap:8px;padding:11px 18px;background:var(--off);color:var(--deep);font-size:11px;letter-spacing:.14em;text-transform:uppercase;border-radius:999px}
-.cs-visual-cta svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.6}
+/* Mobile-only hero banner, a separate element from the desktop .cs-visual — see its own
+   locked-decision note near the 600px breakpoint for why it's duplicated rather than reordered. */
+.cs-visual-m{display:none;position:relative;overflow:hidden}
+.cs-visual-m .ph{position:absolute;inset:0}
+/* "Explore now" CTA overlaid on the category banner — hidden on desktop (that banner stays
+   plain/no-text per its own locked decision), shown via the 600px breakpoint below. Sized down
+   30% from its first pass (padding 11px 18px->8px 13px, font 11px->8px, gap 8px->6px, icon
+   14px->10px) — explicit "the banner cta... make it a little bit smaller please by 30%... its too
+   big right now." */
+.cs-visual-cta{display:none;position:absolute;left:16px;bottom:16px;z-index:2;align-items:center;gap:6px;padding:8px 13px;background:var(--off);color:var(--deep);font-size:8px;letter-spacing:.14em;text-transform:uppercase;border-radius:999px;box-shadow:0 4px 14px rgba(28,8,16,.22)}
+.cs-visual-cta svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:1.6}
 /* min-width:0 is required: .cs-panel is a CSS Grid item, and a grid item's default
    min-width:auto uses its content's min-content size as a hard floor — the .grp-row
    carousel's un-scrolled content (5+ cards laid end to end) has a huge min-content
@@ -854,7 +861,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .stars{font-size:11px}
   .rcard h3{font-size:13px}
   .rcard p{font-size:10px;line-height:1.38}
-  .mf-row .product-card .quick .btn{padding:0 10px;font-size:9.5px;letter-spacing:.12em;white-space:nowrap;height:40px}
+  .mf-row .product-card .quick .btn{padding:0 10px;font-size:11px;letter-spacing:.1em;white-space:nowrap;height:40px}
   .mf-row .product-card .quick .btn-ghost{padding:0 12px}
   /* SUPERSEDED — mobile no longer stacks the 3 category tiles one above another; it's a
      horizontally-scrolling carousel now, same idea as every product-card row on the page
@@ -866,9 +873,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
      furniture and leather accessories will turn into a carousel... not stacking it one by one."*
      Only 3 tiles today, so no arrows/scrollbar thumb (arrows are hidden below 1100px for every
      other carousel on the page anyway) — plain swipe is enough for 3 items. */
-  .tiles{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-ms-overflow-style:none;padding-bottom:4px}
-  .tiles::-webkit-scrollbar{display:none}
-  .tile{flex:0 0 78%;scroll-snap-align:start}
+  .tiles{display:grid;grid-template-columns:1fr;gap:16px}
   .sec-head{flex-direction:column;align-items:flex-start;gap:16px}
   .sec-head .num{margin-right:12px}
   /* Gap widened (9px -> 18px) — the "All of..." CTA row was sitting almost flush against the
@@ -936,18 +941,15 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .mf-row .product-card{flex-basis:52vw}
   .mf-row.grp-row .product-card{flex-basis:44vw}
   #hosting .mf-row.grp-row .product-card,#furniture .mf-row.grp-row .product-card,#accessories .mf-row.grp-row .product-card{flex-basis:52vw}
-  /* Mobile only: Hosting & Bar / Furniture / Leather Accessories' product rows become a static
-     2-column grid instead of a horizontal-scroll carousel — the carousel arrows are already
-     hidden below 1100px, so this just swaps the row's own layout mode and hides the now-pointless
-     scroll-progress bar. Shop by Texture (.mf-row on its own, not .grp-row) keeps the carousel. */
-  #hosting .grp-row,#furniture .grp-row,#accessories .grp-row{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-sm);overflow:visible;padding-bottom:0}
-  #hosting .grp-row .product-card,#furniture .grp-row .product-card,#accessories .grp-row .product-card{flex-basis:auto;width:100%}
-  #hosting .grp-content .mf-row-wrap,#furniture .grp-content .mf-row-wrap,#accessories .grp-content .mf-row-wrap{max-width:none}
-  #hosting .grp-content .mf-scrollbar,#furniture .grp-content .mf-scrollbar,#accessories .grp-content .mf-scrollbar{display:none}
-  /* The category banner reappears on mobile for these 3 sections specifically, now as a hero
-     image with a small "Explore" CTA pill overlaid — see .cs-visual-cta below. */
-  #hosting .cs-visual,#furniture .cs-visual,#accessories .cs-visual{display:block;position:relative;min-height:220px}
-  #hosting .cs-visual-cta,#furniture .cs-visual-cta,#accessories .cs-visual-cta{display:inline-flex}
+  /* Mobile-only hero banner for Hosting & Bar / Furniture / Leather Accessories — a SEPARATE
+     element from the desktop .cs-visual (which stays hidden on mobile, see its own rule), placed
+     in the markup between .cs-groups and .grp-content so it renders after the heading/tabs and
+     before the product row, matching the reference layout ("category tile comes first then the
+     hero banner"). Duplicating the image tag (same URL, so no extra network request) is far lower
+     risk than trying to reorder the shared desktop grid via display:contents/order tricks. */
+  .cs-visual-m{display:block;position:relative;min-height:220px;margin:16px 0}
+  .cs-visual-m .cs-visual-cta{display:inline-flex}
+  #hosting .cs-head-row>.link-arrow,#furniture .cs-head-row>.link-arrow,#accessories .cs-head-row>.link-arrow{display:none}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}
@@ -1246,6 +1248,10 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
         <button class="grp-btn" type="button" data-group="bar" data-heading="Modular Bar" data-desc="One bar trunk, endless configurations." aria-selected="false"><span class="grp-label">Modular Bar</span></button>
         <button class="grp-btn" type="button" data-group="tableware" data-heading="Tableware &amp; Trays" data-desc="Serve trays, coasters, placemats and napkin rings, together." aria-selected="false"><span class="grp-label">Tableware &amp; Trays</span></button>
       </div>
+      <div class="cs-visual-m">
+        <img class="ph img-cover" src="assets/img/sub-cocktail-sets.jpg" alt="Fableroom croco-print leather bar tools styled in use">
+        <a class="cs-visual-cta" href="#">Explore now <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
       <div class="grp-content reveal" data-delay="2">
       <div class="mf-row-wrap reveal">
         <button class="car-nav mf-nav prev" data-carousel-prev aria-label="Scroll to previous products"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
@@ -1479,6 +1485,10 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
         <button class="grp-btn" type="button" data-group="cushions" data-heading="Cushions" data-desc="Lounge cushions in tan oily leather." aria-selected="false"><span class="grp-label">Cushions</span></button>
         <button class="grp-btn" type="button" data-group="mirrors" data-heading="Mirrors" data-desc="Round wall mirrors, waxy leather frame." aria-selected="false"><span class="grp-label">Mirror</span></button>
       </div>
+      <div class="cs-visual-m">
+        <img class="ph img-cover" src="assets/img/furniture-banner.jpg" alt="Caldera dining chair in olive waxy leather">
+        <a class="cs-visual-cta" href="#">Explore now <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
     <div class="grp-content reveal" data-delay="2">
       <div class="mf-row-wrap reveal">
         <button class="car-nav mf-nav prev" data-carousel-prev aria-label="Scroll to previous products"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
@@ -1643,6 +1653,10 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
         <button class="grp-btn" type="button" data-group="boxes" data-heading="Boxes &amp; Organisers" data-desc="Jewellery, watch, keepsake and desk boxes, hand-finished." aria-selected="true"><span class="grp-label">Boxes &amp; Organisers</span></button>
         <button class="grp-btn" type="button" data-group="tissue" data-heading="Tissue Box" data-desc="Tissue box covers and cases, in split suede." aria-selected="false"><span class="grp-label">Tissue Box</span></button>
         <button class="grp-btn" type="button" data-group="frames" data-heading="Photoframes" data-desc="Photo and picture frames, in plain leather." aria-selected="false"><span class="grp-label">Photoframes</span></button>
+      </div>
+      <div class="cs-visual-m">
+        <img class="ph img-cover" src="assets/img/accessories-tile.jpg" alt="Burgundy leather jewellery case held in hand">
+        <a class="cs-visual-cta" href="#">Explore now <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
       <div class="grp-content reveal" data-delay="2">
       <div class="mf-row-wrap reveal">
