@@ -264,9 +264,9 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 /* .tabs (base rule) sets flex-wrap:wrap and comes later in the cascade than a single-class .mf-tabs
    selector would, silently overriding nowrap — the two-class selector here wins on specificity so the
    tab bar reliably stays a single row instead of wrapping into an uneven, gap-leaving second line. */
-.tabs.mf-tabs{justify-content:flex-start;flex-wrap:nowrap;gap:0;margin:var(--space-md) auto 0;width:fit-content;max-width:100%;border:1px solid var(--line-dark);overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.tabs.mf-tabs{justify-content:flex-start;flex-wrap:nowrap;gap:0;margin:var(--space-md) auto 0;width:100%;max-width:100%;border:1px solid var(--line-dark);overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
 .mf-tabs::-webkit-scrollbar{display:none}
-.mf-tabs .tab{flex:0 0 auto;min-width:122px;background:none;border:0;border-right:1px solid var(--line-dark);padding:14px 25px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--bone);white-space:nowrap;transition:background var(--t-fast),color var(--t-fast)}
+.mf-tabs .tab{flex:1 1 0;min-width:122px;background:none;border:0;border-right:1px solid var(--line-dark);padding:14px 25px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--bone);white-space:nowrap;transition:background var(--t-fast),color var(--t-fast)}
 .mf-tabs .tab:last-child{border-right:0}
 .mf-tabs .tab[aria-selected="true"]{background:var(--caramel);color:#fff}
 .mf-row-wrap{position:relative;z-index:3;margin-top:clamp(16px,2vw,22px);margin-left:auto;margin-right:auto}
@@ -394,17 +394,14 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
    grid below switches to that group). Replaces the old sub-grid/sub-tile navigation-tile pattern. No
    separate heading/description block under the circles — the active circle's own bold label is the
    only "which group am I looking at" indicator, so the group name isn't shown twice. */
-.cs-groups{display:flex;flex-wrap:wrap;justify-content:center;gap:20px 32px;margin-top:clamp(24px,3vw,36px)}
-.grp-btn{display:flex;flex-direction:column;align-items:center;gap:10px;background:none;border:0;padding:4px;cursor:pointer;flex:0 0 auto}
-.grp-media{position:relative;width:58px;height:58px;border-radius:50%;overflow:hidden;transition:transform var(--t-med) var(--ease),box-shadow var(--t-med) var(--ease)}
-.grp-media img{width:100%;height:100%;object-fit:cover;display:block}
-.grp-label{font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;color:var(--grey);transition:color var(--t-fast);text-align:center}
-.grp-btn[aria-selected="true"] .grp-media{transform:scale(1.12);box-shadow:0 0 0 2px #fff,0 0 0 4px var(--caramel)}
-.grp-btn[aria-selected="false"] .grp-media{transform:scale(.88)}
-.grp-btn[aria-selected="true"] .grp-label{color:var(--ink);font-weight:700}
-.category-split.on-colored .grp-label{color:rgba(217,210,191,.72)}
-.category-split.on-colored .grp-btn[aria-selected="true"] .grp-label{color:var(--bone)}
-.category-split.on-colored .grp-btn[aria-selected="true"] .grp-media{box-shadow:0 0 0 2px var(--deep),0 0 0 4px var(--caramel)}
+.cs-groups{display:flex;flex-wrap:nowrap;border:1px solid var(--line);width:100%;margin-top:clamp(24px,3vw,36px)}
+.grp-btn{flex:1 1 0;min-width:0;background:none;border:0;border-right:1px solid var(--line);padding:14px 18px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;transition:background var(--t-fast),color var(--t-fast)}
+.grp-btn:last-child{border-right:0}
+.grp-label{display:block}
+.grp-btn[aria-selected="true"]{background:var(--licorice);color:#fff}
+.category-split.on-colored .cs-groups{border-color:var(--line-dark)}
+.category-split.on-colored .grp-btn{border-right-color:var(--line-dark);color:var(--bone)}
+.category-split.on-colored .grp-btn[aria-selected="true"]{background:var(--caramel);color:#fff}
 /* SUPERSEDED — `.grp-content` now DOES carry its own margin-top (a real, deliberate rule, not the
    double-counted-gap bug this comment used to warn about). `.cs-panel`/`.cs-glass-content` no
    longer have a uniform flex `gap` at all — spacing is per-transition now: `.cs-groups` gets a
@@ -897,15 +894,10 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
      tightened here specifically for the category-split heading row, on mobile only. */
   .cs-head-row .link-arrow:not(.pill){font-size:10.5px;letter-spacing:.14em}
   .cs-head-row .link-arrow:not(.pill) svg{width:13px;height:13px}
-  /* All 4 group circles stay in one row on mobile instead of wrapping to 2x2 — each button gets an
-     exact quarter-width column (min-width:0 lets flex shrink it below the label's intrinsic width so
-     the label can wrap under a small circle instead of forcing the row wider than the screen). */
-  .cs-groups{gap:6px;flex-wrap:nowrap}
-  .grp-btn{flex:1 1 0;min-width:0}
-  /* Widened 32px -> 44px — reported as "too small" on mobile. *Reason: explicit "in mobile
-     version firstly increase the size of the group circles please." */
-  .grp-media{width:44px;height:44px;margin:0 auto}
-  .grp-label{font-size:9.5px;line-height:1.2;white-space:normal;letter-spacing:.04em}
+  /* All group tabs stay in one row on mobile instead of wrapping — min-width:0 lets flex shrink
+     each tab below its label's intrinsic width so long labels ellipsis instead of forcing the row
+     wider than the screen. */
+  .grp-btn{padding:10px 6px;font-size:8.5px}
   .product-card .wish{opacity:1;transform:none}
   .faq{padding:32px 0}
   .faq-head{text-align:left}
@@ -929,7 +921,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .fs-item{min-height:76px;padding:12px 11px;gap:6px}
   .fs-item .v{font-size:14px}
   .fs-item .l{font-size:9.5px}
-  .mf-head h2{max-width:15ch;margin-left:auto;margin-right:auto}
+  .mf-head h2{white-space:nowrap;font-size:clamp(22px,7vw,30px);margin-left:auto;margin-right:auto}
   /* Mobile deliberately shows all 4 tabs at once instead of desktop's single scrollable line — a
      scrollable row of filter tabs isn't discoverable on a touch screen. Laid out as a real 2-column
      CSS Grid (not flex-wrap) so the 2×2 grid lines up cleanly with consistent borders — matches the
@@ -1234,9 +1226,9 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
         <a class="link-arrow reveal" href="#">All of Hosting &amp; Bar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
       <div class="cs-groups reveal" data-delay="1" role="tablist" aria-label="Browse Hosting &amp; Bar by group">
-        <button class="grp-btn" type="button" data-group="cocktail" data-heading="Cocktail Sets" data-desc="Croco-print bar tools built for the after-dinner hour." aria-selected="true"><span class="grp-media"><img src="assets/img/sub-cocktail-sets.jpg" alt="" loading="lazy"></span><span class="grp-label">Cocktail Sets</span></button>
-        <button class="grp-btn" type="button" data-group="bar" data-heading="Modular Bar" data-desc="One bar trunk, endless configurations." aria-selected="false"><span class="grp-media"><img src="assets/img/sub-photo-frames.jpg" alt="" loading="lazy"></span><span class="grp-label">Modular Bar</span></button>
-        <button class="grp-btn" type="button" data-group="tableware" data-heading="Tableware &amp; Trays" data-desc="Serve trays, coasters, placemats and napkin rings, together." aria-selected="false"><span class="grp-media"><img src="assets/img/sub-decorative-boxes.jpg" alt="" loading="lazy"></span><span class="grp-label">Tableware &amp; Trays</span></button>
+        <button class="grp-btn" type="button" data-group="cocktail" data-heading="Cocktail Sets" data-desc="Croco-print bar tools built for the after-dinner hour." aria-selected="true"><span class="grp-label">Cocktail Sets</span></button>
+        <button class="grp-btn" type="button" data-group="bar" data-heading="Modular Bar" data-desc="One bar trunk, endless configurations." aria-selected="false"><span class="grp-label">Modular Bar</span></button>
+        <button class="grp-btn" type="button" data-group="tableware" data-heading="Tableware &amp; Trays" data-desc="Serve trays, coasters, placemats and napkin rings, together." aria-selected="false"><span class="grp-label">Tableware &amp; Trays</span></button>
       </div>
       <div class="grp-content reveal" data-delay="2">
       <div class="mf-row-wrap reveal">
@@ -1465,10 +1457,10 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
         <a class="link-arrow reveal" href="#">All of Furniture <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
       <div class="cs-groups reveal" data-delay="1" role="tablist" aria-label="Browse Furniture by group">
-        <button class="grp-btn" type="button" data-group="seating" data-heading="Seating" data-desc="Dining chairs and lounge seating, in olive waxy leather." aria-selected="true"><span class="grp-media"><img src="assets/img/sub-dining-chairs.jpg" alt="" loading="lazy"></span><span class="grp-label">Seating</span></button>
-        <button class="grp-btn" type="button" data-group="tables" data-heading="Side Table" data-desc="Nesting and side tables in croco leather." aria-selected="false"><span class="grp-media"><img src="assets/img/sub-nesting-tables.jpg" alt="" loading="lazy"></span><span class="grp-label">Side Table</span></button>
-        <button class="grp-btn" type="button" data-group="cushions" data-heading="Cushions" data-desc="Lounge cushions in tan oily leather." aria-selected="false"><span class="grp-media"><img src="assets/img/sub-cushions.jpg" alt="" loading="lazy"></span><span class="grp-label">Cushions</span></button>
-        <button class="grp-btn" type="button" data-group="mirrors" data-heading="Mirrors" data-desc="Round wall mirrors, waxy leather frame." aria-selected="false"><span class="grp-media"><img src="assets/img/sub-mirrors.jpg" alt="" loading="lazy"></span><span class="grp-label">Mirror</span></button>
+        <button class="grp-btn" type="button" data-group="seating" data-heading="Seating" data-desc="Dining chairs and lounge seating, in olive waxy leather." aria-selected="true"><span class="grp-label">Seating</span></button>
+        <button class="grp-btn" type="button" data-group="tables" data-heading="Side Table" data-desc="Nesting and side tables in croco leather." aria-selected="false"><span class="grp-label">Side Table</span></button>
+        <button class="grp-btn" type="button" data-group="cushions" data-heading="Cushions" data-desc="Lounge cushions in tan oily leather." aria-selected="false"><span class="grp-label">Cushions</span></button>
+        <button class="grp-btn" type="button" data-group="mirrors" data-heading="Mirrors" data-desc="Round wall mirrors, waxy leather frame." aria-selected="false"><span class="grp-label">Mirror</span></button>
       </div>
     <div class="grp-content reveal" data-delay="2">
       <div class="mf-row-wrap reveal">
@@ -1630,9 +1622,9 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
         <a class="link-arrow reveal" href="#">All of Leather Accessories <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
       <div class="cs-groups reveal" data-delay="1" role="tablist" aria-label="Browse Leather Accessories by group">
-        <button class="grp-btn" type="button" data-group="boxes" data-heading="Boxes &amp; Organisers" data-desc="Jewellery, watch, keepsake and desk boxes, hand-finished." aria-selected="true"><span class="grp-media"><img src="assets/img/sub-decorative-boxes.jpg" alt="" loading="lazy"></span><span class="grp-label">Boxes &amp; Organisers</span></button>
-        <button class="grp-btn" type="button" data-group="tissue" data-heading="Tissue Box" data-desc="Tissue box covers and cases, in split suede." aria-selected="false"><span class="grp-media"><img src="assets/img/sub-storage-baskets.jpg" alt="" loading="lazy"></span><span class="grp-label">Tissue Box</span></button>
-        <button class="grp-btn" type="button" data-group="frames" data-heading="Photoframes" data-desc="Photo and picture frames, in plain leather." aria-selected="false"><span class="grp-media"><img src="assets/img/sub-photo-frames.jpg" alt="" loading="lazy"></span><span class="grp-label">Photoframes</span></button>
+        <button class="grp-btn" type="button" data-group="boxes" data-heading="Boxes &amp; Organisers" data-desc="Jewellery, watch, keepsake and desk boxes, hand-finished." aria-selected="true"><span class="grp-label">Boxes &amp; Organisers</span></button>
+        <button class="grp-btn" type="button" data-group="tissue" data-heading="Tissue Box" data-desc="Tissue box covers and cases, in split suede." aria-selected="false"><span class="grp-label">Tissue Box</span></button>
+        <button class="grp-btn" type="button" data-group="frames" data-heading="Photoframes" data-desc="Photo and picture frames, in plain leather." aria-selected="false"><span class="grp-label">Photoframes</span></button>
       </div>
       <div class="grp-content reveal" data-delay="2">
       <div class="mf-row-wrap reveal">
