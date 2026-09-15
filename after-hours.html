@@ -928,10 +928,15 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
      tightened here specifically for the category-split heading row, on mobile only. */
   .cs-head-row .link-arrow:not(.pill){font-size:10.5px;letter-spacing:.14em}
   .cs-head-row .link-arrow:not(.pill) svg{width:13px;height:13px}
-  /* All group tabs stay in one row on mobile instead of wrapping — min-width:0 lets flex shrink
-     each tab below its label's intrinsic width so long labels ellipsis instead of forcing the row
-     wider than the screen. */
-  .grp-btn{padding:10px 6px;font-size:8.5px}
+  /* Subcategory tabs go borderless/boxless on mobile — plain text, no outer box, no per-tab
+     divider, no solid active-fill — matching the reference's plain "ALL BAGS / CLUTCHES..." row
+     (active = brighter + bold, inactive = dimmed). Frees up the vertical space the boxed padding
+     and border used to take. Content-sized (not equal-width) so short labels don't stretch, with
+     overflow-x:auto as a safety net if a section's combined label lengths ever overflow. */
+  .cs-groups{border:0;justify-content:flex-start;gap:18px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+  .cs-groups::-webkit-scrollbar{display:none}
+  .grp-btn,.category-split.on-colored .grp-btn{flex:0 0 auto;border-right:0;padding:0;font-size:9px;color:rgba(217,210,191,.55)}
+  .grp-btn[aria-selected="true"],.category-split.on-colored .grp-btn[aria-selected="true"]{background:none;color:#fff;font-weight:600}
   .product-card .wish{opacity:1;transform:none}
   .faq{padding:32px 0}
   .faq-head{text-align:left}
@@ -965,7 +970,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .mf-tabs .tab:nth-last-child(-n+2){border-bottom:0}
   .mf-row .product-card{flex-basis:52vw}
   .mf-row.grp-row .product-card{flex-basis:44vw}
-  #hosting .mf-row.grp-row .product-card,#furniture .mf-row.grp-row .product-card,#accessories .mf-row.grp-row .product-card{flex-basis:47vw}
+  #hosting .mf-row.grp-row .product-card,#furniture .mf-row.grp-row .product-card,#accessories .mf-row.grp-row .product-card{flex-basis:42.3vw}
   /* Mobile-only hero banner for Hosting & Bar / Furniture / Leather Accessories — a SEPARATE
      element from the desktop .cs-visual (which stays hidden on mobile, see its own rule), placed
      in the markup between .cs-groups and .grp-content so it renders after the heading/tabs and
