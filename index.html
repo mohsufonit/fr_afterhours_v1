@@ -352,27 +352,26 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
    space" purpose. Furniture (`.cs-backdrop`, full-bleed photo) doesn't use `.cs-grid` and is
    unaffected. *Reason: explicit "there is no space between the category banner and the section
    end, introduce equal space."* */
-.cs-grid{display:grid;grid-template-columns:.85fr 1.15fr;margin:clamp(40px,5vw,64px) 0}
-/* Shared across Hosting & Bar / Furniture / Leather Accessories — one value, not a per-section
-   override, so the three category-split sections stay uniform in banner height, panel spacing,
-   circle size and circle-to-card gap. Reduced 30% from the original clamp(360px,44vw,560px). */
-.cs-visual{position:relative;overflow:hidden;min-height:clamp(160px,19.6vw,250px)}
-.cs-visual .ph{position:absolute;inset:0}
-/* min-width:0 is required: .cs-panel is a CSS Grid item, and a grid item's default
-   min-width:auto uses its content's min-content size as a hard floor — the .grp-row
-   carousel's un-scrolled content (5+ cards laid end to end) has a huge min-content
-   width, which without this override forces the grid column to grow past its intended
-   1.15fr share and collapses the .cs-visual banner column down to almost nothing. */
+/* SUPERSEDED — no banner column in any of the three category-split sections any more (Hosting &
+   Bar, Furniture, Leather Accessories all had their `.cs-visual`/`.cs-glass-visual` banner image
+   removed the same day — see each section's own SUPERSEDED note below). `.cs-grid` is a
+   single-column layout now everywhere it's used; the old `.85fr 1.15fr` two-column split and the
+   whole `.cs-visual` component (base rule, `.ph` fill, the CSS-Grid `min-width:0` gotcha it used
+   to cause) are gone, not just unused — don't resurrect `.cs-visual` from git history without a
+   fresh explicit ask to bring a banner back. *Reason: explicit "remove the category banner from
+   hosting and bar and leather [accessories] and furniture."* */
+.cs-grid{display:grid;grid-template-columns:1fr;margin:clamp(40px,5vw,64px) 0}
+/* min-width:0 is still required even in a single-column grid: .cs-panel is a CSS Grid item, and
+   a grid item's default min-width:auto uses its content's min-content size as a floor — the
+   .grp-row carousel's un-scrolled content (5+ cards laid end to end) has a large min-content
+   width, which without this override would force the grid track (and the whole page) to overflow
+   horizontally instead of letting the carousel scroll internally within its own container. */
 .cs-panel{padding:var(--space-md) var(--gutter);display:flex;flex-direction:column;justify-content:center;gap:var(--space-xs);min-width:0}
 .category-split.on-colored .cs-panel{background:var(--deep);color:var(--bone)}
 .category-split.on-colored .cs-sub{color:rgba(217,210,191,.72)}
 .category-split.on-colored .link-arrow{color:var(--bone)}
 .category-split.on-white .cs-panel{background:#fff;color:var(--ink)}
 .category-split.on-white .cs-sub{color:var(--grey)}
-/* REMOVED — #accessories no longer uses the shared .cs-grid/.cs-visual/.cs-panel banner+panel
-   split at all (see the "editorial tab-filter layout" rule further down) — it has its own
-   dedicated markup now. Don't reintroduce `#accessories .cs-grid` overrides without also bringing
-   that structure back. */
 .cs-head h2{font-size:clamp(22px,2.4vw,32px);line-height:1.04;margin:6px 0 7px}
 /* The "All of..." CTA now sits beside the heading/subheading instead of below the product
    carousel — removes a whole row (link + its gap) from the panel's vertical stack, which is
@@ -412,76 +411,56 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 /* SUPERSEDED — Hosting & Bar's banner is a plain full-bleed rectangle again, no rounded corners
    or lifted-card shadow — that "framed" treatment was explicitly rejected. What it kept: the
    banner no longer touches the true viewport edge with zero inset — it starts at var(--gutter),
-   the SAME left/right whitespace token every other page-wide section already uses, instead of
-   either a bespoke one-off margin or a hard 0. Applied as padding-left on `.cs-grid` (not a
-   margin on `.cs-visual` itself) so it reads as the section's own edge inset, not a box drawn
-   around the image. Product cards still match Shop by Texture's size (clamp(180px,20vw,220px),
-   not the smaller shared clamp(190px,22vw,230px) Furniture/Accessories use) — a deliberate,
-   explicit per-section divergence from the "all three category-split sections stay tightened
-   together" pattern above, Hosting & Bar only. */
-#hosting .cs-visual{margin-left:var(--gutter)}
+   Product cards still match Shop by Texture's size (clamp(180px,20vw,220px), not the smaller
+   shared clamp(190px,22vw,230px) Furniture/Accessories use) — a deliberate, explicit per-section
+   divergence from the "all three category-split sections stay tightened together" pattern above,
+   Hosting & Bar only. */
 #hosting .grp-row .product-card{flex-basis:clamp(180px,20vw,220px)}
 #hosting .grp-content .mf-row-wrap{max-width:calc(3.5 * clamp(180px,20vw,220px) + 3 * var(--space-sm))}
-/* SUPERSEDED — Hosting & Bar's panel is licorice again, matching Shop by Texture's background
-   exactly (`var(--licorice)`, not the generic `.on-colored` panel's `var(--deep)`) — the two dark
-   tokens are close but not identical, and the explicit ask named licorice specifically, the same
-   colour Shop by Texture uses. *Reason: explicit "in our hosting and bar section lets have its
-   background licorice please as present in shop by texture section, accordingly change the
-   colour of the text as well."* The `.on-colored` class change (on-white -> on-colored) already
-   handles the text-colour side (bone headings/body, muted-bone sub/label, bone link-arrow) — this
-   rule only swaps the panel's own background from the class's default deep to licorice.
-   The section itself (`#hosting`) ALSO needs the same background, not just `.cs-panel` — otherwise
-   the top/bottom breathing-room margin on `.cs-grid` (see that rule above) shows plain white
-   behind it instead of reading as one continuous licorice band the way Shop by Texture's
-   full-bleed section background does; confirmed from a screenshot ("i don't see any changes...
-   the category banner also should have the background licorice"). */
+/* SUPERSEDED (again) — the banner is gone entirely now, not just recoloured — `.cs-visual` was
+   removed from the markup, `.cs-panel` is the section's only column, and `.cs-grid` collapses to
+   a single track so the panel spans full width. *Reason: explicit "remove the category banner
+   from hosting and bar."* Hosting & Bar's panel stays licorice (`var(--licorice)`, matching Shop
+   by Texture exactly, not the generic `.on-colored` panel's `var(--deep)`) — the section itself
+   (`#hosting`) also carries the same background so the top/bottom breathing-room margin on
+   `.cs-grid` reads as one continuous licorice band, not a panel floating over plain white. */
 #hosting{background:var(--licorice)}
 #hosting .cs-panel{background:var(--licorice)}
+#hosting .cs-grid{grid-template-columns:1fr}
 
-/* SUPERSEDED (again) — Leather Accessories is "exactly the same" as Hosting & Bar now: the
-   shared `.category-split`/`.cs-grid`/`.cs-visual`/`.cs-panel` markup, in the SAME (non-mirrored)
-   DOM order as Hosting & Bar — banner left, panel right — plus the same Hosting-only overrides
-   (banner gutter inset, larger Shop-by-Texture-matching product-card size) applied to Accessories
-   too, so the two sections are visually identical apart from their copy/photos. This reverses the
-   editorial tab-filter rebuild from the same day — explicitly rejected on sight ("really bad") —
-   and every earlier Accessories layout before it (banner+mirrored-panel split, photo tiles as
-   hero+selector, sidebar nav + banner-in-carousel, and the brief DOM-order Hosting-mirror). None
-   of those are "the previous version" to fall back to — this is simply "make it the same as
-   Hosting & Bar," full stop. *Reason: explicit "let's have our hosting and bar section exactly
-   the same here for leather accessories please."* Don't reintroduce any per-section Accessories
-   divergence (its own card style, its own banner treatment, mirroring, tabs) without a fresh
-   explicit ask — the standing rule now is that Accessories mirrors Hosting & Bar's CSS 1:1. */
-#accessories .cs-visual{margin-left:var(--gutter)}
+/* SUPERSEDED (again) — Leather Accessories: banner removed (same as Hosting & Bar above), panel
+   now licorice too (was `on-white`, matching Hosting & Bar's earlier white treatment — now
+   `on-colored` with the same `var(--licorice)` background, matching Hosting & Bar's current
+   licorice treatment instead). `.cs-grid` collapses to a single track, same as Hosting & Bar,
+   since there's no second column to size against. *Reason: explicit "remove the category banner
+   from... leather [accessories]... we use licorice as its background."* Card size/carousel
+   max-width still match Hosting & Bar's (Shop-by-Texture-sized cards), per the standing "exactly
+   the same as Hosting & Bar" rule — don't reintroduce a per-section divergence there. */
 #accessories .grp-row .product-card{flex-basis:clamp(180px,20vw,220px)}
 #accessories .grp-content .mf-row-wrap{max-width:calc(3.5 * clamp(180px,20vw,220px) + 3 * var(--space-sm))}
+#accessories{background:var(--licorice)}
+#accessories .cs-panel{background:var(--licorice)}
+#accessories .cs-grid{grid-template-columns:1fr}
 
-/* SUPERSEDED (again) — Furniture: full-bleed photo backdrop with a frosted-glass content card,
-   no separate banner box at all — Concept 6 from the ten-layout-options review. History: (1) a
-   full vertical "magazine" stack measured 1145px tall (banner+heading+circles+carousel all
-   adding up); (2) a short banner strip + 2-column split fixed the height (648px) but still used
-   a conventional rectangular banner region. This pass removes the banner region as a concept
-   entirely — the photograph IS the section (`.cs-visual` is `position:absolute;inset:0`, behind
-   everything, dimmed by a gradient), and `.cs-glass` (a `backdrop-filter:blur()` card) floats on
-   top holding the heading, groups and carousel. Nothing to crop awkwardly because there's no
-   separate frame to crop into. Text recolours for the dark backdrop directly (not via
-   `.on-colored`, since this isn't a solid-fill panel) — don't add the `on-white`/`on-colored`
-   class here, `.cs-backdrop` owns its own palette. */
+/* SUPERSEDED (again) — Furniture: plain licorice background, no photo anywhere in the section at
+   all now. History: (1) a full vertical "magazine" stack (1145px tall); (2) a banner-strip +
+   2-column split; (3) a full-bleed photo backdrop (`.cs-visual`, `position:absolute;inset:0`,
+   dimmed by a gradient) behind a frosted-glass `.cs-glass` card, which itself briefly held an
+   in-glass banner column (`.cs-glass-visual`, a plain photo, no text) beside `.cs-glass-content`.
+   Both the full-bleed backdrop and the in-glass banner were removed the same day: `.cs-backdrop`
+   already had `background:var(--licorice)` as its own base fallback (previously invisible,
+   covered entirely by the opaque `.cs-visual` photo on top of it) — removing the photo layer
+   lets that licorice show through directly, no new background rule needed. `.cs-glass` still
+   provides the raised, softly-bordered "card" look (its `backdrop-filter:blur()` now has nothing
+   to blur against a flat colour, which is fine — the border/tint/rounded-corner treatment still
+   reads as a card on its own) and now holds only `.cs-glass-content`, which fills it at full
+   width. *Reason: explicit "remove the category banner from... furniture... for furniture the
+   background which right now is an image with an overlay we use licorice only as the background
+   for it."* Don't reintroduce a photo backdrop or in-glass banner column here without a fresh
+   explicit ask — `.cs-backdrop`/`.cs-glass-visual` are gone from the markup, not just hidden. */
 .cs-backdrop{position:relative;overflow:hidden;background:var(--licorice);padding:clamp(16px,2vw,24px) var(--gutter)}
 .cs-backdrop .cs-groups{gap:10px 20px;justify-content:center}
-.cs-backdrop .cs-visual{position:absolute;inset:0;z-index:0;margin:0;min-height:0}
-.cs-backdrop .cs-visual::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(28,8,16,.76) 0%,rgba(28,8,16,.52) 55%,rgba(28,8,16,.76) 100%)}
-/* SUPERSEDED — widened further (1080px -> 1300px) to hold a proper full-size banner image
-   INSIDE the glass card (see `.cs-glass-visual`/`.cs-glass-content` below) — briefly widened to
-   1220px for a carousel-card-sized `.hero-card` banner instead, which was rejected as too small:
-   "the category banner... should be a lot bigger... the layout you could follow Hosting & Bar
-   but ensure that layout is within the glass section." */
 .cs-glass{position:relative;z-index:1;max-width:1300px;margin:0 auto;background:rgba(245,242,236,.1);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(217,210,191,.22);border-radius:16px;padding:clamp(16px,2vw,24px);display:flex;gap:var(--space-md);color:var(--bone)}
-/* Furniture's in-glass banner+content split, modeled on Hosting & Bar's `.cs-grid` (banner
-   narrower, content wider) but contained entirely within `.cs-glass` instead of being the
-   section's own full-width grid. Plain photo, no gradient/label overlay — explicit "the category
-   banner doesn't need to have any text on it." */
-.cs-glass-visual{flex:0 0 clamp(220px,29vw,360px);position:relative;overflow:hidden;align-self:stretch}
-.cs-glass-visual img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .cs-glass-content{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:clamp(12px,1.5vw,16px)}
 .cs-backdrop .cs-head h2{font-size:clamp(18px,1.9vw,24px);margin:4px 0 5px}
 .cs-backdrop .eyebrow{color:var(--caramel)}
@@ -505,30 +484,25 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
    again to solve a height problem; look at heading/padding/gap first, the same standing
    instruction that already applies to Hosting & Bar/Accessories now applies here too. */
 /* SUPERSEDED (reverted) — back to the standard "3.5 regular cards" formula every other
-   category-split carousel uses. The `.hero-card` version of this (1 hero-card width + 3.5
-   regular cards) is gone — Furniture's banner is a full-size in-glass visual column now (see
-   `.cs-glass-visual` above), not a carousel card, so this carousel is a normal product row again,
-   just narrower (it shares the glass card with the banner column). This cap is effectively a
-   ceiling now rather than the binding constraint — the content column's own width from the
-   banner+content split usually governs first. */
+   category-split carousel uses (the `.hero-card`/in-glass-banner variants of this are both long
+   gone). This cap is a ceiling — `.cs-glass-content`'s own width, now the full glass card since
+   there's no banner column sharing it, usually governs first. */
 .cs-backdrop .grp-content .mf-row-wrap{max-width:calc(3.5 * clamp(190px,22vw,230px) + 3 * var(--space-sm))}
-/* SUPERSEDED — the arrows sit fully outside the row (the shared `.mf-nav` position — `left:-8px;
+/* The arrows sit fully outside the row (the shared `.mf-nav` position — `left:-8px;
    transform:translate(-100%,-50%)` — already does this, unchanged from every other carousel) so
-   they never overlap the product photo. The room for that outward reach used to come from
-   `.cs-glass`'s own wide side padding (back when the glass card held only the heading/groups/
-   carousel, no separate visual column); now that Furniture has an in-glass banner column (see
-   `.cs-glass-visual`/`.cs-glass-content` above), that room instead comes from
-   `.cs-glass-content`'s own side padding — see the rule below. A prior attempt tried fixing an
-   arrow overlap by dropping its outward translate instead, which put it back on TOP of the
-   first/last card — the fix is spacing, not repositioning the arrow onto the row; keep that in
-   mind if arrow clearance ever needs adjusting again. */
-.cs-glass-content{padding:0 clamp(40px,4vw,48px) 0 clamp(24px,2.4vw,32px)}
+   they never overlap the product photo. The room for that outward reach comes from
+   `.cs-glass-content`'s own side padding — symmetric now that the in-glass banner column is gone
+   (it was briefly asymmetric, `24px`/`48px`, to align with that banner's edge). A prior attempt
+   tried fixing an arrow overlap by dropping its outward translate instead, which put it back on
+   TOP of the first/last card — the fix is spacing, not repositioning the arrow onto the row; keep
+   that in mind if arrow clearance ever needs adjusting again. */
+.cs-glass-content{padding:0 clamp(40px,4vw,48px)}
 
-/* REMOVED — `.cs-sidebar`/`.side-select` (the sidebar-nav layout) and `.hero-card` (a carousel-
-   card-sized banner, briefly used by Furniture) no longer exist. Accessories is a conventional
-   banner+panel split again — see the mirrored `.cs-grid` rule above. Furniture's banner is now a
-   full-size in-glass visual column (see `.cs-glass-visual` below), not a carousel card. Don't
-   resurrect any of this CSS from git history without a fresh explicit ask. */
+/* REMOVED — `.cs-sidebar`/`.side-select` (the sidebar-nav layout), `.hero-card` and
+   `.cs-glass-visual` (two different carousel-card/in-glass banner treatments briefly used by
+   Furniture) no longer exist. Neither does Accessories' own banner, or Hosting & Bar's — all
+   three category-split sections are banner-less licorice panels now. Don't resurrect any of this
+   CSS from git history without a fresh explicit ask. */
 
 /* ---------- Reviews ---------- */
 /* SUPERSEDED — structurally cloned "as is" from the reference package's Fableroom Customer
@@ -808,24 +782,9 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .mf-sub{font-size:12.5px;margin-top:8px;line-height:1.4}
   .mf-row-wrap{margin-top:16px}
   #catTitle{white-space:normal}
-  .cs-visual{min-height:150px}
   .cs-backdrop{padding:28px 15px}
-  .cs-backdrop .cs-visual{min-height:0}
-  .cs-glass{padding:18px;border-radius:12px;gap:12px;flex-direction:column}
-  .cs-glass-visual{flex:0 0 auto;width:100%;height:160px}
+  .cs-glass{padding:18px;border-radius:12px;gap:12px}
   .cs-glass-content{padding:0}
-  /* SUPERSEDED — Hosting & Bar's mobile banner now has whitespace on BOTH sides, matching the
-     page's standard mobile gutter (15px), not a bleed on one edge. A prior pass only set
-     margin-left (bleeding flush to the true right edge of the screen) — explicitly flagged from
-     a screenshot as wrong: "bleeding on the right side and not left... ensure its page wide, a
-     specific whitespace, except when explicitly the background is asked to be bleeding [as in
-     Shop by Texture or Furniture]." Desktop is untouched (there the banner sits in a fixed grid
-     column next to the panel, not against the true viewport edge, so the same "bleeding to the
-     screen edge" problem doesn't apply there). */
-  #hosting .cs-visual{margin:0 15px;height:160px;min-height:0}
-  /* Accessories mirrors Hosting & Bar's mobile banner treatment exactly too — see "exactly the
-     same" locked decision above. */
-  #accessories .cs-visual{margin:0 15px;height:160px;min-height:0}
   /* Quick view becomes a bottom sheet on mobile (was a centered, full-height dialog) — rises
      from the bottom, fixed at 82% of the viewport height, page behind stays visible/dimmed via
      the existing .scrim. Desktop is untouched (still the centered 2-column dialog). */
@@ -1352,9 +1311,6 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
 <!-- 7. HOSTING & BAR (banner-left, SKU grid-right, colored panel) -->
 <section class="category-split on-colored" id="hosting" aria-labelledby="hostTitle">
   <div class="cs-grid">
-    <div class="cs-visual reveal">
-      <img class="ph img-cover" src="assets/img/sub-cocktail-sets.jpg" alt="Fableroom croco-print leather bar tools styled in use">
-    </div>
     <div class="cs-panel">
       <div class="cs-head-row">
         <div class="cs-head reveal">
@@ -1598,15 +1554,9 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   </div>
 </section>
 
-<!-- 9. FURNITURE (banner-left, SKU grid-right, white panel) -->
+<!-- 9. FURNITURE (licorice background, no banner) -->
 <section class="category-split cs-backdrop" id="furniture" aria-labelledby="furnTitle">
-  <div class="cs-visual reveal">
-    <img class="ph img-cover" src="assets/img/furniture-banner.jpg" alt="Caldera dining chair in olive waxy leather">
-  </div>
   <div class="cs-glass">
-    <div class="cs-glass-visual reveal">
-      <img class="ph img-cover" src="assets/img/furniture-banner.jpg" alt="Caldera dining chair in olive waxy leather">
-    </div>
     <div class="cs-glass-content">
       <div class="cs-head-row">
         <div class="cs-head reveal">
@@ -1787,11 +1737,8 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
 </section>
 
 <!-- 10. LEATHER ACCESSORIES (no banner — the 3 groups themselves are the hero, tiles + full-width carousel) -->
-<section class="category-split on-white" id="accessories" aria-labelledby="accTitle">
+<section class="category-split on-colored" id="accessories" aria-labelledby="accTitle">
   <div class="cs-grid">
-    <div class="cs-visual reveal">
-      <img class="ph img-cover" src="assets/img/accessories-tile.jpg" alt="Burgundy leather jewellery case held in hand">
-    </div>
     <div class="cs-panel">
       <div class="cs-head-row">
         <div class="cs-head reveal">
