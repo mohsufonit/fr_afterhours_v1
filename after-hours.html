@@ -449,6 +449,13 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
    desktop lets align the title and the CTA to where the product cards start and end, for both
    hosting and bar and leather accessories."* */
 #hosting .cs-panel{max-width:calc(3.5 * clamp(180px,20vw,220px) + 3 * var(--space-sm) + 2 * var(--gutter));margin:0 auto}
+/* This cap MUST be reset below 901px (see that breakpoint) — the formula's absolute value
+   (~700px+) exceeds a mobile/tablet viewport, but max-width only caps growth, so on its own it
+   looks like a no-op there. It isn't: something about a capped, auto-centered flex/grid item in a
+   narrower single-column `.cs-grid` still forced `.cs-panel` (and everything inside it, including
+   the group circles) to actually render at the cap's full pixel width and overflow the viewport,
+   confirmed by measurement (666px wide in a 390px viewport, only ~1.5 of 3 group circles visible).
+   Scope this fix to desktop only. */
 
 /* SUPERSEDED (again) — Leather Accessories: banner removed (same as Hosting & Bar above), panel
    now licorice too (was `on-white`, matching Hosting & Bar's earlier white treatment — now
@@ -466,6 +473,7 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 /* Same panel-width cap as Hosting & Bar above, same reason — aligns the heading/CTA row with
    where the product carousel starts and ends now that there's no banner column. */
 #accessories .cs-panel{max-width:calc(3.5 * clamp(180px,20vw,220px) + 3 * var(--space-sm) + 2 * var(--gutter));margin:0 auto}
+/* Reset below 901px too — see the matching note on #hosting's identical rule above. */
 
 /* SUPERSEDED (again) — Furniture: plain licorice background, no photo anywhere in the section at
    all now. History: (1) a full vertical "magazine" stack (1145px tall); (2) a banner-strip +
@@ -791,6 +799,10 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .fs-item:nth-child(3){border-left:0}
   .fs-item:nth-child(n+3){border-top:1px solid rgba(217,210,191,.3)}
   .cs-grid{grid-template-columns:1fr}
+  /* Resets the desktop-only alignment cap on #hosting/#accessories's .cs-panel (see those rules) —
+     without this, the group circles (and everything else in the panel) rendered at the cap's full
+     ~700px width and overflowed a mobile/tablet viewport instead of filling it. */
+  #hosting .cs-panel,#accessories .cs-panel{max-width:none;margin:0}
   .cs-head-row{flex-direction:column;align-items:flex-start;gap:12px}
   .mf-head h2{white-space:normal;font-size:clamp(21px,5vw,26px)}
   .mf-sub{font-size:12.5px;margin-top:8px;line-height:1.4}
