@@ -794,44 +794,45 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
      same" locked decision above. */
   #accessories .cs-visual{margin:0 15px;height:160px;min-height:0}
   /* Quick view becomes a bottom sheet on mobile (was a centered, full-height dialog) — rises
-     from the bottom, capped at 82% of the viewport height, page behind stays visible/dimmed via
+     from the bottom, fixed at 82% of the viewport height, page behind stays visible/dimmed via
      the existing .scrim. Desktop is untouched (still the centered 2-column dialog). */
   .modal{align-items:flex-end;padding:0}
-  .modal .dialog{grid-template-columns:1fr;width:100%;max-width:100%;max-height:82vh;border-radius:20px 20px 0 0;margin-top:auto}
+  /* SUPERSEDED — `height:82vh` (a fixed size), not `max-height:82vh` (a cap the sheet only reaches
+     once content is tall enough). With a content-driven max-height, expanding "Product details"
+     grows the sheet's own height while it's bottom-anchored (`margin-top:auto`) — the top edge,
+     and the gallery photo pinned to it, visibly moves up the screen instead of staying put while
+     the user scrolls to the newly revealed content. A fixed height guarantees the sheet — and the
+     gallery inside it — never resizes or repositions when the accordion opens; only the sheet's
+     own internal scroll area (already `overflow:auto` from the base dialog rule) grows, which is
+     what the user actually scrolls. *Reason: explicit "when product details opened only the
+     details increase and the user can scroll, not the canvas of it changes."* */
+  .modal .dialog{grid-template-columns:1fr;width:100%;max-width:100%;height:82vh;border-radius:20px 20px 0 0;margin-top:auto}
   /* SUPERSEDED (again) — mobile now shows a real swipeable "dot pager" gallery (reference:
      Quick View Redesign, Concept 01), not the single full-bleed static image from the previous
      pass. History: (1) a small letterboxed 3:4 box; (2) a full-bleed single `object-fit:cover`
      image, fixing the "too small" complaint but leaving no way to browse multiple images and
      showing a redundant single-thumbnail rail (removed entirely, see the earlier SUPERSEDED note
      on `.qv-thumbs`). This pass: the desktop single-image `#qvImg`/`.qv-zoom-trigger` is hidden
-     on mobile, replaced by `.qv-gallery` — a horizontally-scrolling, scroll-snap `.qv-track` of
-     each image at its own true `3:4` width (so real photos are never cropped by a mismatched
-     box), inset with left padding so the next photo visibly peeks at the trailing edge, plus
-     small `.qv-dots` tracking swipe position (both built by `qvBuildTrack()`, scaling from 1 to
-     several images the same way the arrows already did — with one photo per SKU today, the dots
-     are hidden and there's nothing to peek at, same "ready for more, not there yet" pattern as
-     the arrows). *Reason: explicit reference to the "01 Dot pager" concept — "in mobile we need
-     to have that kind of a product gallery... desktop can have arrows to go to the next image...
+     on mobile, replaced by `.qv-gallery` — a horizontally-scrolling, scroll-snap `.qv-track`
+     where each image fills the full width of the box, one at a time (SUPERSEDED — the first pass
+     modeled the reference's peek treatment, sizing each slide at its own true 3:4 width so the
+     next photo visibly peeked at the trailing edge; explicitly reversed — "the images one by
+     one, not together" — every slide is `flex:0 0 100%` now, so swiping always shows exactly one
+     full image, never a sliver of the next one), plus small `.qv-dots` tracking swipe position
+     (both built by `qvBuildTrack()`, scaling from 1 to several images the same way the arrows
+     already did — with one real photo per SKU, `data-images` is used to demo 2-3 placeholder
+     images per card so the gallery/dots are actually visible and testable; see the note on that
+     below). *Reason: explicit reference to the "01 Dot pager" concept — "in mobile we need to
+     have that kind of a product gallery... desktop can have arrows to go to the next image...
      rest of the elements added stays as in the current file."* Desktop is unaffected — still the
      single image plus `#qvPrev`/`#qvNext` arrows. */
   .modal .media{height:min(46vh,340px);min-height:0;background:#000}
   .modal .media>.qv-zoom-trigger{display:none}
   .qv-gallery{display:block;position:relative;width:100%;height:100%}
-  /* No leading padding-left here (unlike the reference mockup's inset peek) — combining leading
-     padding with `scroll-snap-align:start` on the first slide is a known quirk elsewhere on this
-     page: the browser auto-snaps on load and forces a non-zero initial scrollLeft to align the
-     slide's edge, silently eating the padding. Each slide is already narrower than the viewport
-     (its own true 3:4 width vs. the full-width track), so the next photo still peeks at the
-     trailing edge without needing an inset. */
-  .qv-track{display:flex;gap:8px;height:100%;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-ms-overflow-style:none}
+  .qv-track{display:flex;height:100%;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-ms-overflow-style:none}
   .qv-track::-webkit-scrollbar{display:none}
-  .qv-track .qv-slide{flex:none;height:100%;aspect-ratio:3/4;padding:0;border:0;background:#000;cursor:zoom-in;scroll-snap-align:start}
+  .qv-track .qv-slide{flex:0 0 100%;width:100%;height:100%;padding:0;border:0;background:#000;cursor:zoom-in;scroll-snap-align:start}
   .qv-track .qv-slide img{width:100%;height:100%;object-fit:cover;display:block}
-  /* With exactly one photo (every product today) a fixed 3:4 slide leaves an empty black void
-     beside it — there's nothing to peek at, so the lone slide fills the full track width instead
-     of the aspect-derived width the multi-image peek relies on. Toggled via qvBuildTrack(). */
-  .qv-track.is-single{overflow-x:hidden}
-  .qv-track.is-single .qv-slide{flex:1 1 100%;width:100%;aspect-ratio:auto}
   .qv-dots{position:absolute;left:0;right:0;bottom:10px;display:flex;justify-content:center;gap:5px;z-index:2}
   /* [hidden] and this class-selector display rule are equal specificity, and author styles beat
      the UA default `[hidden]{display:none}` regardless of specificity — so `hidden` alone does
@@ -2338,7 +2339,6 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   const qvTrack = $('#qvTrack'), qvDots = $('#qvDots');
   function qvBuildTrack() {
     qvTrack.innerHTML = ''; qvDots.innerHTML = ''; qvTrack.scrollLeft = 0;
-    qvTrack.classList.toggle('is-single', qvImages.length <= 1);
     qvImages.forEach((src, i) => {
       const slide = document.createElement('button');
       slide.type = 'button'; slide.className = 'qv-slide';
@@ -2401,6 +2401,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
     const btn = $('[data-qv-details-toggle]', qv), panel = $('[data-qv-details-panel]', qv);
     const open = btn.getAttribute('aria-expanded') === 'true';
     btn.setAttribute('aria-expanded', String(!open)); panel.classList.toggle('is-open', !open);
+    btn.blur();
   });
   qv.addEventListener('keydown', e => { if (e.key !== 'Tab') return; const f = $$('button, [href], input', $('.dialog', qv)).filter(el => !el.disabled); const first = f[0], last = f[f.length - 1]; if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); } else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); } });
   $('#qvPrev').addEventListener('click', () => qvSetImage(qvIndex - 1));
