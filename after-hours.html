@@ -413,7 +413,13 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
    background licorice please as present in shop by texture section, accordingly change the
    colour of the text as well."* The `.on-colored` class change (on-white -> on-colored) already
    handles the text-colour side (bone headings/body, muted-bone sub/label, bone link-arrow) — this
-   rule only swaps the panel's own background from the class's default deep to licorice. */
+   rule only swaps the panel's own background from the class's default deep to licorice.
+   The section itself (`#hosting`) ALSO needs the same background, not just `.cs-panel` — otherwise
+   the top/bottom breathing-room margin on `.cs-grid` (see that rule above) shows plain white
+   behind it instead of reading as one continuous licorice band the way Shop by Texture's
+   full-bleed section background does; confirmed from a screenshot ("i don't see any changes...
+   the category banner also should have the background licorice"). */
+#hosting{background:var(--licorice)}
 #hosting .cs-panel{background:var(--licorice)}
 
 /* SUPERSEDED (again) — Leather Accessories is "exactly the same" as Hosting & Bar now: the
