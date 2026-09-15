@@ -324,12 +324,14 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
    hand-made facts instead of numeric stats — no counting animation, just a quiet craft-claim
    pause between the two category sections. *Reason: explicit "let's go with this and keep it as
    a section breaker between furniture and leather accessories."* */
-.fact-strip{position:relative;overflow:hidden;color:var(--licorice);background:#fff;margin:clamp(32px,4vw,56px) 0}
+.fact-strip{position:relative;overflow:hidden;background:#fff;margin:clamp(32px,4vw,56px) 0}
+.fact-strip .ph{position:absolute;top:0;bottom:0;left:var(--gutter);width:calc(100% - var(--gutter)*2)}
+.fact-strip::before{content:"";position:absolute;top:0;bottom:0;left:var(--gutter);right:var(--gutter);background:linear-gradient(100deg,rgba(28,8,16,.74) 0%,rgba(28,8,16,.56) 100%)}
 .fact-strip .wrap{position:relative;z-index:1;display:grid;grid-template-columns:repeat(4,1fr);gap:0;padding-left:var(--gutter);padding-right:var(--gutter)}
-.fs-item{position:relative;min-height:clamp(88px,8.4vw,125px);display:grid;align-content:center;justify-items:start;gap:clamp(8px,.85vw,13px);padding:clamp(14px,2.1vw,29px) clamp(13px,2.8vw,38px);border-left:1px solid rgba(38,11,15,.16);text-align:left}
+.fs-item{position:relative;min-height:clamp(88px,8.4vw,125px);display:grid;align-content:center;justify-items:start;gap:clamp(8px,.85vw,13px);padding:clamp(14px,2.1vw,29px) clamp(13px,2.8vw,38px);border-left:1px solid rgba(217,210,191,.3);text-align:left}
 .fs-item:first-child{border-left:0}
-.fs-item .v{font-family:var(--font-display);font-style:italic;font-size:clamp(16px,1.8vw,20px);line-height:1.1;color:var(--licorice)}
-.fs-item .l{font-size:clamp(10px,.9vw,12px);line-height:1.35;color:rgba(38,11,15,.68)}
+.fs-item .v{font-family:var(--font-display);font-style:italic;font-size:clamp(16px,1.8vw,20px);line-height:1.1;color:var(--bone)}
+.fs-item .l{font-size:clamp(10px,.9vw,12px);line-height:1.35;color:rgba(217,210,191,.65)}
 
 /* Trust break section intentionally removed — see CLAUDE.md section 8 (Open TODOs) for why
    and what a replacement needs to account for. Do not re-add the old .trust-break CSS from
@@ -547,10 +549,10 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
    finished by machine. Not this.") no longer exists — explicit "we remove this section please as
    we have a section breaker for this," referring to `.fact-strip` (between Furniture and
    Accessories), which now serves the "pause before the newsletter" role this section used to.
-   `.fact-strip` no longer uses a background photo at all (see its own locked decision — now a
-   plain white/licorice strip matching `.stats`), so `closing-banner.jpg` is unused again. Don't
-   resurrect `.closing`/`.closing-grid`/`.closing-visual`/`.closing-copy` from git history without a
-   fresh explicit ask. */
+   `closing-banner.jpg` is still in use (as `.fact-strip`'s background photo, inset with white
+   gutter on both sides) — don't assume it's unused. Don't resurrect
+   `.closing`/`.closing-grid`/`.closing-visual`/`.closing-copy` from git history without a fresh
+   explicit ask. */
 
 /* ---------- FAQ ---------- */
 .faq{background:#fff;padding:var(--sec-pad) 0}
@@ -757,7 +759,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .stat:nth-child(n+3){border-top:1px solid rgba(38,11,15,.16)}
   .fact-strip .wrap{grid-template-columns:1fr 1fr}
   .fs-item:nth-child(3){border-left:0}
-  .fs-item:nth-child(n+3){border-top:1px solid rgba(38,11,15,.16)}
+  .fs-item:nth-child(n+3){border-top:1px solid rgba(217,210,191,.3)}
   .cs-grid{grid-template-columns:1fr}
   /* The category banner (.cs-visual) is desktop-only across all three category-split sections —
      mobile hides it entirely rather than showing a smaller version, a deliberate "desktop only"
@@ -921,6 +923,8 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .stat{min-height:76px;padding:12px 11px;gap:6px}
   .stat .v{font-size:clamp(23px,7vw,32px)}
   .stat .l{font-size:clamp(11px,3.15vw,13px)}
+  .fact-strip .ph{left:15px;width:calc(100% - 30px)}
+  .fact-strip::before{left:15px;right:15px}
   .fact-strip .wrap{padding-left:15px;padding-right:15px}
   .fs-item{min-height:76px;padding:12px 11px;gap:6px}
   .fs-item .v{font-size:14px}
@@ -1736,6 +1740,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
 
 <!-- 9b. FACT STRIP (section breaker) -->
 <section class="fact-strip reveal" aria-label="What sets After Hours apart">
+  <img class="ph img-cover" src="assets/img/closing-banner.jpg" alt="">
   <div class="wrap">
     <div class="fs-item"><div class="v">Hand cut</div><div class="l">Not machine-stamped</div></div>
     <div class="fs-item"><div class="v">Hand shaped</div><div class="l">No two exactly alike</div></div>
