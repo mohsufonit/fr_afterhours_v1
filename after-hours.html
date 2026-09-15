@@ -652,6 +652,17 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
      opposite side: bleeds left, whitespace on the right. Height is 20% taller than the shared
      150px mobile `.cs-visual` default (150 * 1.2 = 180), explicit ask. */
   #accessories .cs-visual{order:-1;margin-right:15px;height:180px;min-height:0}
+  /* The gutter above is real (verified via computed style), but at this short/wide mobile crop
+     ratio it was visually imperceptible: accessories-banner.jpg is a studio product shot on a
+     plain white background, and object-fit:cover's default center crop for this box's aspect
+     ratio happens to land squarely on the photo's own blank top-right corner (confirmed by
+     sampling the source file — native x>900 is solid white at every height in the visible crop
+     band). That built-in whitespace reads as "no gutter at all", not as a controlled 15px inset,
+     because there's no visible edge between "photo" and "page". Zooming in slightly (crop out
+     the blank corner, keep the framing anchored to the left where the product sits) restores a
+     visible product edge at the gutter boundary, the same way Hosting & Bar's dark leather photo
+     already gives its left gutter a visible edge to sit against. */
+  #accessories .cs-visual img{transform:scale(1.15);transform-origin:0% 50%}
   .modal .dialog{grid-template-columns:1fr}
   .modal .media{min-height:300px}
   .mf-row .product-card{flex-basis:clamp(160px,32vw,220px)}
