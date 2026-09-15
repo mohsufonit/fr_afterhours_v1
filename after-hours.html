@@ -822,13 +822,13 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .qv-dots span{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.5);transition:background .2s,width .2s}
   .qv-dots span.is-on{background:#fff;width:14px;border-radius:3px}
   .mf-row .product-card{flex-basis:clamp(160px,32vw,220px)}
-  /* grp-row cards stay smaller than Shop by Texture's on mobile too — the category-split
-     panel is narrower and stacked below a banner image, so a large card here pushes the
-     whole section well past one fold. Hosting & Bar is the explicit exception (see the
-     desktop rule above) — its cards match Shop by Texture's size at every breakpoint. */
+  /* SUPERSEDED — grp-row cards used to stay smaller than Shop by Texture's on mobile, Hosting &
+     Bar being the one explicit exception — now Furniture and Leather Accessories match Hosting &
+     Bar's mobile card size too, not just its desktop size. *Reason: explicit "in our furniture
+     and leather accessories section can we have the same size of the product card as in the
+     hosting and bar section please in mobile."* */
   .mf-row.grp-row .product-card{flex-basis:clamp(140px,40vw,180px)}
-  #hosting .mf-row.grp-row .product-card{flex-basis:clamp(160px,32vw,220px)}
-  #accessories .mf-row.grp-row .product-card{flex-basis:clamp(160px,32vw,220px)}
+  #hosting .mf-row.grp-row .product-card,#furniture .mf-row.grp-row .product-card,#accessories .mf-row.grp-row .product-card{flex-basis:clamp(160px,32vw,220px)}
   .nlc-row{grid-template-columns:1fr}
   .nl-form{max-width:none}
 }
@@ -924,7 +924,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .mf-tabs .tab:nth-last-child(-n+3){border-bottom:0}
   .mf-row .product-card{flex-basis:52vw}
   .mf-row.grp-row .product-card{flex-basis:44vw}
-  #hosting .mf-row.grp-row .product-card{flex-basis:52vw}
+  #hosting .mf-row.grp-row .product-card,#furniture .mf-row.grp-row .product-card,#accessories .mf-row.grp-row .product-card{flex-basis:52vw}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}
