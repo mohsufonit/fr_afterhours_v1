@@ -864,7 +864,14 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   /* Gap widened (9px -> 18px) — the "All of..." CTA row was sitting almost flush against the
      group circles below it on mobile, reported as "too close." *Reason: explicit "ensure the
      spacing between the CTA text in the subcategory section... is natural enough."* */
-  .cs-panel{padding:18px 15px}
+  /* SUPERSEDED — top padding trimmed 18px -> 12px (bottom stays 18px). Measured directly: the
+     rendered gap from the section's top edge to the eyebrow text was 64px (40px .cs-grid margin +
+     18px this padding + ~6px from the eyebrow's own line-height/font-metric overshoot above its
+     glyphs), while the bottom gap (scrollbar to section end) measured exactly 58px (40px margin +
+     18px padding, no equivalent overshoot there). Trimming 6px off the top padding brings both to
+     58px exactly. *Reason: explicit "both should be 58px, let's do it across all the sections."*
+     Shared rule — fixes Hosting & Bar, Furniture, and Accessories at once. */
+  .cs-panel{padding:12px 15px 18px}
   /* Sized to exact spec, given as a fully worked-out spacing table after direct measurement:
      eyebrow 12px, h2 25px, sub 15px — eyebrow-to-heading 10px, heading-to-subheading 8px,
      subheading-to-CTA 10px (all measured edge-to-edge, not just the CSS margin value, since
