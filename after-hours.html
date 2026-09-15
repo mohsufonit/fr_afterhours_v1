@@ -894,6 +894,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
      Only 3 tiles today, so no arrows/scrollbar thumb (arrows are hidden below 1100px for every
      other carousel on the page anyway) — plain swipe is enough for 3 items. */
   .tiles{display:grid;grid-template-columns:1fr;gap:16px}
+  .tile{width:350px;max-width:100%;aspect-ratio:350/219;margin:0 auto}
   .sec-head{flex-direction:column;align-items:flex-start;gap:16px}
   .sec-head .num{margin-right:12px}
   /* Gap widened (9px -> 18px) — the "All of..." CTA row was sitting almost flush against the
@@ -907,6 +908,11 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
      58px exactly. *Reason: explicit "both should be 58px, let's do it across all the sections."*
      Shared rule — fixes Hosting & Bar, Furniture, and Accessories at once. */
   .cs-panel{padding:12px 15px 18px}
+  /* Section top/bottom end-caps tightened from 58px to 30px — .cs-grid's shared margin (was
+     40px, same clamp desktop and mobile) is the biggest single contributor to both ends, so
+     trimming it moves both gaps together: top = 12px(margin) + 12px(panel padding) + ~6px
+     (eyebrow overshoot) = 30px; bottom = 12px(margin) + 18px(panel padding) = 30px exactly. */
+  .cs-grid{margin:12px 0}
   /* Sized to exact spec, given as a fully worked-out spacing table after direct measurement:
      eyebrow 12px, h2 25px, sub 15px — eyebrow-to-heading 10px, heading-to-subheading 8px,
      subheading-to-CTA 10px (all measured edge-to-edge, not just the CSS margin value, since
@@ -966,8 +972,13 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
      before the product row, matching the reference layout ("category tile comes first then the
      hero banner"). Duplicating the image tag (same URL, so no extra network request) is far lower
      risk than trying to reorder the shared desktop grid via display:contents/order tricks. */
-  .cs-visual-m{display:block;position:relative;min-height:220px;margin:16px 0}
+  .cs-visual-m{display:block;position:relative;min-height:220px;margin:16px 0 0}
   .cs-visual-m .cs-visual-cta{display:inline-flex}
+  /* Banner->carousel gap tightened to a flat 15px — .grp-content's own margin-top and
+     .mf-row-wrap's own margin-top were both still adding on top of each other (flex items don't
+     collapse margins), stacking to 49px total. */
+  .cs-visual-m + .grp-content{margin-top:15px}
+  .cs-visual-m + .grp-content .mf-row-wrap{margin-top:0}
   #hosting .cs-head-row>.link-arrow,#furniture .cs-head-row>.link-arrow,#accessories .cs-head-row>.link-arrow{display:none}
 }
 @media (prefers-reduced-motion:reduce){
