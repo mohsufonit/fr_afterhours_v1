@@ -812,27 +812,32 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
      pass. History: (1) a small letterboxed 3:4 box; (2) a full-bleed single `object-fit:cover`
      image, fixing the "too small" complaint but leaving no way to browse multiple images and
      showing a redundant single-thumbnail rail (removed entirely, see the earlier SUPERSEDED note
-     on `.qv-thumbs`). This pass: the desktop single-image `#qvImg`/`.qv-zoom-trigger` is hidden
-     on mobile, replaced by `.qv-gallery` — a horizontally-scrolling, scroll-snap `.qv-track`
-     where each image fills the full width of the box, one at a time (SUPERSEDED — the first pass
-     modeled the reference's peek treatment, sizing each slide at its own true 3:4 width so the
-     next photo visibly peeked at the trailing edge; explicitly reversed — "the images one by
-     one, not together" — every slide is `flex:0 0 100%` now, so swiping always shows exactly one
-     full image, never a sliver of the next one), plus small `.qv-dots` tracking swipe position
-     (both built by `qvBuildTrack()`, scaling from 1 to several images the same way the arrows
-     already did — with one real photo per SKU, `data-images` is used to demo 2-3 placeholder
-     images per card so the gallery/dots are actually visible and testable; see the note on that
-     below). *Reason: explicit reference to the "01 Dot pager" concept — "in mobile we need to
-     have that kind of a product gallery... desktop can have arrows to go to the next image...
-     rest of the elements added stays as in the current file."* Desktop is unaffected — still the
-     single image plus `#qvPrev`/`#qvNext` arrows. */
+     on `.qv-thumbs`); (3) briefly full-width slides with no peek at all — explicitly reverted
+     the same day ("in mobile the next image should be there a peek of it please, that has to be
+     there"). This pass: the desktop single-image `#qvImg`/`.qv-zoom-trigger` is hidden on mobile,
+     replaced by `.qv-gallery` — a horizontally-scrolling, scroll-snap `.qv-track` where each
+     slide sits at its own true 3:4 width (derived from the fixed box height via
+     `aspect-ratio:3/4`, not `object-fit:contain` letterboxing) so the next photo visibly peeks at
+     the trailing edge, plus small `.qv-dots` tracking swipe position (both built by
+     `qvBuildTrack()`, scaling from 1 to several images the same way the arrows already did — with
+     one real photo per SKU, `data-images` is used to demo 2-3 placeholder images per card so the
+     gallery/dots/peek are actually visible and testable; see the note on that below).
+     **Single-image products get a full-width slide instead** (`.qv-track.is-single`) — there's
+     nothing to peek at with only one photo, so a fixed 3:4 slide would just leave an empty black
+     void beside it. *Reason: explicit reference to the "01 Dot pager" concept — "in mobile we
+     need to have that kind of a product gallery... desktop can have arrows to go to the next
+     image... rest of the elements added stays as in the current file," then, after briefly
+     removing the peek, "that has to be there."* Desktop is unaffected — still the single image
+     plus `#qvPrev`/`#qvNext` arrows. */
   .modal .media{height:min(46vh,340px);min-height:0;background:#000}
   .modal .media>.qv-zoom-trigger{display:none}
   .qv-gallery{display:block;position:relative;width:100%;height:100%}
-  .qv-track{display:flex;height:100%;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-ms-overflow-style:none}
+  .qv-track{display:flex;gap:8px;height:100%;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-ms-overflow-style:none}
   .qv-track::-webkit-scrollbar{display:none}
-  .qv-track .qv-slide{flex:0 0 100%;width:100%;height:100%;padding:0;border:0;background:#000;cursor:zoom-in;scroll-snap-align:start}
+  .qv-track .qv-slide{flex:none;height:100%;aspect-ratio:3/4;padding:0;border:0;background:#000;cursor:zoom-in;scroll-snap-align:start}
   .qv-track .qv-slide img{width:100%;height:100%;object-fit:cover;display:block}
+  .qv-track.is-single{overflow-x:hidden}
+  .qv-track.is-single .qv-slide{flex:1 1 100%;width:100%;aspect-ratio:auto}
   .qv-dots{position:absolute;left:0;right:0;bottom:10px;display:flex;justify-content:center;gap:5px;z-index:2}
   /* [hidden] and this class-selector display rule are equal specificity, and author styles beat
      the UA default `[hidden]{display:none}` regardless of specificity — so `hidden` alone does
@@ -2339,6 +2344,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   const qvTrack = $('#qvTrack'), qvDots = $('#qvDots');
   function qvBuildTrack() {
     qvTrack.innerHTML = ''; qvDots.innerHTML = ''; qvTrack.scrollLeft = 0;
+    qvTrack.classList.toggle('is-single', qvImages.length <= 1);
     qvImages.forEach((src, i) => {
       const slide = document.createElement('button');
       slide.type = 'button'; slide.className = 'qv-slide';
