@@ -634,7 +634,11 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
 .modal .qv-thumbs button.is-active{border-color:var(--caramel)}
 .modal .qv-thumbs img{width:100%;height:100%;object-fit:cover;display:block}
 .modal .body{padding:clamp(24px,3vw,44px);display:flex;flex-direction:column;gap:16px}
+.modal .title-row{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.modal .title-row h3{margin:0}
 .modal .body h3{font-family:var(--font-display);font-size:clamp(28px,3vw,40px);font-weight:400;line-height:1.05}
+.modal .pdp-link{flex:none;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--ink);margin-top:6px}
+.modal .pdp-link svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.7}
 .modal .body .p{font-size:18px;font-weight:500}
 .modal .body p.d{color:var(--ink-soft);font-size:14px}
 .modal .swatches{display:flex;gap:10px}
@@ -642,7 +646,25 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
 .modal .swatches button i{display:block;width:100%;height:100%;border-radius:50%}
 .modal .swatches button[aria-pressed="true"]{border-color:var(--deep)}
 .modal .swatch-name{font-size:12px;color:var(--grey);letter-spacing:.06em}
-.modal .spec{display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;font-size:12.5px;color:var(--grey);border-top:1px solid var(--line);padding-top:16px;margin-top:auto}
+/* EDD — an informational pill styled with the same visual weight as a control (matches a
+   supplied reference screenshot), not a plain text line. The date itself is computed in JS as
+   "today + a rolling handling/shipping window", not a fixed fabricated date. */
+.modal .edd{display:flex;align-items:center;gap:10px;background:var(--off);border-radius:999px;padding:12px 18px;font-size:13px;color:var(--ink)}
+.modal .edd svg{width:16px;height:16px;flex:none;color:var(--caramel)}
+.modal .edd b{font-weight:600}
+.modal .cta-row{display:flex;gap:10px;align-items:stretch}
+.modal .cta-row .wish{position:static;opacity:1;transform:none;flex:none;width:52px;border-radius:999px;border:1px solid var(--line);background:none;display:flex;align-items:center;justify-content:center}
+.modal .cta-row .wish svg{width:18px;height:18px;stroke:var(--ink);fill:none}
+.modal .cta-row #qvAdd{flex:1;min-width:0;align-self:auto}
+/* Product details — a real accordion (collapsed by default), not an always-open block. Every
+   other field in the modal (name, description, price, variant, EDD, Add to bag) stays visible
+   without a tap; only the spec grid (dimensions/care/batch) hides behind one. */
+.modal .details-toggle{width:100%;display:flex;justify-content:space-between;align-items:center;background:none;border:0;border-top:1px solid var(--line);padding:14px 0 0;margin-top:2px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);cursor:pointer;font-family:inherit}
+.modal .details-toggle svg{width:14px;height:14px;stroke:var(--ink-soft);fill:none;stroke-width:1.8;transition:transform .25s}
+.modal .details-toggle[aria-expanded="true"] svg{transform:rotate(180deg)}
+.modal .details-panel{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.modal .details-panel.is-open{max-height:260px}
+.modal .spec{display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;font-size:12.5px;color:var(--grey);padding-top:14px}
 .modal .spec b{display:block;color:var(--ink);font-weight:500}
 .modal .close{position:absolute;top:12px;right:12px;width:40px;height:40px;border-radius:50%;background:var(--off);display:grid;place-items:center;z-index:2}
 .modal .close svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.5}
@@ -700,8 +722,18 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   /* Accessories mirrors Hosting & Bar's mobile banner treatment exactly too — see "exactly the
      same" locked decision above. */
   #accessories .cs-visual{margin:0 15px;height:160px;min-height:0}
-  .modal .dialog{grid-template-columns:1fr}
-  .modal .media{min-height:300px}
+  /* Quick view becomes a bottom sheet on mobile (was a centered, full-height dialog) — rises
+     from the bottom, capped at 82% of the viewport height, page behind stays visible/dimmed via
+     the existing .scrim. Desktop is untouched (still the centered 2-column dialog). */
+  .modal{align-items:flex-end;padding:0}
+  .modal .dialog{grid-template-columns:1fr;width:100%;max-width:100%;max-height:82vh;border-radius:20px 20px 0 0;margin-top:auto}
+  /* Gallery is shorter than before (was min-height:300px, i.e. close to a full 3:4 box) — a
+     fixed height with letterboxing on either side of the photo, matching a reference mockup
+     that shrank the gallery specifically to make room so name/description/price/variant all sit
+     in the first view without scrolling. */
+  .modal .media{height:220px;min-height:0;background:var(--off)}
+  .modal .media .ph{position:absolute;inset:0 auto 0 16px;width:auto;aspect-ratio:3/4;border-radius:6px}
+  .modal .qv-thumbs{left:32px}
   .mf-row .product-card{flex-basis:clamp(160px,32vw,220px)}
   /* grp-row cards stay smaller than Shop by Texture's on mobile too — the category-split
      panel is narrower and stacked below a banner image, so a large card here pushes the
@@ -1890,9 +1922,12 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
     </div>
     <div class="body">
       <span class="eyebrow" id="qvMat">Croco print</span>
-      <h3 id="qvTitle">Product</h3>
-      <div class="p" id="qvPrice">TBC</div>
+      <div class="title-row">
+        <h3 id="qvTitle">Product</h3>
+        <a class="pdp-link" id="qvPdpLink" href="#" aria-label="View full product page"><svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg></a>
+      </div>
       <p class="d" id="qvDesc"></p>
+      <div class="p" id="qvPrice">TBC</div>
       <div>
         <div class="swatches" data-swatches aria-label="Leather">
           <button aria-pressed="true" data-name="Caramel" aria-label="Caramel"><i style="background:#BF7E45"></i></button>
@@ -1902,12 +1937,19 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
         </div>
         <div class="swatch-name" style="margin-top:8px">Colour: <b data-swatch-name>Caramel</b></div>
       </div>
-      <button class="btn btn-dark" id="qvAdd" data-add style="align-self:flex-start;min-width:200px">Add to bag</button>
-      <div class="spec">
-        <div><b>Made in</b>India, Three Sixty workshop</div>
-        <div><b>Finish</b>Cut, shaped and finished by hand</div>
-        <div><b>Care</b>Dry cloth. No water. Avoid sun.</div>
-        <div><b>Batch</b>Handmade in one batch. No restock planned.</div>
+      <div class="edd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="6" width="15" height="12" rx="1"/><path d="M16 10h4l3 3v5h-7z"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/></svg><span>Delivered by <b id="qvEdd">–</b></span></div>
+      <div class="cta-row">
+        <button class="wish" aria-pressed="false" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
+        <button class="btn btn-dark" id="qvAdd" data-add>Add to bag</button>
+      </div>
+      <button class="details-toggle" type="button" aria-expanded="false" data-qv-details-toggle>Product details<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 9l6 6 6-6"/></svg></button>
+      <div class="details-panel" data-qv-details-panel>
+        <div class="spec">
+          <div><b>Made in</b>India, Three Sixty workshop</div>
+          <div><b>Finish</b>Cut, shaped and finished by hand</div>
+          <div><b>Care</b>Dry cloth. No water. Avoid sun.</div>
+          <div><b>Batch</b>Handmade in one batch. No restock planned.</div>
+        </div>
       </div>
     </div>
   </div>
@@ -2160,6 +2202,13 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
       t.innerHTML = `<img src="${src}" alt="">`; thumbs.appendChild(t);
     }
     $('#qvAdd').textContent = 'Add to bag'; $('#qvAdd').classList.remove('is-added');
+    /* Estimated delivery date — computed as "today + a rolling handling/shipping window", not a
+       fixed fabricated date, since no real per-product shipping data exists yet. */
+    const edd = new Date(); edd.setDate(edd.getDate() + 6);
+    $('#qvEdd').textContent = edd.toLocaleDateString('en-GB', { day: 'numeric', month: 'long' });
+    /* Product details accordion starts collapsed every time the modal opens. */
+    const detailsToggle = $('[data-qv-details-toggle]', qv), detailsPanel = $('[data-qv-details-panel]', qv);
+    detailsToggle.setAttribute('aria-expanded', 'false'); detailsPanel.classList.remove('is-open');
     qv.classList.add('is-open'); qv.setAttribute('aria-hidden', 'false'); document.body.style.overflow = 'hidden'; $('.close', qv).focus();
   }
   function closeQV() { qv.classList.remove('is-open'); qv.setAttribute('aria-hidden', 'true'); document.body.style.overflow = ''; qvFocus && qvFocus.focus(); }
@@ -2170,6 +2219,11 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   });
   $$('[data-qv-close]', qv).forEach(b => b.addEventListener('click', closeQV));
   $$('[data-swatches] button', qv).forEach(s => s.addEventListener('click', () => { $$('[data-swatches] button', qv).forEach(x => x.setAttribute('aria-pressed', 'false')); s.setAttribute('aria-pressed', 'true'); $('[data-swatch-name]', qv).textContent = s.dataset.name; }));
+  $('[data-qv-details-toggle]', qv).addEventListener('click', () => {
+    const btn = $('[data-qv-details-toggle]', qv), panel = $('[data-qv-details-panel]', qv);
+    const open = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!open)); panel.classList.toggle('is-open', !open);
+  });
   qv.addEventListener('keydown', e => { if (e.key !== 'Tab') return; const f = $$('button, [href], input', $('.dialog', qv)).filter(el => !el.disabled); const first = f[0], last = f[f.length - 1]; if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); } else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); } });
 })();
 </script>
