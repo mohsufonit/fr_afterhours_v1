@@ -431,7 +431,7 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
    narrower, content wider) but contained entirely within `.cs-glass` instead of being the
    section's own full-width grid. Plain photo, no gradient/label overlay — explicit "the category
    banner doesn't need to have any text on it." */
-.cs-glass-visual{flex:0 0 clamp(220px,29vw,360px);position:relative;overflow:hidden;border-radius:10px;align-self:stretch}
+.cs-glass-visual{flex:0 0 clamp(220px,29vw,360px);position:relative;overflow:hidden;align-self:stretch}
 .cs-glass-visual img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .cs-glass-content{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:clamp(12px,1.5vw,16px)}
 .cs-backdrop .cs-head h2{font-size:clamp(18px,1.9vw,24px);margin:4px 0 5px}
@@ -679,7 +679,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .cs-backdrop{padding:28px 15px}
   .cs-backdrop .cs-visual{min-height:0}
   .cs-glass{padding:18px;border-radius:12px;gap:12px;flex-direction:column}
-  .cs-glass-visual{flex:0 0 auto;width:100%;height:160px;border-radius:8px}
+  .cs-glass-visual{flex:0 0 auto;width:100%;height:160px}
   .cs-glass-content{padding:0}
   /* SUPERSEDED — Hosting & Bar's mobile banner now has whitespace on BOTH sides, matching the
      page's standard mobile gutter (15px), not a bleed on one edge. A prior pass only set
@@ -1146,7 +1146,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
       </ul>
       <div class="mf-scrollbar" aria-hidden="true"><div class="mf-scrollbar-thumb" data-carousel-thumb></div></div>
     </div>
-    <div class="mf-foot"><a class="link-arrow pill" href="#" data-mf-foot><span data-mf-foot-text>Shop All</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+    <div class="mf-foot"><a class="link-arrow pill" href="#" data-mf-foot>Shop All <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
   </div>
 </section>
 
@@ -2121,15 +2121,15 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
     }));
   });
 
-  /* Materials filter tabs – filters the product row by texture, and updates the section's
-     own CTA pill to name the active texture ("Shop All" / "Shop Croco" / "Shop Shagreen"…) */
+  /* Materials filter tabs – filters the product row by texture. The section's own CTA pill
+     stays a fixed "Shop All" regardless of the active texture (reverted from a prior version
+     that renamed it to "Shop Croco"/"Shop Shagreen"/etc. per tab — explicit "shop all cta in
+     shop by texture should remain as shop all, not vary by material"). */
   const mfRow = $('#materials-filter [data-carousel-row]');
-  const mfFootText = $('[data-mf-foot-text]');
   $$('.mf-tabs .tab').forEach(t => t.addEventListener('click', () => {
     $$('.mf-tabs .tab').forEach(x => x.setAttribute('aria-selected', 'false')); t.setAttribute('aria-selected', 'true');
     const f = t.dataset.filter;
     refilterRow(mfRow, c => f !== 'all' && c.dataset.material !== f);
-    if (mfFootText) mfFootText.textContent = `Shop ${t.textContent.trim()}`;
   }));
 
   /* Newsletter */
