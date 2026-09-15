@@ -484,31 +484,45 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
    resurrect any of this CSS from git history without a fresh explicit ask. */
 
 /* ---------- Reviews ---------- */
-.reviews{background:#fff;padding:clamp(10px,1.4vw,18px) 0 clamp(6px,1vw,12px)}
-.reviews .wrap{padding-left:var(--band-pad);padding-right:var(--band-pad)}
-.reviews .sec-head{flex-direction:column;align-items:flex-start;gap:6px;margin-bottom:clamp(10px,1.2vw,14px)}
-.reviews h2{font-size:clamp(38px,4.6vw,68px);line-height:1;max-width:14ch}
-#revTitle{display:inline-flex;align-items:center;gap:10px}
-#revTitle::before{content:"♥";flex:0 0 auto;width:24px;height:24px;display:inline-grid;place-items:center;border:1px solid rgba(191,126,69,.4);border-radius:50%;color:var(--caramel);font-family:var(--font-body);font-size:12px;line-height:1;animation:rvHeartBeat 1.75s ease-in-out infinite}
-@keyframes rvHeartBeat{0%,100%{transform:scale(1);box-shadow:0 0 0 rgba(191,126,69,0)}18%{transform:scale(1.14);box-shadow:0 0 16px rgba(191,126,69,.22)}34%{transform:scale(.98);box-shadow:0 0 6px rgba(191,126,69,.1)}50%{transform:scale(1.08);box-shadow:0 0 14px rgba(191,126,69,.18)}}
-.rticker{--rgap:clamp(14px,2vw,28px);overflow:hidden;position:relative;width:100%;-webkit-mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent);mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}
+/* SUPERSEDED — structurally cloned "as is" from the reference package's Fableroom Customer
+   Stories section (`.launch-reviews`/`.launch-review-head`/`.review-card`) — same grid, same
+   card sizing (108px circular figure, 76%-sized image with a drop-shadow and an inner ring,
+   badge overlapping bottom-right, star row / bold title / quote / small-caps meta), recoloured
+   to our palette (licorice/caramel/grey instead of the reference's burgundy/ink/muted) instead of
+   the previous named-reviewer avatar-card version (which had itself been shrunk twice, 20% then a
+   further 25%, in earlier rounds — that sizing history no longer applies, this is back to the
+   reference's original proportions). Side padding switched from the wider `--band-pad` this
+   section used to have to the SAME gutter every regular content section on the page uses
+   (`var(--gutter)`) — explicit "ensure the padding required follows how our page currently has,
+   it shouldn't bleed on the left and right." The pulsing heart icon that used to sit before the
+   heading (`#revTitle::before`) is removed — not part of the reference's header, which is just a
+   kicker + h2. *Reason: explicit "clone that section as is... use the colour palette of the page
+   though but the structure and every element in desktop and mobile all of it you are cloning."* */
+.reviews{background:#fff;padding:clamp(28px,3.4vw,56px) 0}
+.reviews .wrap{padding-left:var(--gutter);padding-right:var(--gutter)}
+.reviews .sec-head{flex-direction:column;align-items:flex-start;gap:10px;margin-bottom:clamp(16px,1.8vw,22px)}
+.reviews h2{font-size:clamp(34px,4.1vw,58px);line-height:1.02;max-width:10ch}
+.rticker{overflow:hidden;position:relative;width:100%;cursor:grab}
 .rticker:hover .rtrack,.rticker:focus .rtrack,.rticker:focus-within .rtrack{animation-play-state:paused}
-.rtrack{display:flex;width:max-content;gap:var(--rgap);animation:rticker 34s linear infinite;padding:0 var(--band-pad)}
-.rset{display:flex;gap:var(--rgap)}
-@keyframes rticker{from{transform:translateX(0)}to{transform:translateX(calc(-50% - (var(--rgap) / 2)))}}
-.rcard{background:var(--off);border:1px solid var(--line);display:grid;grid-template-columns:clamp(32px,4.65vw,94px) minmax(0,1fr);align-items:center;gap:clamp(6px,1.13vw,23px);min-height:clamp(53px,8.4vw,180px);padding:clamp(6px,1.35vw,28px);width:clamp(148px,20.4vw,432px);flex:0 0 auto}
-.rc-fig{position:relative;width:100%;aspect-ratio:1;border-radius:50%;overflow:hidden}
-.rc-fig .ph{position:absolute;inset:0}
-.rc-badge{position:absolute;right:2px;bottom:2px;width:clamp(11px,1.43vw,29px);height:clamp(11px,1.43vw,29px);border-radius:50%;background:var(--caramel);color:var(--licorice);display:flex;align-items:center;justify-content:center}
-.rc-badge svg{width:52%;height:52%;fill:currentColor}
-.rc-body{display:grid;gap:clamp(2px,.45vw,8px);min-width:0}
-.stars{display:flex;gap:2px;color:var(--caramel)}
-.stars svg{width:9px;height:9px;fill:currentColor}
-.rcard h3{font-family:var(--font-display);font-size:clamp(11px,1vw,20px);font-weight:400;line-height:1.15}
-.rcard p{color:var(--ink-soft);font-size:clamp(9px,.68vw,13px);line-height:1.4}
-.rcard .who{font-size:clamp(7px,.47vw,9px);letter-spacing:.14em;text-transform:uppercase;color:var(--grey)}
-.rcard .who b{font-weight:600;color:var(--ink)}
-.reviews .agg{display:flex;align-items:center;gap:14px;margin-top:28px;color:var(--grey);font-size:13px}
+.rtrack{display:flex;width:max-content;gap:12px;animation:rticker 34s linear infinite;padding:0 var(--gutter) 8px}
+.rset{display:flex;gap:12px}
+@keyframes rticker{from{transform:translateX(0)}to{transform:translateX(calc(-50% - 6px))}}
+.rcard{background:#fff;border:1px solid var(--line);display:grid;grid-template-columns:108px minmax(0,1fr);gap:16px;align-items:center;min-height:176px;padding:18px;flex:0 0 clamp(310px,30vw,420px)}
+.rc-fig{position:relative;width:104px;aspect-ratio:1;margin:0 auto;display:grid;place-items:center;overflow:hidden;border:1px solid rgba(38,11,15,.16);border-radius:50%;background:#fff}
+.rc-fig::before{content:"";position:absolute;inset:14%;border:1px solid rgba(38,11,15,.2);border-radius:50%}
+/* The reference's own photos are transparent-background product cutouts, so sizing them at 76%
+   inside the circle reads as "an object floating in frame." Our placeholder is a solid gradient
+   block (no real reviewer photos yet — see Open TODOs), which looks like an odd rounded square at
+   that treatment instead — so it additionally gets its own border-radius here, reading as a
+   smaller concentric circle instead. Swap this out once real avatar photos exist. */
+.rc-fig .ph{display:block;width:76%;height:76%;border-radius:50%;filter:drop-shadow(0 12px 14px rgba(38,11,15,.18))}
+.rc-badge{position:absolute;right:9px;bottom:9px;width:26px;height:26px;padding:5px;border-radius:50%;background:var(--caramel);color:#fff;display:flex;align-items:center;justify-content:center}
+.rc-badge svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.rc-body{display:grid;gap:6px;min-width:0}
+.stars{color:var(--caramel);font-size:13px;letter-spacing:.12em}
+.rcard h3{font-family:var(--font-display);font-size:15px;font-weight:500;line-height:1.2}
+.rcard p{margin:0;color:var(--grey);font-size:13px;line-height:1.42}
+.rcard .who{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
 @media (min-width:1024px){
   .rcard p{display:block;overflow:visible}
 }
@@ -711,6 +725,16 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
 }
 @media (max-width:600px){
   .hero{height:min(92vh,760px)}
+  /* Reviews mobile sizing, cloned from the reference's own 640px breakpoint (gap/padding/card
+     values), with the reference's 18px edge inset swapped for our page's standard 15px mobile
+     gutter — same reason as everywhere else this section changed: no bleed left/right. */
+  .reviews{padding:20px 0 28px}
+  .reviews .wrap{padding-left:15px;padding-right:15px}
+  .reviews h2{max-width:11ch;font-size:clamp(28px,8.2vw,36px)}
+  .rtrack{gap:10px;padding:0 15px 6px}
+  .rcard{flex-basis:280px;grid-template-columns:80px minmax(0,1fr);gap:12px;min-height:150px;padding:13px}
+  .rc-fig{width:76px}
+  .rcard p{font-size:12px;line-height:1.38}
   .mf-row .product-card .quick .btn{padding:0 10px;font-size:9.5px;letter-spacing:.12em;white-space:nowrap;height:40px}
   .mf-row .product-card .quick .btn-ghost{padding:0 12px}
   .tiles{grid-template-columns:1fr;gap:8px}
@@ -771,7 +795,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}
   .reveal{opacity:1;transform:none}
   .rtrack{animation:none!important}
-  .rticker{overflow-x:auto;-webkit-mask-image:none;mask-image:none}
+  .rticker{overflow-x:auto}
 }
 </style>
 </head>
@@ -1307,66 +1331,81 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
     <div class="rtrack" data-rtrack>
       <div class="rset">
         <article class="rcard">
-          <div class="rc-fig"><span class="ph bone"></span><span class="rc-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg></span></div>
+          <div class="rc-fig"><span class="ph caramel"></span><span class="rc-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/><path d="M5 7v10"/></svg></span></div>
           <div class="rc-body">
-            <div class="stars" aria-label="5 out of 5 stars"><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg></div>
-            <h3>10/10 Customer Service</h3>
-            <p>Ordered a gorgeous orange accent dining table. Delivery was prompt and the team were easy to put together – genuinely lovely to deal with. Looking forward to ordering more.</p>
-            <div class="who"><b>Georgia B.</b> · Verified buyer</div>
+            <span class="stars" aria-label="Five star review">★★★★★</span>
+            <h3>Great value without the markup</h3>
+            <p>Customers call out quality pieces at a fair price point, with the direct-from-makers model making the value feel clear.</p>
+            <small>Fableroom Value</small>
           </div>
         </article>
         <article class="rcard">
-          <div class="rc-fig"><span class="ph grey"></span><span class="rc-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg></span></div>
+          <div class="rc-fig"><span class="ph bone"></span><span class="rc-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m4 11 8-6 8 6"/><path d="M7 10v9h10v-9"/><path d="M10 19v-5h4v5"/></svg></span></div>
           <div class="rc-body">
-            <div class="stars" aria-label="5 out of 5 stars"><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg></div>
-            <h3>Well Made &amp; Great Quality</h3>
-            <p>My dining chair is exactly as described on the website, well made and great quality. I love it.</p>
-            <div class="who"><b>Sandra P.</b> · Verified buyer</div>
+            <span class="stars" aria-label="Five star review">★★★★★</span>
+            <h3>Delivery that keeps customers updated</h3>
+            <p>Many Fableroom shoppers mention quick delivery, clear courier updates and a smoother arrival experience.</p>
+            <small>Delivery Experience</small>
           </div>
         </article>
         <article class="rcard">
-          <div class="rc-fig"><span class="ph caramel"></span><span class="rc-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg></span></div>
+          <div class="rc-fig"><span class="ph grey"></span><span class="rc-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3v18"/><path d="M6 7h12"/><path d="M8 7l-3 5h6L8 7Z"/><path d="M16 7l-3 5h6l-3-5Z"/></svg></span></div>
           <div class="rc-body">
-            <div class="stars" aria-label="5 out of 5 stars"><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg></div>
-            <h3>The Quality is Exceptional</h3>
-            <p>The dining table was a beautiful piece of furniture and the quality is exceptional. The team were very helpful and it arrived on time.</p>
-            <div class="who"><b>Polly S.</b> · Verified buyer</div>
+            <span class="stars" aria-label="Five star review">★★★★★</span>
+            <h3>Service that feels responsive</h3>
+            <p>Reviews often highlight helpful support, regular communication and a team that stays close to the order.</p>
+            <small>Customer Support</small>
+          </div>
+        </article>
+        <article class="rcard">
+          <div class="rc-fig"><span class="ph caramel"></span><span class="rc-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M7 9h10"/><path d="M8 9c.4 4.2 2.1 7 4 9 1.9-2 3.6-4.8 4-9"/><path d="M5 18h14"/></svg></span></div>
+          <div class="rc-body">
+            <span class="stars" aria-label="Five star review">★★★★★</span>
+            <h3>Thoughtfully priced home pieces</h3>
+            <p>The pricing story is simple: considered materials, fewer middlemen and pieces that feel more premium than expected.</p>
+            <small>Brand Promise</small>
           </div>
         </article>
       </div>
       <div class="rset" aria-hidden="true">
         <article class="rcard">
-          <div class="rc-fig"><span class="ph bone"></span><span class="rc-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg></span></div>
+          <div class="rc-fig"><span class="ph caramel"></span><span class="rc-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/><path d="M5 7v10"/></svg></span></div>
           <div class="rc-body">
-            <div class="stars"><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg></div>
-            <h3>10/10 Customer Service</h3>
-            <p>Ordered a gorgeous orange accent dining table. Delivery was prompt and the team were easy to put together – genuinely lovely to deal with. Looking forward to ordering more.</p>
-            <div class="who"><b>Georgia B.</b> · Verified buyer</div>
+            <span class="stars">★★★★★</span>
+            <h3>Great value without the markup</h3>
+            <p>Customers call out quality pieces at a fair price point, with the direct-from-makers model making the value feel clear.</p>
+            <small>Fableroom Value</small>
           </div>
         </article>
         <article class="rcard">
-          <div class="rc-fig"><span class="ph grey"></span><span class="rc-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg></span></div>
+          <div class="rc-fig"><span class="ph bone"></span><span class="rc-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m4 11 8-6 8 6"/><path d="M7 10v9h10v-9"/><path d="M10 19v-5h4v5"/></svg></span></div>
           <div class="rc-body">
-            <div class="stars"><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg></div>
-            <h3>Well Made &amp; Great Quality</h3>
-            <p>My dining chair is exactly as described on the website, well made and great quality. I love it.</p>
-            <div class="who"><b>Sandra P.</b> · Verified buyer</div>
+            <span class="stars">★★★★★</span>
+            <h3>Delivery that keeps customers updated</h3>
+            <p>Many Fableroom shoppers mention quick delivery, clear courier updates and a smoother arrival experience.</p>
+            <small>Delivery Experience</small>
           </div>
         </article>
         <article class="rcard">
-          <div class="rc-fig"><span class="ph caramel"></span><span class="rc-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg></span></div>
+          <div class="rc-fig"><span class="ph grey"></span><span class="rc-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3v18"/><path d="M6 7h12"/><path d="M8 7l-3 5h6L8 7Z"/><path d="M16 7l-3 5h6l-3-5Z"/></svg></span></div>
           <div class="rc-body">
-            <div class="stars"><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg></div>
-            <h3>The Quality is Exceptional</h3>
-            <p>The dining table was a beautiful piece of furniture and the quality is exceptional. The team were very helpful and it arrived on time.</p>
-            <div class="who"><b>Polly S.</b> · Verified buyer</div>
+            <span class="stars">★★★★★</span>
+            <h3>Service that feels responsive</h3>
+            <p>Reviews often highlight helpful support, regular communication and a team that stays close to the order.</p>
+            <small>Customer Support</small>
+          </div>
+        </article>
+        <article class="rcard">
+          <div class="rc-fig"><span class="ph caramel"></span><span class="rc-badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M7 9h10"/><path d="M8 9c.4 4.2 2.1 7 4 9 1.9-2 3.6-4.8 4-9"/><path d="M5 18h14"/></svg></span></div>
+          <div class="rc-body">
+            <span class="stars">★★★★★</span>
+            <h3>Thoughtfully priced home pieces</h3>
+            <p>The pricing story is simple: considered materials, fewer middlemen and pieces that feel more premium than expected.</p>
+            <small>Brand Promise</small>
           </div>
         </article>
       </div>
     </div>
-  </div>
-  <div class="wrap">
-    <div class="agg reveal"><div class="stars" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3 7 7 .6-5.3 4.7 1.6 7L12 17.7 5.7 21.3l1.6-7L2 9.6 9 9z"/></svg></div>Independently collected reviews from Fableroom customers.</div>
   </div>
 </section>
 
