@@ -569,7 +569,11 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 .recommended .head .eyebrow{color:var(--caramel)}
 .recommended h2{margin-top:8px;font-size:clamp(28px,3.2vw,44px);line-height:1.05;color:var(--ink)}
 .recommended .sub{margin-top:10px;color:var(--grey);font-size:14px;max-width:48ch}
-#recommended .mf-row-wrap{max-width:calc(4.5 * clamp(180px,20vw,220px) + 4 * var(--space-sm))}
+/* Unlike Shop by Texture/the category-split carousels, this row-wrap is NOT capped to a fixed
+   card-multiple width — it spans the same left/right edges as the heading above it (full width of
+   .wrap, no auto-centering margin), per explicit "product card start from where our title starts
+   and end it accordingly the same space as on the left should be there on the right." */
+#recommended .mf-row-wrap{max-width:none;margin-left:0;margin-right:0}
 /* Product-card name/price default to bone (for the licorice sections they normally sit on) — this
    rail is on white, so it needs the same light-background override the reference showed. */
 #recommended .product-card .name{color:var(--ink)}
@@ -1076,7 +1080,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
         <div class="cap"><h3>Hosting &amp; Bar</h3><span class="go">Shop the range <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
       </a>
       <a class="tile reveal" data-delay="2" href="#furniture">
-        <img class="ph img-cover" src="assets/img/furniture-tile.jpg" alt="">
+        <img class="ph img-cover" src="assets/img/furniture-lifestyle.jpg" alt="">
         <div class="cap"><h3>Furniture</h3><span class="go">Shop the range <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
       </a>
       <a class="tile reveal" data-delay="3" href="#accessories">
@@ -1482,7 +1486,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
 <section class="category-split on-colored" id="furniture" aria-labelledby="furnTitle">
   <div class="cs-grid">
     <div class="cs-visual reveal">
-      <img class="ph img-cover" src="assets/img/furniture-banner.jpg" alt="Caldera dining chair in olive waxy leather">
+      <img class="ph img-cover" src="assets/img/furniture-lifestyle.jpg" alt="Croco leather nested tables styled beside a leather armchair">
       <a class="cs-visual-cta" href="#">Explore now <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     </div>
     <div class="cs-panel">
@@ -1501,7 +1505,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
         <button class="grp-btn" type="button" data-group="mirrors" data-heading="Mirrors" data-desc="Round wall mirrors, waxy leather frame." aria-selected="false"><span class="grp-label">Mirror</span></button>
       </div>
       <div class="cs-visual-m">
-        <img class="ph img-cover" src="assets/img/furniture-banner.jpg" alt="Caldera dining chair in olive waxy leather">
+        <img class="ph img-cover" src="assets/img/furniture-lifestyle.jpg" alt="Croco leather nested tables styled beside a leather armchair">
         <a class="cs-visual-cta" href="#">Explore now <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
     <div class="grp-content reveal" data-delay="2">
