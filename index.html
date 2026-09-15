@@ -516,7 +516,7 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 .reviews{background:#fff;padding:clamp(28px,3.4vw,56px) 0}
 .reviews .wrap{padding-left:var(--gutter);padding-right:var(--gutter)}
 .reviews .sec-head{flex-direction:column;align-items:flex-start;gap:10px;margin-bottom:clamp(16px,1.8vw,22px)}
-.reviews h2{font-size:clamp(34px,4.1vw,58px);line-height:1.02;max-width:10ch}
+.reviews h2{font-size:clamp(34px,4.1vw,58px);line-height:1.02;max-width:17ch}
 .rticker{overflow:hidden;position:relative;width:100%;cursor:grab}
 .rticker:hover .rtrack,.rticker:focus .rtrack,.rticker:focus-within .rtrack{animation-play-state:paused}
 .rtrack{display:flex;width:max-content;gap:12px;animation:rticker 34s linear infinite;padding:0 var(--gutter) 8px}
@@ -837,13 +837,23 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   /* Reviews mobile sizing, cloned from the reference's own 640px breakpoint (gap/padding/card
      values), with the reference's 18px edge inset swapped for our page's standard 15px mobile
      gutter — same reason as everywhere else this section changed: no bleed left/right. */
-  .reviews{padding:20px 0 28px}
+  /* Top padding matched to bottom (20px -> 28px) — measured directly: the gap from the section
+     edge to the eyebrow was 20px while the gap from the card row to the section end was 28px.
+     *Reason: explicit "spacing both should be 28px." */
+  .reviews{padding:28px 0 28px}
   .reviews .wrap{padding-left:15px;padding-right:15px}
-  .reviews h2{max-width:11ch;font-size:clamp(28px,8.2vw,36px)}
+  .reviews h2{max-width:17ch;font-size:clamp(28px,8.2vw,36px)}
   .rtrack{gap:10px;padding:0 15px 6px}
-  .rcard{flex-basis:280px;grid-template-columns:80px minmax(0,1fr);gap:12px;min-height:150px;padding:13px}
-  .rc-fig{width:76px}
-  .rcard p{font-size:12px;line-height:1.38}
+  /* Card scaled down 15% across the board on mobile (was sized to the reference's own values
+     verbatim) — badge/star/title sizes didn't have a mobile override before (they just inherited
+     the desktop value), so they get one now too, each also cut 15%. *Reason: explicit "reduce
+     the overall component size by 15% in mobile."* */
+  .rcard{flex-basis:238px;grid-template-columns:68px minmax(0,1fr);gap:10px;min-height:128px;padding:11px}
+  .rc-fig{width:65px}
+  .rc-badge{width:22px;height:22px;padding:4px;right:8px;bottom:8px}
+  .stars{font-size:11px}
+  .rcard h3{font-size:13px}
+  .rcard p{font-size:10px;line-height:1.38}
   .mf-row .product-card .quick .btn{padding:0 10px;font-size:9.5px;letter-spacing:.12em;white-space:nowrap;height:40px}
   .mf-row .product-card .quick .btn-ghost{padding:0 12px}
   /* SUPERSEDED — mobile no longer stacks the 3 category tiles one above another; it's a
