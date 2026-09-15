@@ -577,6 +577,20 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 .closing p{color:var(--ink-soft);font-size:14px;line-height:1.65;max-width:42ch;margin:0}
 .closing .sign{margin-top:22px;font-family:var(--font-display);font-style:italic;font-size:19px;color:var(--caramel)}
 
+/* ---------- FAQ ---------- */
+.faq{background:#fff;padding:var(--sec-pad) 0}
+.faq-head{max-width:640px;margin:0 auto;text-align:center}
+.faq-head h2{font-size:clamp(28px,3.2vw,44px);line-height:1.08;margin-top:8px}
+.faq-head p{color:var(--grey);margin-top:12px;font-size:14px;line-height:1.5}
+.faq-list{max-width:760px;margin:clamp(28px,3vw,44px) auto 0;border-top:1px solid var(--line)}
+.faq-item{border-bottom:1px solid var(--line)}
+.faq-q{width:100%;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:clamp(18px,2vw,24px) 4px;background:none;border:0;text-align:left;font-family:var(--font-display);font-size:clamp(16px,1.6vw,19px);font-weight:400;color:var(--ink);cursor:pointer}
+.faq-q svg{flex:none;width:16px;height:16px;stroke:var(--ink-soft);fill:none;stroke-width:1.6;transition:transform .25s}
+.faq-q[aria-expanded="true"] svg{transform:rotate(180deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.faq-a.is-open{max-height:200px}
+.faq-a p{padding:0 4px clamp(16px,2vw,22px);color:var(--grey);font-size:14px;line-height:1.6;max-width:60ch}
+
 /* ---------- Newsletter (compact) ---------- */
 .newsletter-compact{padding:clamp(18px,2vw,26px) 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .nlc-row{display:grid;grid-template-columns:1fr auto;gap:clamp(20px,4vw,48px);align-items:center}
@@ -901,6 +915,10 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .grp-media{width:44px;height:44px;margin:0 auto}
   .grp-label{font-size:9.5px;line-height:1.2;white-space:normal;letter-spacing:.04em}
   .product-card .wish{opacity:1;transform:none}
+  .faq{padding:32px 0}
+  .faq-head{text-align:left}
+  .faq-q{font-size:15px;padding:16px 4px}
+  .faq-a p{font-size:13px}
   .fgrid-foot{grid-template-columns:1fr 1fr}
   .fgrid-foot .brand{grid-column:1/-1}
   .nl-form{flex-direction:column;gap:8px;max-width:none}
@@ -1941,6 +1959,73 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   </div>
 </section>
 
+<!-- 11b. FAQ -->
+<section class="faq" id="faq" aria-labelledby="faqTitle">
+  <div class="wrap">
+    <div class="faq-head reveal">
+      <span class="eyebrow">Questions</span>
+      <h2 class="display" id="faqTitle">Before you ask.</h2>
+      <p>The short answers to what we get asked most.</p>
+    </div>
+    <div class="faq-list reveal" data-delay="1">
+      <div class="faq-item">
+        <button class="faq-q" type="button" aria-expanded="false" data-faq-toggle>
+          <span>Is this really a one-batch collection?</span>
+          <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="faq-a" data-faq-panel>
+          <p>Yes. After Hours was handmade in one batch at our workshop in India, and there's no restock planned once a piece sells out.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button" aria-expanded="false" data-faq-toggle>
+          <span>How long does delivery take?</span>
+          <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="faq-a" data-faq-panel>
+          <p>You'll see your exact delivery estimate on each product's quick view and again at checkout before you pay.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button" aria-expanded="false" data-faq-toggle>
+          <span>How do I care for the leather?</span>
+          <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="faq-a" data-faq-panel>
+          <p>Wipe with a dry cloth, keep it away from water, and out of direct sun. Leather like this is meant to develop a patina, not stay pristine.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button" aria-expanded="false" data-faq-toggle>
+          <span>What textures are available?</span>
+          <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="faq-a" data-faq-panel>
+          <p>Six, across the whole collection: Croco, Split suede, Hair-on-hide, Plain, Fine-grained and Shagreen.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button" aria-expanded="false" data-faq-toggle>
+          <span>Where is each piece made?</span>
+          <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="faq-a" data-faq-panel>
+          <p>Cut, shaped and finished entirely by hand at our workshop in India – no factory line, no machine finishing.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button" aria-expanded="false" data-faq-toggle>
+          <span>Which currencies can I shop in?</span>
+          <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="faq-a" data-faq-panel>
+          <p>GBP, EUR, USD and INR – switch anytime from the currency selector in the header.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- 12. NEWSLETTER (compact) -->
 <section class="newsletter-compact" id="newsletter" aria-labelledby="nlTitle">
   <div class="wrap">
@@ -2305,6 +2390,18 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
     const f = t.dataset.filter;
     refilterRow(mfRow, c => f !== 'all' && c.dataset.material !== f);
   }));
+
+  /* FAQ accordion — one generic delegated pattern, same idea as the quick-view "Product
+     details" accordion, but multiple independent items rather than one panel per modal. Opening
+     one item does not close the others (no accordion-exclusivity requested). */
+  $$('[data-faq-toggle]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const open = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!open));
+      btn.nextElementSibling.classList.toggle('is-open', !open);
+      btn.blur();
+    });
+  });
 
   /* Newsletter */
   const form = $('#nlForm'), email = $('#nlEmail'), msg = $('#nlMsg');
