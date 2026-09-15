@@ -421,9 +421,19 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 .cs-backdrop .cs-groups{gap:10px 20px;justify-content:center}
 .cs-backdrop .cs-visual{position:absolute;inset:0;z-index:0;margin:0;min-height:0}
 .cs-backdrop .cs-visual::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(28,8,16,.76) 0%,rgba(28,8,16,.52) 55%,rgba(28,8,16,.76) 100%)}
-/* SUPERSEDED — widened from 1080px so the reintroduced .hero-card banner (see below) has room
-   to sit at the front of the carousel without squeezing the regular product cards down. */
-.cs-glass{position:relative;z-index:1;max-width:1220px;margin:0 auto;background:rgba(245,242,236,.1);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(217,210,191,.22);border-radius:16px;padding:clamp(16px,2vw,24px) clamp(56px,4.5vw,64px);display:flex;flex-direction:column;gap:clamp(12px,1.5vw,16px);color:var(--bone)}
+/* SUPERSEDED — widened further (1080px -> 1300px) to hold a proper full-size banner image
+   INSIDE the glass card (see `.cs-glass-visual`/`.cs-glass-content` below) — briefly widened to
+   1220px for a carousel-card-sized `.hero-card` banner instead, which was rejected as too small:
+   "the category banner... should be a lot bigger... the layout you could follow Hosting & Bar
+   but ensure that layout is within the glass section." */
+.cs-glass{position:relative;z-index:1;max-width:1300px;margin:0 auto;background:rgba(245,242,236,.1);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(217,210,191,.22);border-radius:16px;padding:clamp(16px,2vw,24px);display:flex;gap:clamp(20px,2.6vw,32px);color:var(--bone)}
+/* Furniture's in-glass banner+content split, modeled on Hosting & Bar's `.cs-grid` (banner
+   narrower, content wider) but contained entirely within `.cs-glass` instead of being the
+   section's own full-width grid. Plain photo, no gradient/label overlay — explicit "the category
+   banner doesn't need to have any text on it." */
+.cs-glass-visual{flex:0 0 clamp(220px,29vw,360px);position:relative;overflow:hidden;border-radius:10px;align-self:stretch}
+.cs-glass-visual img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cs-glass-content{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:clamp(12px,1.5vw,16px)}
 .cs-backdrop .cs-head h2{font-size:clamp(18px,1.9vw,24px);margin:4px 0 5px}
 .cs-backdrop .eyebrow{color:var(--caramel)}
 .cs-backdrop .cs-sub{color:rgba(217,210,191,.75);font-size:12px}
@@ -445,32 +455,33 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
    by reverting the centered head-row above instead (see that note) — don't shrink the cards
    again to solve a height problem; look at heading/padding/gap first, the same standing
    instruction that already applies to Hosting & Bar/Accessories now applies here too. */
-/* SUPERSEDED — accounts for the reintroduced .hero-card (bigger than a regular product card) now
-   sitting first in the row: 1 hero-card width + 3.5 regular-card widths + gaps, instead of the
-   flat "4.5 regular cards" formula every other category-split carousel uses. Keep this in sync
-   if either card's clamp changes. */
-.cs-backdrop .grp-content .mf-row-wrap{max-width:calc(clamp(240px,27vw,290px) + 3.5 * clamp(190px,22vw,230px) + 4 * var(--space-sm))}
-/* The arrows sit fully outside the row (the shared `.mf-nav` position — `left:-8px;
-   transform:translate(-100%,-50%)` — already does this, unchanged from every other carousel)
-   so they never overlap the product photo. What they needed was room to do that INSIDE the
-   glass card without poking past its edge onto the raw backdrop photo — that room now comes
-   from `.cs-glass`'s own side padding (widened above, `clamp(56px,4.5vw,64px)`, specifically
-   sized to contain the arrow's ~56px outward reach) rather than a `.grp-content`-only gutter,
-   so the heading/CTA row and the carousel both start from the exact same left edge instead of
-   the carousel being inset further than the heading above it. A prior attempt tried fixing the
+/* SUPERSEDED (reverted) — back to the standard "3.5 regular cards" formula every other
+   category-split carousel uses. The `.hero-card` version of this (1 hero-card width + 3.5
+   regular cards) is gone — Furniture's banner is a full-size in-glass visual column now (see
+   `.cs-glass-visual` above), not a carousel card, so this carousel is a normal product row again,
+   just narrower (it shares the glass card with the banner column). This cap is effectively a
+   ceiling now rather than the binding constraint — the content column's own width from the
+   banner+content split usually governs first. */
+.cs-backdrop .grp-content .mf-row-wrap{max-width:calc(3.5 * clamp(190px,22vw,230px) + 3 * var(--space-sm))}
+/* SUPERSEDED — the arrows sit fully outside the row (the shared `.mf-nav` position — `left:-8px;
+   transform:translate(-100%,-50%)` — already does this, unchanged from every other carousel) so
+   they never overlap the product photo. The room for that outward reach used to come from
+   `.cs-glass`'s own wide side padding (back when the glass card held only the heading/groups/
+   carousel, no separate visual column); now that Furniture has an in-glass banner column (see
+   `.cs-glass-visual`/`.cs-glass-content` above), that room instead comes from
+   `.cs-glass-content`'s own side padding — see the rule below. A prior attempt tried fixing an
    arrow overlap by dropping its outward translate instead, which put it back on TOP of the
-   first/last card — the fix is spacing, not repositioning the arrow onto the row. */
+   first/last card — the fix is spacing, not repositioning the arrow onto the row; keep that in
+   mind if arrow clearance ever needs adjusting again. */
+.cs-glass-content{padding:0 clamp(40px,4vw,48px) 0 clamp(24px,2.4vw,32px)}
 .cs-backdrop .link-arrow.pill{border-color:rgba(217,210,191,.4)}
 .cs-backdrop .link-arrow.pill:hover{background:var(--caramel);border-color:var(--caramel);color:#fff}
 
-/* REMOVED — `.cs-sidebar`/`.side-select` (the sidebar-nav layout) no longer exist. Accessories is
-   a conventional banner+panel split again — see the mirrored `.cs-grid` rule above. Don't
-   resurrect that CSS from git history without a fresh explicit ask.
-   `.hero-card` itself is back, reintroduced for Furniture below (a discrete category banner
-   photo living INSIDE `.cs-glass`, as the first carousel card, distinct from `.cs-visual`'s
-   full-bleed ambient backdrop photo behind the whole section). */
-.hero-card{flex:0 0 clamp(240px,27vw,290px)!important}
-.hero-card .name{font-family:var(--font-display);font-size:18px;font-weight:500}
+/* REMOVED — `.cs-sidebar`/`.side-select` (the sidebar-nav layout) and `.hero-card` (a carousel-
+   card-sized banner, briefly used by Furniture) no longer exist. Accessories is a conventional
+   banner+panel split again — see the mirrored `.cs-grid` rule above. Furniture's banner is now a
+   full-size in-glass visual column (see `.cs-glass-visual` below), not a carousel card. Don't
+   resurrect any of this CSS from git history without a fresh explicit ask. */
 
 /* ---------- Reviews ---------- */
 .reviews{background:#fff;padding:clamp(10px,1.4vw,18px) 0 clamp(6px,1vw,12px)}
@@ -653,7 +664,9 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .cs-visual{min-height:150px}
   .cs-backdrop{padding:28px 15px}
   .cs-backdrop .cs-visual{min-height:0}
-  .cs-glass{padding:20px;border-radius:12px;gap:10px}
+  .cs-glass{padding:18px;border-radius:12px;gap:12px;flex-direction:column}
+  .cs-glass-visual{flex:0 0 auto;width:100%;height:160px;border-radius:8px}
+  .cs-glass-content{padding:0}
   /* SUPERSEDED — Hosting & Bar's mobile banner now has whitespace on BOTH sides, matching the
      page's standard mobile gutter (15px), not a bleed on one edge. A prior pass only set
      margin-left (bleeding flush to the true right edge of the screen) — explicitly flagged from
@@ -1363,6 +1376,10 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
     <img class="ph img-cover" src="assets/img/furniture-banner.jpg" alt="Caldera dining chair in olive waxy leather">
   </div>
   <div class="cs-glass">
+    <div class="cs-glass-visual reveal">
+      <img class="ph img-cover" src="assets/img/furniture-banner.jpg" alt="Caldera dining chair in olive waxy leather">
+    </div>
+    <div class="cs-glass-content">
       <div class="cs-head-row">
         <div class="cs-head reveal">
           <span class="eyebrow">Furniture</span>
@@ -1382,11 +1399,6 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
         <button class="car-nav mf-nav prev" data-carousel-prev aria-label="Scroll to previous products"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
         <button class="car-nav mf-nav next" data-carousel-next aria-label="Scroll to next products"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
         <ul class="mf-row grp-row" data-carousel-row aria-label="A piece in each Furniture group">
-          <li class="product-card hero-card" data-group="seating">
-            <div class="media"><img class="ph img-cover" src="assets/img/furniture-banner.jpg" alt="Caldera dining chair in olive waxy leather, full collection shot">
-              <div class="info"><h3 class="name">Furniture</h3></div>
-            </div>
-          </li>
           <li class="product-card" data-group="seating" data-product="Caldera Dining Chair" data-price="TBC" data-material="Plain" data-img="assets/img/sub-dining-chairs.jpg" data-desc="A channel-stitched dining chair in olive waxy leather over a slim black frame.">
             <div class="media"><img class="ph img-cover" src="assets/img/sub-dining-chairs.jpg" alt="Caldera dining chair">
               <button class="wish" aria-pressed="false" aria-label="Save Caldera Dining Chair"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
@@ -1532,6 +1544,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
       </div>
       </div>
     </div>
+  </div>
 </section>
 
 <!-- 10. LEATHER ACCESSORIES (no banner — the 3 groups themselves are the hero, tiles + full-width carousel) -->
