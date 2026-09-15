@@ -640,18 +640,25 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .cs-backdrop{padding:28px 15px}
   .cs-backdrop .cs-visual{min-height:0}
   .cs-glass{padding:20px;border-radius:12px;gap:10px}
-  /* Hosting & Bar's banner keeps the same-as-desktop gutter inset on the left at mobile too,
-     matching every other section's own mobile gutter (15px) — no rounding, no shadow, no card
-     treatment, just consistent whitespace. */
-  #hosting .cs-visual{margin-left:15px;height:160px;min-height:0}
+  /* SUPERSEDED — Hosting & Bar's mobile banner now has whitespace on BOTH sides, matching the
+     page's standard mobile gutter (15px), not a bleed on one edge. A prior pass only set
+     margin-left (bleeding flush to the true right edge of the screen) — explicitly flagged from
+     a screenshot as wrong: "bleeding on the right side and not left... ensure its page wide, a
+     specific whitespace, except when explicitly the background is asked to be bleeding [as in
+     Shop by Texture or Furniture]." Desktop is untouched (there the banner sits in a fixed grid
+     column next to the panel, not against the true viewport edge, so the same "bleeding to the
+     screen edge" problem doesn't apply there). */
+  #hosting .cs-visual{margin:0 15px;height:160px;min-height:0}
   /* Accessories is mirrored (banner on the right on desktop, via DOM order not `order`), but
      mobile still shows the banner first — `order:-1` is safe to use here because at this
      breakpoint `.cs-grid` is single-column (see above), so `order` only affects paint/stacking
      order, not track-width assignment (the specific CSS Grid bug this file warns about
-     elsewhere only bites in a multi-column grid). Gutter mirrors Hosting & Bar's, on the
-     opposite side: bleeds left, whitespace on the right. Height is 20% taller than the shared
-     150px mobile `.cs-visual` default (150 * 1.2 = 180), explicit ask. */
-  #accessories .cs-visual{order:-1;margin-right:15px;height:180px;min-height:0}
+     elsewhere only bites in a multi-column grid). SUPERSEDED — now has whitespace on BOTH sides
+     too (was margin-right only, bleeding left) — same fix and same reason as Hosting & Bar's
+     above, applied same day from the same screenshot report. Height is 20% taller than the
+     shared 150px mobile `.cs-visual` default (150 * 1.2 = 180), explicit ask from a separate,
+     earlier request. */
+  #accessories .cs-visual{order:-1;margin:0 15px;height:180px;min-height:0}
   /* The gutter above is real (verified via computed style), but at this short/wide mobile crop
      ratio it was visually imperceptible: accessories-banner.jpg is a studio product shot on a
      plain white background, and object-fit:cover's default center crop for this box's aspect
@@ -691,6 +698,12 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .cs-head h2{font-size:19px;margin:4px 0 5px}
   .cs-sub{font-size:12px;line-height:1.35}
   .cs-head-row{gap:8px}
+  /* The "All of..." CTA (a plain underlined .link-arrow, not a pill) was reading as too visually
+     heavy against the h2/sub above it — its 12px base size plus wide .2em letter-spacing made it
+     look nearly as prominent as the heading itself instead of a secondary action. Sized down and
+     tightened here specifically for the category-split heading row, on mobile only. */
+  .cs-head-row .link-arrow:not(.pill){font-size:10.5px;letter-spacing:.14em}
+  .cs-head-row .link-arrow:not(.pill) svg{width:13px;height:13px}
   /* All 4 group circles stay in one row on mobile instead of wrapping to 2x2 — each button gets an
      exact quarter-width column (min-width:0 lets flex shrink it below the label's intrinsic width so
      the label can wrap under a small circle instead of forcing the row wider than the screen). */
@@ -1109,7 +1122,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
           <h2 class="display" id="hostTitle">The bar that means it.</h2>
           <p class="cs-sub">Cocktail sets, modular bar, tableware &amp; trays.</p>
         </div>
-        <a class="link-arrow pill reveal" href="#">All of Hosting &amp; Bar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="link-arrow reveal" href="#">All of Hosting &amp; Bar <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
       <div class="cs-groups reveal" data-delay="1" role="tablist" aria-label="Browse Hosting &amp; Bar by group">
         <button class="grp-btn" type="button" data-group="cocktail" data-heading="Cocktail Sets" data-desc="Croco-print bar tools built for the after-dinner hour." aria-selected="true"><span class="grp-media"><img src="assets/img/sub-cocktail-sets.jpg" alt="" loading="lazy"></span><span class="grp-label">Cocktail Sets</span></button>
