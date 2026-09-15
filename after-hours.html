@@ -366,25 +366,30 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
    .grp-row carousel's un-scrolled content (5+ cards laid end to end) has a large min-content
    width, which without this override would force the grid track (and the whole page) to overflow
    horizontally instead of letting the carousel scroll internally within its own container. */
-.cs-panel{padding:var(--space-md) var(--gutter);display:flex;flex-direction:column;justify-content:center;gap:var(--space-xs);min-width:0}
+/* SUPERSEDED — no more uniform `gap` between cs-panel's children (cs-head-row, cs-groups,
+   grp-content) — a single small gap value made every transition feel the same distance apart,
+   reported as "too close" between the heading block and the group circles specifically. Spacing
+   is deliberate per-transition now via margin-top on `.cs-groups` (a clear break from the heading
+   block) and `.grp-content` (a smaller, closer step down to the carousel) — see those rules. */
+.cs-panel{padding:var(--space-md) var(--gutter);display:flex;flex-direction:column;justify-content:center;min-width:0}
 .category-split.on-colored .cs-panel{background:var(--deep);color:var(--bone)}
 .category-split.on-colored .cs-sub{color:rgba(217,210,191,.72)}
 .category-split.on-colored .link-arrow{color:var(--bone)}
 .category-split.on-white .cs-panel{background:#fff;color:var(--ink)}
 .category-split.on-white .cs-sub{color:var(--grey)}
-.cs-head h2{font-size:clamp(22px,2.4vw,32px);line-height:1.04;margin:6px 0 7px}
+.cs-head h2{font-size:clamp(24px,2.6vw,34px);line-height:1.05;margin:6px 0 7px}
 /* The "All of..." CTA now sits beside the heading/subheading instead of below the product
    carousel — removes a whole row (link + its gap) from the panel's vertical stack, which is
    part of how these sections got shorter without shrinking the product cards back down. */
 .cs-head-row{display:flex;justify-content:space-between;align-items:center;gap:var(--space-md)}
 .cs-head-row .cs-head{flex:1 1 auto;min-width:0}
-.cs-sub{font-size:14px;max-width:48ch}
+.cs-sub{font-size:15px;max-width:48ch}
 
 /* Group carousel – circular subcategory/group selector (birthstone-style: click a circle, the product
    grid below switches to that group). Replaces the old sub-grid/sub-tile navigation-tile pattern. No
    separate heading/description block under the circles — the active circle's own bold label is the
    only "which group am I looking at" indicator, so the group name isn't shown twice. */
-.cs-groups{display:flex;flex-wrap:wrap;justify-content:center;gap:20px 32px}
+.cs-groups{display:flex;flex-wrap:wrap;justify-content:center;gap:20px 32px;margin-top:clamp(24px,3vw,36px)}
 .grp-btn{display:flex;flex-direction:column;align-items:center;gap:10px;background:none;border:0;padding:4px;cursor:pointer;flex:0 0 auto}
 .grp-media{position:relative;width:58px;height:58px;border-radius:50%;overflow:hidden;transition:transform var(--t-med) var(--ease),box-shadow var(--t-med) var(--ease)}
 .grp-media img{width:100%;height:100%;object-fit:cover;display:block}
@@ -395,9 +400,16 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 .category-split.on-colored .grp-label{color:rgba(217,210,191,.72)}
 .category-split.on-colored .grp-btn[aria-selected="true"] .grp-label{color:var(--bone)}
 .category-split.on-colored .grp-btn[aria-selected="true"] .grp-media{box-shadow:0 0 0 2px var(--deep),0 0 0 4px var(--caramel)}
-/* No margin-top here — .cs-panel's own flex `gap` already spaces .grp-content from the
-   circle row above it. Adding a margin-top here too double-counted that gap (32px flex
-   gap + 32px margin = 64px, reported as "too much space between the circle and cards"). */
+/* SUPERSEDED — `.grp-content` now DOES carry its own margin-top (a real, deliberate rule, not the
+   double-counted-gap bug this comment used to warn about). `.cs-panel`/`.cs-glass-content` no
+   longer have a uniform flex `gap` at all — spacing is per-transition now: `.cs-groups` gets a
+   bigger margin-top (a clear break from the heading block above it), `.grp-content` gets a
+   smaller one (a closer step down to the carousel it introduces). *Reason: explicit "the spacing
+   is odd right now, too close [between the] heading and subheading and the group circles."* If
+   you ever reintroduce a uniform `gap` on `.cs-panel`/`.cs-glass-content`, remove this margin
+   again first — the double-gap bug this comment used to describe is a real risk if both exist
+   at once. */
+.grp-content{margin-top:clamp(16px,2vw,22px)}
 /* .grp-row carries no layout rules of its own — it always appears combined with .mf-row
    (".mf-row grp-row"), which supplies the single-row horizontal-carousel layout, sizing,
    and [hidden] handling identically to Shop by Texture. See the carousel guideline in
@@ -427,6 +439,16 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 #hosting{background:var(--licorice)}
 #hosting .cs-panel{background:var(--licorice)}
 #hosting .cs-grid{grid-template-columns:1fr}
+/* Desktop: cap the panel's own width to exactly the carousel's cap (see the max-width formula
+   two lines up) plus its own left/right padding (`var(--gutter)`, applied via .cs-panel's own
+   padding shorthand), then center that box in the section. Without this, now that the panel
+   spans the full section width (no banner column any more), the heading/CTA row stretched
+   edge-to-edge while the narrower, separately-capped carousel sat centered underneath it,
+   visually disconnected from the heading above it. Capping the panel itself means the heading,
+   CTA, and carousel all resolve to the exact same left/right edges. *Reason: explicit "in
+   desktop lets align the title and the CTA to where the product cards start and end, for both
+   hosting and bar and leather accessories."* */
+#hosting .cs-panel{max-width:calc(3.5 * clamp(180px,20vw,220px) + 3 * var(--space-sm) + 2 * var(--gutter));margin:0 auto}
 
 /* SUPERSEDED (again) — Leather Accessories: banner removed (same as Hosting & Bar above), panel
    now licorice too (was `on-white`, matching Hosting & Bar's earlier white treatment — now
@@ -441,6 +463,9 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 #accessories{background:var(--licorice)}
 #accessories .cs-panel{background:var(--licorice)}
 #accessories .cs-grid{grid-template-columns:1fr}
+/* Same panel-width cap as Hosting & Bar above, same reason — aligns the heading/CTA row with
+   where the product carousel starts and ends now that there's no banner column. */
+#accessories .cs-panel{max-width:calc(3.5 * clamp(180px,20vw,220px) + 3 * var(--space-sm) + 2 * var(--gutter));margin:0 auto}
 
 /* SUPERSEDED (again) — Furniture: plain licorice background, no photo anywhere in the section at
    all now. History: (1) a full vertical "magazine" stack (1145px tall); (2) a banner-strip +
@@ -461,10 +486,10 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 .cs-backdrop{position:relative;overflow:hidden;background:var(--licorice);padding:clamp(16px,2vw,24px) var(--gutter)}
 .cs-backdrop .cs-groups{gap:10px 20px;justify-content:center}
 .cs-glass{position:relative;z-index:1;max-width:1300px;margin:0 auto;background:rgba(245,242,236,.1);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(217,210,191,.22);border-radius:16px;padding:clamp(16px,2vw,24px);display:flex;gap:var(--space-md);color:var(--bone)}
-.cs-glass-content{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:clamp(12px,1.5vw,16px)}
-.cs-backdrop .cs-head h2{font-size:clamp(18px,1.9vw,24px);margin:4px 0 5px}
+.cs-glass-content{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;justify-content:center}
+.cs-backdrop .cs-head h2{font-size:clamp(20px,2.1vw,26px);margin:4px 0 5px}
 .cs-backdrop .eyebrow{color:var(--caramel)}
-.cs-backdrop .cs-sub{color:rgba(217,210,191,.72);font-size:12px}
+.cs-backdrop .cs-sub{color:rgba(217,210,191,.72);font-size:13px}
 .cs-backdrop .link-arrow{color:var(--bone)}
 /* SUPERSEDED — the heading block is left-aligned with the "All of Furniture" CTA pinned right,
    the same single-row `.cs-head-row` layout Hosting & Bar uses, not the centered/stacked column
@@ -551,21 +576,13 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
   .rcard p{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 }
 
-/* ---------- Closing ("Quiet split" — image fills one half, short copy sits in a narrow column
-   in the other, left-aligned, not centered. SUPERSEDED — was a single centered text-only column
-   (no image at all); redesigned to tell the "hand-finished, not machine-made" story with one
-   real photo instead, and the copy trimmed from three sentences to one. Chosen from 5 layout
-   options reviewed via an artifact. "Three Sixty" (the workshop's name) is no longer mentioned
-   anywhere on the page — explicit "we don't mention any three sixty thing in the website" — so
-   the copy now says "our workshop" instead of naming it. ) ---------- */
-.closing{background:#fff}
-.closing-grid{display:grid;grid-template-columns:1fr 1fr;min-height:clamp(360px,44vw,520px)}
-.closing-visual{position:relative;overflow:hidden}
-.closing-visual .ph{position:absolute;inset:0}
-.closing-copy{display:flex;flex-direction:column;justify-content:center;padding:clamp(32px,5vw,72px) var(--gutter)}
-.closing h2{font-size:clamp(26px,3.2vw,44px);line-height:1.1;margin:14px 0 18px;text-align:left}
-.closing p{color:var(--ink-soft);font-size:14px;line-height:1.65;max-width:42ch;margin:0}
-.closing .sign{margin-top:22px;font-family:var(--font-display);font-style:italic;font-size:19px;color:var(--caramel)}
+/* REMOVED — the "Quiet split" closing section (Fableroom brand statement, "Most leather is
+   finished by machine. Not this.") no longer exists — explicit "we remove this section please as
+   we have a section breaker for this," referring to `.fact-strip` (between Furniture and
+   Accessories), which now serves the "pause before the newsletter" role this section used to.
+   `closing-banner.jpg` is still in use (as `.fact-strip`'s background photo) — don't assume it's
+   unused. Don't resurrect `.closing`/`.closing-grid`/`.closing-visual`/`.closing-copy` from git
+   history without a fresh explicit ask. */
 
 /* ---------- FAQ ---------- */
 .faq{background:#fff;padding:var(--sec-pad) 0}
@@ -755,9 +772,6 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
 }
 @media (max-width:900px){
   :root{--nav-h:64px}
-  .closing-grid{grid-template-columns:1fr}
-  .closing-visual{height:240px}
-  .closing-copy{padding:28px 15px 36px}
   .nav-left .desk,.nav-cats{display:none}
   .burger{display:block}
   .nav-row{grid-template-columns:auto 1fr auto}
@@ -880,12 +894,14 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   /* Gap widened (9px -> 18px) — the "All of..." CTA row was sitting almost flush against the
      group circles below it on mobile, reported as "too close." *Reason: explicit "ensure the
      spacing between the CTA text in the subcategory section... is natural enough."* */
-  .cs-panel{padding:18px 15px;gap:18px}
+  .cs-panel{padding:18px 15px}
   /* Trimmed to help the category-split sections fit one mobile viewport now that the banner
      and product cards are both bigger — the heading was already at its desktop clamp's floor
-     (22px), which isn't small enough on its own at this width. */
-  .cs-head h2{font-size:19px;margin:4px 0 5px}
-  .cs-sub{font-size:12px;line-height:1.35}
+     (22px), which isn't small enough on its own at this width. Sizes nudged back up slightly
+     (19->21, 12->13) alongside the desktop bump — "each and every category... inc its font
+     slightly." */
+  .cs-head h2{font-size:21px;margin:4px 0 5px}
+  .cs-sub{font-size:13px;line-height:1.35}
   .cs-head-row{gap:8px}
   /* The "All of..." CTA (a plain underlined .link-arrow, not a pill) was reading as too visually
      heavy against the h2/sub above it — its 12px base size plus wide .2em letter-spacing made it
@@ -953,7 +969,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
 <div class="promo" id="promo" role="region" aria-label="Announcement">
   <div class="promo-msgs" aria-live="polite">
     <span class="is-on"><b>After Hours</b> · Fableroom · <a href="#categories">Now live</a></span>
-    <span>Handmade in India in one batch. <a href="#closing">No restock planned</a>.</span>
+    <span>Handmade in India in one batch. <a href="#faq">No restock planned</a>.</span>
     <span>Home Circle members: <a href="#newsletter">early access to every drop</a>.</span>
   </div>
   <button class="promo-close" id="promoClose" aria-label="Dismiss announcement">
@@ -1934,21 +1950,6 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   </div>
 </section>
 
-<!-- 11. THE COLLECTION → closing line ("Quiet split": image fills one half, short copy sits in
-     the other — see CLAUDE.md for the layout history and the artifact this was chosen from) -->
-<section class="closing" id="closing" aria-labelledby="closeTitle">
-  <div class="closing-grid">
-    <div class="closing-visual reveal">
-      <img class="ph img-cover" src="assets/img/closing-banner.jpg" alt="Croco leather bar tools styled with an olive leather chair">
-    </div>
-    <div class="closing-copy reveal" data-delay="1">
-      <span class="eyebrow">Fableroom</span>
-      <h2 class="display" id="closeTitle"><em>Most leather is finished by machine.</em><br>Not this.</h2>
-      <p>Cut, shaped and finished entirely by hand in our workshop in India. No middlemen. Nothing removed but the markup.</p>
-      <div class="sign">Thoughtfully made. Fairly priced.</div>
-    </div>
-  </div>
-</section>
 
 <!-- 11b. FAQ -->
 <section class="faq" id="faq" aria-labelledby="faqTitle">
@@ -2057,7 +2058,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
       </div>
       <div>
         <h4>About us</h4>
-        <ul><li><a href="#">Our story</a></li><li><a href="#">Contact us</a></li><li><a href="#">Blog</a></li><li><a href="#">FAQs</a></li><li><a href="#closing">Our workshop</a></li></ul>
+        <ul><li><a href="#">Our story</a></li><li><a href="#">Contact us</a></li><li><a href="#">Blog</a></li><li><a href="#faq">FAQs</a></li><li><a href="#faq">Our workshop</a></li></ul>
       </div>
       <div>
         <h4>We care</h4>
@@ -2065,7 +2066,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
       </div>
       <div>
         <h4>Help</h4>
-        <ul><li><a href="#">Delivery &amp; shipping</a></li><li><a href="#">Returns &amp; exchange</a></li><li><a href="#">Terms of service</a></li><li><a href="#">Privacy policy</a></li><li><a href="#closing">Leather care</a></li></ul>
+        <ul><li><a href="#">Delivery &amp; shipping</a></li><li><a href="#">Returns &amp; exchange</a></li><li><a href="#">Terms of service</a></li><li><a href="#">Privacy policy</a></li><li><a href="#faq">Leather care</a></li></ul>
       </div>
     </div>
     <div class="foot-bottom">
