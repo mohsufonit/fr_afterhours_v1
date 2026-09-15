@@ -903,9 +903,19 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .rcard p{font-size:12px;line-height:1.38}
   .mf-row .product-card .quick .btn{padding:0 10px;font-size:9.5px;letter-spacing:.12em;white-space:nowrap;height:40px}
   .mf-row .product-card .quick .btn-ghost{padding:0 12px}
-  .tiles{grid-template-columns:1fr;gap:8px}
-  .tile{aspect-ratio:16/10}
-  .track{grid-auto-columns:78%}
+  /* SUPERSEDED — mobile no longer stacks the 3 category tiles one above another; it's a
+     horizontally-scrolling carousel now, same idea as every product-card row on the page
+     (touch-scroll, one tile mostly in view with the next peeking at the edge), so the user can
+     swipe straight to whichever shop they want instead of scrolling past the other two first.
+     `.tile`'s aspect-ratio is no longer overridden here either — it inherits the shared desktop
+     value (`3/4`) instead of the old wider `16/10` mobile crop, matching the explicit ask to keep
+     "the same aspect ratio the image has in desktop." *Reason: explicit "hosting and bar,
+     furniture and leather accessories will turn into a carousel... not stacking it one by one."*
+     Only 3 tiles today, so no arrows/scrollbar thumb (arrows are hidden below 1100px for every
+     other carousel on the page anyway) — plain swipe is enough for 3 items. */
+  .tiles{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-ms-overflow-style:none;padding-bottom:4px}
+  .tiles::-webkit-scrollbar{display:none}
+  .tile{flex:0 0 78%;scroll-snap-align:start}
   .sec-head{flex-direction:column;align-items:flex-start;gap:16px}
   .sec-head .num{margin-right:12px}
   /* Gap widened (9px -> 18px) — the "All of..." CTA row was sitting almost flush against the
