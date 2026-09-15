@@ -471,16 +471,32 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
    a frosted-glass `.cs-glass` card; (4) the photo backdrop removed, `.cs-glass` kept purely as a
    raised "card" visual treatment with nothing left to blur; (5) **this pass** — `.cs-glass`/
    `.cs-backdrop`/`.cs-glass-content` dropped entirely. `#furniture` is `class="category-split
-   on-colored"` now (was `cs-backdrop`), which already gives it the same licorice panel, bone text,
-   and muted-bone sub/label colours Hosting & Bar and Accessories use via the shared
-   `.category-split.on-colored` rules — no Furniture-specific text-colour overrides needed any
-   more. Its heading/sub font sizes, product-card size, and carousel max-width all now inherit the
-   shared defaults too (no longer a smaller heading or its own carousel-width formula — both were
-   identical to the shared value anyway once measured). *Reason: explicit "we remove the glass
-   effect from furniture and match the layout of hosting and bar for now."* Don't reintroduce
-   `.cs-backdrop`/`.cs-glass`/`.cs-glass-content`/`.cs-glass-visual` from git history without a
-   fresh explicit ask — none of them are used anywhere on the page any more. */
+   on-colored"` now (was `cs-backdrop`), which gives it bone text and muted-bone sub/label colours
+   via the shared `.category-split.on-colored` rules — no Furniture-specific text-colour overrides
+   needed any more. *Reason: explicit "we remove the glass effect from furniture and match the
+   layout of hosting and bar for now."* Don't reintroduce `.cs-backdrop`/`.cs-glass`/
+   `.cs-glass-content`/`.cs-glass-visual` from git history without a fresh explicit ask.
+   **BUG, fixed the same day this shipped: the generic `.category-split.on-colored .cs-panel`
+   background is `var(--deep)`, not licorice** — Hosting & Bar and Accessories both need their own
+   `#id{background:var(--licorice)}`/`#id .cs-panel{background:var(--licorice)}` override for
+   this exact reason (see their own rules), and Furniture was missed when it moved onto this same
+   `on-colored` pattern, so it silently rendered `--deep` instead of licorice — reported directly
+   ("the background used in furniture is deep licorice, we need to use only licorice"). Worse,
+   `#furniture` itself (not just `.cs-panel`) had NO background at all, so the section's own
+   top/bottom breathing-room margin (on `.cs-grid`, 64px both sides — genuinely symmetric, verified
+   by measurement) showed plain white page background instead of licorice, which read as uneven
+   spacing even though the margin values themselves were equal — fixed by the same two rules below
+   that Hosting & Bar and Accessories already use. Card size and carousel max-width are also
+   matched to Hosting & Bar's (not the shared Furniture/Accessories default) specifically to close
+   a real ~14px height difference this caused (wider default cards render taller at the shared 3:4
+   aspect ratio) — the remaining height gap versus Hosting & Bar (about 35px) comes from
+   Furniture's longer heading copy wrapping to two lines where Hosting & Bar's shorter heading
+   fits one; that's a copy-length difference, not a spacing bug, and wasn't changed. */
+#furniture{background:var(--licorice)}
+#furniture .cs-panel{background:var(--licorice)}
 #furniture .cs-visual{margin-left:var(--gutter)}
+#furniture .grp-row .product-card{flex-basis:clamp(180px,20vw,220px)}
+#furniture .grp-content .mf-row-wrap{max-width:calc(3.5 * clamp(180px,20vw,220px) + 3 * var(--space-sm))}
 
 /* ---------- Reviews ---------- */
 /* SUPERSEDED — structurally cloned "as is" from the reference package's Fableroom Customer
