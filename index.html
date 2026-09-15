@@ -639,8 +639,14 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
 .modal .body h3{font-family:var(--font-display);font-size:clamp(28px,3vw,40px);font-weight:400;line-height:1.05}
 .modal .pdp-link{flex:none;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--ink);margin-top:6px}
 .modal .pdp-link svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.7}
+/* Material/texture eyebrow removed from the modal entirely — explicit "no need for the type of
+   texture, nor type of category please, only the title." The element/JS still populate it
+   (harmless, unused) rather than deleting the wiring outright. */
+.modal #qvMat{display:none}
 .modal .body .p{font-size:18px;font-weight:500}
-.modal .body p.d{color:var(--ink-soft);font-size:14px}
+/* Short description is capped at 2 lines now, both breakpoints — explicit "short description
+   p - only two lines." */
+.modal .body p.d{color:var(--ink-soft);font-size:14px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .modal .swatches{display:flex;gap:10px}
 .modal .swatches button{width:34px;height:34px;border-radius:50%;border:2px solid transparent;padding:2px;transition:border-color var(--t-fast)}
 .modal .swatches button i{display:block;width:100%;height:100%;border-radius:50%}
@@ -648,14 +654,19 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
 .modal .swatch-name{font-size:12px;color:var(--grey);letter-spacing:.06em}
 /* EDD — an informational pill styled with the same visual weight as a control (matches a
    supplied reference screenshot), not a plain text line. The date itself is computed in JS as
-   "today + a rolling handling/shipping window", not a fixed fabricated date. */
-.modal .edd{display:flex;align-items:center;gap:10px;background:var(--off);border-radius:999px;padding:12px 18px;font-size:13px;color:var(--ink)}
+   "today + a rolling handling/shipping window", not a fixed fabricated date. SUPERSEDED — the
+   pill previously used `background:var(--off)`, the SAME colour as the dialog/sheet itself, so
+   the "box" was invisible (confirmed from a screenshot: just an icon and text floating on the
+   sheet, no visible pill at all). Given a real, distinct white box + border, and the row is
+   centered rather than left-aligned. */
+.modal .edd{display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:12px 18px;font-size:13px;color:var(--ink)}
 .modal .edd svg{width:16px;height:16px;flex:none;color:var(--caramel)}
 .modal .edd b{font-weight:600}
 .modal .cta-row{display:flex;gap:10px;align-items:stretch}
 .modal .cta-row .wish{position:static;opacity:1;transform:none;flex:none;width:52px;border-radius:999px;border:1px solid var(--line);background:none;display:flex;align-items:center;justify-content:center}
 .modal .cta-row .wish svg{width:18px;height:18px;stroke:var(--ink);fill:none}
-.modal .cta-row #qvAdd{flex:1;min-width:0;align-self:auto}
+/* "Add to bag" font size increased — explicit ask. */
+.modal .cta-row #qvAdd{flex:1;min-width:0;align-self:auto;font-size:14px}
 /* Product details — a real accordion (collapsed by default), not an always-open block. Every
    other field in the modal (name, description, price, variant, EDD, Add to bag) stays visible
    without a tap; only the spec grid (dimensions/care/batch) hides behind one. */
@@ -668,6 +679,32 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
 .modal .spec b{display:block;color:var(--ink);font-weight:500}
 .modal .close{position:absolute;top:12px;right:12px;width:40px;height:40px;border-radius:50%;background:var(--off);display:grid;place-items:center;z-index:2}
 .modal .close svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.5}
+/* Clicking the quick-view photo opens the full lightbox (zoom/pan) — the button is a plain,
+   full-bleed transparent overlay on top of the image, not a visible control of its own. */
+.qv-zoom-trigger{position:absolute;inset:0;border:0;padding:0;margin:0;background:none;cursor:zoom-in;display:block;width:100%;height:100%;z-index:1}
+/* Desktop-only prev/next arrows to move between a product's images, reusing the site's shared
+   `.car-nav` circular-button look. Hidden via the `hidden` attribute in the markup whenever a
+   product has 1 image (every SKU today) — JS un-hides them once a product has more than one. */
+.modal .qv-nav{display:none}
+@media (min-width:901px){
+  .modal .qv-nav:not([hidden]){display:grid;top:50%}
+  .modal .qv-nav.prev{left:16px}
+  .modal .qv-nav.next{right:16px}
+}
+
+/* ---------- Quick view lightbox (zoom/pan) ---------- */
+.lightbox{position:fixed;inset:0;z-index:200;background:rgba(20,6,8,.95);display:none;align-items:center;justify-content:center}
+.lightbox.is-open{display:flex}
+.lightbox .lb-close{position:absolute;top:18px;right:18px;width:44px;height:44px;border-radius:50%;background:rgba(245,242,236,.14);border:1px solid rgba(245,242,236,.3);color:var(--off);display:grid;place-items:center;z-index:3;cursor:pointer}
+.lightbox .lb-close svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.6}
+.lightbox .lb-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(245,242,236,.14);border-color:rgba(245,242,236,.3);color:var(--off);z-index:3}
+.lightbox .lb-nav.prev{left:18px}
+.lightbox .lb-nav.next{right:18px}
+.lb-stage{position:relative;width:100%;height:100%;overflow:hidden;display:flex;align-items:center;justify-content:center;touch-action:none}
+.lb-stage img{max-width:88vw;max-height:82vh;object-fit:contain;cursor:zoom-in;transition:transform .2s ease;user-select:none;-webkit-user-drag:none}
+.lb-stage img.is-zoomed{cursor:grab}
+.lb-stage img.is-dragging{cursor:grabbing;transition:none}
+.lb-hint{position:absolute;bottom:18px;left:0;right:0;text-align:center;color:rgba(245,242,236,.55);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}
 
 /* ---------- Toast ---------- */
 .toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);background:var(--deep);color:var(--bone);padding:12px 18px;font-size:13px;opacity:0;pointer-events:none;transition:opacity var(--t-med),transform var(--t-med) var(--ease-out);z-index:95;display:flex;gap:10px;align-items:center}
@@ -731,7 +768,9 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
      fixed height with letterboxing on either side of the photo, matching a reference mockup
      that shrank the gallery specifically to make room so name/description/price/variant all sit
      in the first view without scrolling. */
-  .modal .media{height:220px;min-height:0;background:var(--off)}
+  /* SUPERSEDED — 20% shorter again (220px -> 176px), explicit ask: "reduce the product tile
+     size please... reduced by 20%." */
+  .modal .media{height:176px;min-height:0;background:var(--off)}
   .modal .media .ph{position:absolute;inset:0 auto 0 16px;width:auto;aspect-ratio:3/4;border-radius:6px}
   .modal .qv-thumbs{left:32px}
   .mf-row .product-card{flex-basis:clamp(160px,32vw,220px)}
@@ -1917,7 +1956,11 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="qvTitle">
     <button class="close" data-qv-close aria-label="Close quick view"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <div class="media">
-      <img class="ph img-cover" id="qvImg" src="" alt="">
+      <button class="qv-zoom-trigger" id="qvZoomTrigger" type="button" aria-label="View larger image">
+        <img class="ph img-cover" id="qvImg" src="" alt="">
+      </button>
+      <button class="car-nav qv-nav prev" id="qvPrev" type="button" aria-label="Previous image" hidden><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <button class="car-nav qv-nav next" id="qvNext" type="button" aria-label="Next image" hidden><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
       <div class="qv-thumbs" id="qvThumbs" aria-label="Product image"></div>
     </div>
     <div class="body">
@@ -1953,6 +1996,19 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
       </div>
     </div>
   </div>
+</div>
+
+<!-- Quick view image lightbox — opens on clicking the quick-view gallery image, zoom/pan on
+     both desktop (click-to-zoom, mouse wheel) and mobile (tap-to-zoom, pinch), arrows to move
+     between images when a product has more than one. -->
+<div class="lightbox" id="qvLightbox" aria-hidden="true">
+  <button class="lb-close" data-lb-close type="button" aria-label="Close image viewer"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  <button class="car-nav lb-nav prev" id="lbPrev" type="button" aria-label="Previous image" hidden><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+  <button class="car-nav lb-nav next" id="lbNext" type="button" aria-label="Next image" hidden><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+  <div class="lb-stage" id="lbStage" data-lb-close>
+    <img id="lbImg" src="" alt="" draggable="false">
+  </div>
+  <div class="lb-hint">Click to zoom · Drag to pan</div>
 </div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg><span id="toastText"></span></div>
@@ -2190,17 +2246,39 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
 
   /* Quick view */
   const qv = $('#qv'); let qvFocus = null;
+  /* Multi-image support: a card can carry a comma-separated data-images list; every current
+     card only has one real photo (data-img), so this falls back to a 1-image array almost
+     everywhere today — the prev/next arrows and thumbs are built to scale to more images once
+     they exist, not a bug that they're hidden now. */
+  let qvImages = [], qvIndex = 0, qvName = '';
+  function qvBuildThumbs() {
+    const thumbs = $('#qvThumbs'); thumbs.innerHTML = '';
+    qvImages.forEach((src, i) => {
+      const t = document.createElement('button'); t.type = 'button'; t.setAttribute('aria-label', `${qvName} — image ${i + 1}`);
+      t.innerHTML = `<img src="${src}" alt="">`;
+      t.addEventListener('click', () => qvSetImage(i));
+      thumbs.appendChild(t);
+    });
+  }
+  function qvSetImage(i) {
+    if (!qvImages.length) return;
+    qvIndex = (i + qvImages.length) % qvImages.length;
+    const src = qvImages[qvIndex];
+    $('#qvImg').src = src; $('#qvImg').alt = qvName;
+    $$('#qvThumbs button').forEach((t, idx) => t.classList.toggle('is-active', idx === qvIndex));
+    const hasMultiple = qvImages.length > 1;
+    $('#qvPrev').hidden = !hasMultiple; $('#qvNext').hidden = !hasMultiple;
+    if (lightbox.classList.contains('is-open')) lbShow(qvIndex);
+  }
   function openQV(card) {
     if (!card) return;
     qvFocus = document.activeElement;
+    qvName = card.dataset.product;
     $('#qvTitle').textContent = card.dataset.product; $('#qvPrice').textContent = card.dataset.price; $('#qvDesc').textContent = card.dataset.desc; $('#qvMat').textContent = card.dataset.material;
-    const src = card.dataset.img || '';
-    const img = $('#qvImg'); img.src = src; img.alt = card.dataset.product;
-    const thumbs = $('#qvThumbs'); thumbs.innerHTML = '';
-    if (src) {
-      const t = document.createElement('button'); t.type = 'button'; t.className = 'is-active'; t.setAttribute('aria-label', card.dataset.product);
-      t.innerHTML = `<img src="${src}" alt="">`; thumbs.appendChild(t);
-    }
+    const list = card.dataset.images ? card.dataset.images.split(',').map(s => s.trim()).filter(Boolean) : (card.dataset.img ? [card.dataset.img] : []);
+    qvImages = list;
+    qvBuildThumbs();
+    qvSetImage(0);
     $('#qvAdd').textContent = 'Add to bag'; $('#qvAdd').classList.remove('is-added');
     /* Estimated delivery date — computed as "today + a rolling handling/shipping window", not a
        fixed fabricated date, since no real per-product shipping data exists yet. */
@@ -2211,7 +2289,10 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
     detailsToggle.setAttribute('aria-expanded', 'false'); detailsPanel.classList.remove('is-open');
     qv.classList.add('is-open'); qv.setAttribute('aria-hidden', 'false'); document.body.style.overflow = 'hidden'; $('.close', qv).focus();
   }
-  function closeQV() { qv.classList.remove('is-open'); qv.setAttribute('aria-hidden', 'true'); document.body.style.overflow = ''; qvFocus && qvFocus.focus(); }
+  function closeQV() {
+    qv.classList.remove('is-open'); qv.setAttribute('aria-hidden', 'true'); document.body.style.overflow = ''; qvFocus && qvFocus.focus();
+    if (lightbox.classList.contains('is-open')) closeLightbox();
+  }
   document.addEventListener('click', e => {
     if (e.target.closest('[data-add]') || e.target.closest('.wish')) return;
     const card = e.target.closest('.product-card[data-product]');
@@ -2225,6 +2306,108 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
     btn.setAttribute('aria-expanded', String(!open)); panel.classList.toggle('is-open', !open);
   });
   qv.addEventListener('keydown', e => { if (e.key !== 'Tab') return; const f = $$('button, [href], input', $('.dialog', qv)).filter(el => !el.disabled); const first = f[0], last = f[f.length - 1]; if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); } else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); } });
+  $('#qvPrev').addEventListener('click', () => qvSetImage(qvIndex - 1));
+  $('#qvNext').addEventListener('click', () => qvSetImage(qvIndex + 1));
+
+  /* ---- Quick view image lightbox: click to open, click-to-toggle zoom + wheel zoom on
+     desktop, tap-to-toggle zoom + two-finger pinch on touch, drag/pan once zoomed in. ---- */
+  const lightbox = $('#qvLightbox'), lbImg = $('#lbImg'), lbStage = $('#lbStage');
+  let lbZoom = 1, lbPanX = 0, lbPanY = 0, lbFocus = null;
+  const LB_ZOOM_STEP = 2.2, LB_ZOOM_MAX = 4, LB_ZOOM_MIN = 1;
+
+  function lbApply() { lbImg.style.transform = `translate(${lbPanX}px, ${lbPanY}px) scale(${lbZoom})`; lbImg.classList.toggle('is-zoomed', lbZoom > 1); }
+  function lbClampPan() {
+    // Rough bound so a zoomed image can't be dragged entirely off-stage.
+    const maxX = (lbImg.clientWidth * (lbZoom - 1)) / 2, maxY = (lbImg.clientHeight * (lbZoom - 1)) / 2;
+    lbPanX = Math.max(-maxX, Math.min(maxX, lbPanX)); lbPanY = Math.max(-maxY, Math.min(maxY, lbPanY));
+  }
+  function lbSetZoom(z, originX, originY) {
+    z = Math.max(LB_ZOOM_MIN, Math.min(LB_ZOOM_MAX, z));
+    if (z === 1) { lbPanX = 0; lbPanY = 0; } else if (typeof originX === 'number') {
+      // Keep the point under the cursor/finger stable while zooming.
+      const rect = lbImg.getBoundingClientRect();
+      const cx = originX - rect.left - rect.width / 2, cy = originY - rect.top - rect.height / 2;
+      const scaleDelta = z / lbZoom;
+      lbPanX = cx - (cx - lbPanX) * scaleDelta; lbPanY = cy - (cy - lbPanY) * scaleDelta;
+    }
+    lbZoom = z; lbClampPan(); lbApply();
+  }
+  function lbResetZoom() { lbZoom = 1; lbPanX = 0; lbPanY = 0; lbApply(); }
+  function lbShow(i) {
+    lbImg.src = qvImages[i] || ''; lbImg.alt = qvName; lbResetZoom();
+    const hasMultiple = qvImages.length > 1;
+    $('#lbPrev').hidden = !hasMultiple; $('#lbNext').hidden = !hasMultiple;
+  }
+  function openLightbox() {
+    if (!qvImages.length) return;
+    lbFocus = document.activeElement;
+    lbShow(qvIndex);
+    lightbox.classList.add('is-open'); lightbox.setAttribute('aria-hidden', 'false'); document.body.style.overflow = 'hidden';
+    $('.lb-close', lightbox).focus();
+  }
+  function closeLightbox() {
+    lightbox.classList.remove('is-open'); lightbox.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = ''; lbResetZoom(); lbFocus && lbFocus.focus();
+  }
+  $('#qvZoomTrigger').addEventListener('click', openLightbox);
+  // The image's own click handler (below) calls stopPropagation, so a click on the image never
+  // reaches this stage-background handler — only clicks on the surrounding stage close it.
+  $$('[data-lb-close]', lightbox).forEach(el => el.addEventListener('click', closeLightbox));
+  $('#lbPrev').addEventListener('click', () => qvSetImage(qvIndex - 1));
+  $('#lbNext').addEventListener('click', () => qvSetImage(qvIndex + 1));
+  document.addEventListener('keydown', e => {
+    if (!lightbox.classList.contains('is-open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') qvSetImage(qvIndex - 1);
+    if (e.key === 'ArrowRight') qvSetImage(qvIndex + 1);
+  });
+
+  // Click/tap to toggle zoom in/out, centred on the click point — but NOT if that click was
+  // actually the tail end of a drag (a mouseup/touchend after a pan still fires a synthetic
+  // "click", which would otherwise immediately undo the pan by toggling the zoom back off).
+  let lbDidDrag = false;
+  lbImg.addEventListener('click', e => {
+    e.stopPropagation();
+    if (lbDidDrag) { lbDidDrag = false; return; }
+    lbSetZoom(lbZoom > 1 ? 1 : LB_ZOOM_STEP, e.clientX, e.clientY);
+  });
+  // Desktop: mouse wheel zooms in/out around the cursor.
+  lbStage.addEventListener('wheel', e => {
+    if (!lightbox.classList.contains('is-open')) return;
+    e.preventDefault();
+    lbSetZoom(lbZoom - e.deltaY * 0.0025, e.clientX, e.clientY);
+  }, { passive: false });
+
+  // Drag to pan once zoomed (mouse or single touch), plus two-finger pinch-to-zoom on touch.
+  let lbDragging = false, lbDragStartX = 0, lbDragStartY = 0, lbPanStartX = 0, lbPanStartY = 0;
+  let lbPinchStartDist = 0, lbPinchStartZoom = 1;
+  const LB_DRAG_THRESHOLD = 6;
+  function dist(t0, t1) { return Math.hypot(t1.clientX - t0.clientX, t1.clientY - t0.clientY); }
+  lbStage.addEventListener('pointerdown', e => {
+    if (lbZoom <= 1 || e.target !== lbImg) return;
+    lbDragging = true; lbDidDrag = false; lbImg.classList.add('is-dragging');
+    lbDragStartX = e.clientX; lbDragStartY = e.clientY; lbPanStartX = lbPanX; lbPanStartY = lbPanY;
+    lbImg.setPointerCapture(e.pointerId);
+  });
+  lbStage.addEventListener('pointermove', e => {
+    if (!lbDragging) return;
+    const dx = e.clientX - lbDragStartX, dy = e.clientY - lbDragStartY;
+    if (Math.hypot(dx, dy) > LB_DRAG_THRESHOLD) lbDidDrag = true;
+    lbPanX = lbPanStartX + dx; lbPanY = lbPanStartY + dy;
+    lbClampPan(); lbApply();
+  });
+  ['pointerup', 'pointercancel', 'pointerleave'].forEach(evt => lbStage.addEventListener(evt, () => { lbDragging = false; lbImg.classList.remove('is-dragging'); }));
+  lbStage.addEventListener('touchstart', e => {
+    if (e.touches.length === 2) { lbPinchStartDist = dist(e.touches[0], e.touches[1]); lbPinchStartZoom = lbZoom; }
+  }, { passive: true });
+  lbStage.addEventListener('touchmove', e => {
+    if (e.touches.length === 2 && lbPinchStartDist) {
+      e.preventDefault();
+      const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2, midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+      lbSetZoom(lbPinchStartZoom * (dist(e.touches[0], e.touches[1]) / lbPinchStartDist), midX, midY);
+    }
+  }, { passive: false });
+  lbStage.addEventListener('touchend', e => { if (e.touches.length < 2) lbPinchStartDist = 0; });
 })();
 </script>
 </body>
