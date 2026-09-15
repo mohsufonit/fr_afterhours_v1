@@ -109,8 +109,8 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 .nav-right{justify-self:end}
 .icon-btn{width:40px;height:40px;display:grid;place-items:center;border-radius:50%;position:relative;color:var(--ink);transition:background var(--t-fast)}
 .icon-btn:hover{background:rgba(28,8,16,.06)}
-.icon-btn svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-.bag-count{position:absolute;top:5px;right:3px;min-width:16px;height:16px;padding:0 4px;border-radius:8px;background:var(--caramel);color:var(--deep);font-size:10px;font-weight:600;display:grid;place-items:center;transform:scale(0);transition:transform var(--t-med) var(--ease-out)}
+.icon-btn svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.bag-count{position:absolute;top:5px;right:3px;min-width:16px;height:16px;padding:0 4px;border-radius:999px;background:var(--caramel);color:var(--deep);font-size:10px;font-weight:600;display:grid;place-items:center;transform:scale(0);transition:transform var(--t-med) var(--ease-out)}
 .bag-count.is-on{transform:scale(1)}
 .bag-count.bump{animation:bump 420ms var(--ease-out)}
 @keyframes bump{0%{transform:scale(1)}40%{transform:scale(1.35)}100%{transform:scale(1)}}
@@ -127,7 +127,7 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 
 /* Currency dropdown */
 .dd{position:relative}
-.dd-btn{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 12px;border-radius:20px;font-size:12px;letter-spacing:.06em;transition:background var(--t-fast)}
+.dd-btn{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 12px;border-radius:999px;font-size:12px;letter-spacing:.06em;transition:background var(--t-fast)}
 .dd-btn:hover{background:rgba(28,8,16,.06)}
 .dd-btn svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:1.6;transition:transform var(--t-med) var(--ease)}
 .dd.is-open .dd-btn svg{transform:rotate(180deg)}
@@ -246,7 +246,7 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 .car-nav{position:absolute;top:calc((100% - 78px)/2);width:48px;height:48px;border-radius:50%;background:var(--off);border:1px solid var(--line);display:grid;place-items:center;z-index:3;transform:translateY(-50%);box-shadow:0 12px 30px -16px rgba(28,8,16,.5);transition:background var(--t-fast),opacity var(--t-fast),transform var(--t-fast)}
 .car-nav:hover{background:#fff}
 .car-nav:disabled{opacity:.3;cursor:default}
-.car-nav svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.5}
+.car-nav svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.6}
 .car-nav.prev{left:-24px}.car-nav.next{right:-24px}
 .dots{display:flex;justify-content:center;gap:8px;margin-top:28px}
 .dots button{width:28px;height:18px;display:grid;place-items:center}
@@ -329,7 +329,14 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 
 /* ---------- Category split (Hosting & Bar / Furniture / Leather Accessories) ---------- */
 .category-split{overflow:hidden}
-.cs-grid{display:grid;grid-template-columns:.85fr 1.15fr}
+/* Hosting & Bar and Leather Accessories (the two sections using this shared banner+panel grid)
+   had no top/bottom breathing room of their own — the banner image filled flush to the very top
+   of the section with zero margin, so the section immediately above/below touched it directly.
+   Matches the same margin value `.stats` already uses for the same "give this section its own
+   space" purpose. Furniture (`.cs-backdrop`, full-bleed photo) doesn't use `.cs-grid` and is
+   unaffected. *Reason: explicit "there is no space between the category banner and the section
+   end, introduce equal space."* */
+.cs-grid{display:grid;grid-template-columns:.85fr 1.15fr;margin:clamp(32px,4vw,56px) 0}
 /* Shared across Hosting & Bar / Furniture / Leather Accessories — one value, not a per-section
    override, so the three category-split sections stay uniform in banner height, panel spacing,
    circle size and circle-to-card gap. Reduced 30% from the original clamp(360px,44vw,560px). */
@@ -340,7 +347,7 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
    carousel's un-scrolled content (5+ cards laid end to end) has a huge min-content
    width, which without this override forces the grid column to grow past its intended
    1.15fr share and collapses the .cs-visual banner column down to almost nothing. */
-.cs-panel{padding:clamp(20px,2.6vw,32px) var(--gutter);display:flex;flex-direction:column;justify-content:center;gap:clamp(8px,1vw,12px);min-width:0}
+.cs-panel{padding:var(--space-md) var(--gutter);display:flex;flex-direction:column;justify-content:center;gap:var(--space-xs);min-width:0}
 .category-split.on-colored .cs-panel{background:var(--deep);color:var(--bone)}
 .category-split.on-colored .cs-sub{color:rgba(217,210,191,.72)}
 .category-split.on-colored .link-arrow{color:var(--bone)}
@@ -399,6 +406,15 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 #hosting .cs-visual{margin-left:var(--gutter)}
 #hosting .grp-row .product-card{flex-basis:clamp(180px,20vw,220px)}
 #hosting .grp-content .mf-row-wrap{max-width:calc(3.5 * clamp(180px,20vw,220px) + 3 * var(--space-sm))}
+/* SUPERSEDED — Hosting & Bar's panel is licorice again, matching Shop by Texture's background
+   exactly (`var(--licorice)`, not the generic `.on-colored` panel's `var(--deep)`) — the two dark
+   tokens are close but not identical, and the explicit ask named licorice specifically, the same
+   colour Shop by Texture uses. *Reason: explicit "in our hosting and bar section lets have its
+   background licorice please as present in shop by texture section, accordingly change the
+   colour of the text as well."* The `.on-colored` class change (on-white -> on-colored) already
+   handles the text-colour side (bone headings/body, muted-bone sub/label, bone link-arrow) — this
+   rule only swaps the panel's own background from the class's default deep to licorice. */
+#hosting .cs-panel{background:var(--licorice)}
 
 /* SUPERSEDED (again) — Leather Accessories is "exactly the same" as Hosting & Bar now: the
    shared `.category-split`/`.cs-grid`/`.cs-visual`/`.cs-panel` markup, in the SAME (non-mirrored)
@@ -437,7 +453,7 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
    1220px for a carousel-card-sized `.hero-card` banner instead, which was rejected as too small:
    "the category banner... should be a lot bigger... the layout you could follow Hosting & Bar
    but ensure that layout is within the glass section." */
-.cs-glass{position:relative;z-index:1;max-width:1300px;margin:0 auto;background:rgba(245,242,236,.1);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(217,210,191,.22);border-radius:16px;padding:clamp(16px,2vw,24px);display:flex;gap:clamp(20px,2.6vw,32px);color:var(--bone)}
+.cs-glass{position:relative;z-index:1;max-width:1300px;margin:0 auto;background:rgba(245,242,236,.1);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(217,210,191,.22);border-radius:16px;padding:clamp(16px,2vw,24px);display:flex;gap:var(--space-md);color:var(--bone)}
 /* Furniture's in-glass banner+content split, modeled on Hosting & Bar's `.cs-grid` (banner
    narrower, content wider) but contained entirely within `.cs-glass` instead of being the
    section's own full-width grid. Plain photo, no gradient/label overlay — explicit "the category
@@ -447,7 +463,7 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 .cs-glass-content{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:clamp(12px,1.5vw,16px)}
 .cs-backdrop .cs-head h2{font-size:clamp(18px,1.9vw,24px);margin:4px 0 5px}
 .cs-backdrop .eyebrow{color:var(--caramel)}
-.cs-backdrop .cs-sub{color:rgba(217,210,191,.75);font-size:12px}
+.cs-backdrop .cs-sub{color:rgba(217,210,191,.72);font-size:12px}
 .cs-backdrop .link-arrow{color:var(--bone)}
 /* SUPERSEDED — the heading block is left-aligned with the "All of Furniture" CTA pinned right,
    the same single-row `.cs-head-row` layout Hosting & Bar uses, not the centered/stacked column
@@ -485,8 +501,6 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
    first/last card — the fix is spacing, not repositioning the arrow onto the row; keep that in
    mind if arrow clearance ever needs adjusting again. */
 .cs-glass-content{padding:0 clamp(40px,4vw,48px) 0 clamp(24px,2.4vw,32px)}
-.cs-backdrop .link-arrow.pill{border-color:rgba(217,210,191,.4)}
-.cs-backdrop .link-arrow.pill:hover{background:var(--caramel);border-color:var(--caramel);color:#fff}
 
 /* REMOVED — `.cs-sidebar`/`.side-select` (the sidebar-nav layout) and `.hero-card` (a carousel-
    card-sized banner, briefly used by Furniture) no longer exist. Accessories is a conventional
@@ -528,16 +542,16 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
    smaller concentric circle instead. Swap this out once real avatar photos exist. */
 .rc-fig .ph{display:block;width:76%;height:76%;border-radius:50%;filter:drop-shadow(0 12px 14px rgba(38,11,15,.18))}
 .rc-badge{position:absolute;right:9px;bottom:9px;width:26px;height:26px;padding:5px;border-radius:50%;background:var(--caramel);color:#fff;display:flex;align-items:center;justify-content:center}
-.rc-badge svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.rc-badge svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .rc-body{display:grid;gap:6px;min-width:0}
 .stars{color:var(--caramel);font-size:13px;letter-spacing:.12em}
 .rcard h3{font-family:var(--font-display);font-size:15px;font-weight:500;line-height:1.2}
 .rcard p{margin:0;color:var(--grey);font-size:13px;line-height:1.42}
 .rcard .who{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
-@media (min-width:1024px){
+@media (min-width:1100px){
   .rcard p{display:block;overflow:visible}
 }
-@media (max-width:1023px){
+@media (max-width:1099px){
   .rcard p{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 }
 
@@ -554,7 +568,7 @@ h2.display{font-size:clamp(34px,4.4vw,60px);line-height:1.02}
 .closing-visual .ph{position:absolute;inset:0}
 .closing-copy{display:flex;flex-direction:column;justify-content:center;padding:clamp(32px,5vw,72px) var(--gutter)}
 .closing h2{font-size:clamp(26px,3.2vw,44px);line-height:1.1;margin:14px 0 18px;text-align:left}
-.closing p{color:var(--ink-soft);font-size:15px;line-height:1.65;max-width:42ch;margin:0}
+.closing p{color:var(--ink-soft);font-size:14px;line-height:1.65;max-width:42ch;margin:0}
 .closing .sign{margin-top:22px;font-family:var(--font-display);font-style:italic;font-size:19px;color:var(--caramel)}
 
 /* ---------- Newsletter (compact) ---------- */
@@ -593,7 +607,7 @@ footer li a:hover{color:#fff}
 .social{display:flex;gap:10px;margin-top:22px}
 .social a{width:36px;height:36px;border:1px solid var(--line-dark);border-radius:50%;display:grid;place-items:center;transition:border-color var(--t-fast),background var(--t-fast)}
 .social a:hover{border-color:var(--bone);background:rgba(217,210,191,.06)}
-.social svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.5}
+.social svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.6}
 .foot-bottom{margin-top:clamp(40px,5vw,64px);padding-top:24px;border-top:1px solid var(--line-dark);display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;font-size:11.5px;color:rgba(217,210,191,.55)}
 .foot-bottom .legal{display:flex;gap:18px;flex-wrap:wrap}
 .foot-bottom .legal a:hover{color:var(--bone)}
@@ -606,7 +620,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
 .chat{position:fixed;right:22px;bottom:22px;z-index:75}
 .chat-btn{width:56px;height:56px;border-radius:50%;background:var(--deep);color:var(--bone);display:grid;place-items:center;box-shadow:0 18px 40px -16px rgba(28,8,16,.7);transition:transform var(--t-med) var(--ease-out),background var(--t-fast)}
 .chat-btn:hover{transform:translateY(-2px);background:var(--licorice)}
-.chat-btn svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.5;position:absolute;transition:opacity var(--t-fast),transform var(--t-med) var(--ease)}
+.chat-btn svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.6;position:absolute;transition:opacity var(--t-fast),transform var(--t-med) var(--ease)}
 .chat-btn .ic-x{opacity:0;transform:rotate(-90deg) scale(.6)}
 .chat.is-open .chat-btn .ic-x{opacity:1;transform:none}
 .chat.is-open .chat-btn .ic-chat{opacity:0;transform:rotate(90deg) scale(.6)}
@@ -635,16 +649,12 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
 .modal.is-open .dialog{opacity:1;transform:none}
 .modal .media{position:relative;min-height:420px;background:#3a1a16}
 .modal .media .ph{position:absolute;inset:0}
-.modal .qv-thumbs{position:absolute;left:16px;bottom:16px;z-index:2;display:flex;gap:8px}
-.modal .qv-thumbs button{width:52px;height:52px;border-radius:4px;overflow:hidden;border:2px solid rgba(245,242,236,.85);padding:0;position:relative;background:#3a1a16;cursor:pointer}
-.modal .qv-thumbs button.is-active{border-color:var(--caramel)}
-.modal .qv-thumbs img{width:100%;height:100%;object-fit:cover;display:block}
-.modal .body{padding:clamp(24px,3vw,44px);display:flex;flex-direction:column;gap:16px}
+.modal .body{padding:clamp(24px,3vw,44px);display:flex;flex-direction:column;gap:var(--space-sm)}
 .modal .title-row{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
 .modal .title-row h3{margin:0}
 .modal .body h3{font-family:var(--font-display);font-size:clamp(28px,3vw,40px);font-weight:400;line-height:1.05}
 .modal .pdp-link{flex:none;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--ink);margin-top:6px}
-.modal .pdp-link svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.7}
+.modal .pdp-link svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.6}
 /* Material/texture eyebrow removed from the modal entirely — explicit "no need for the type of
    texture, nor type of category please, only the title." The element/JS still populate it
    (harmless, unused) rather than deleting the wiring outright. */
@@ -677,14 +687,14 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
    other field in the modal (name, description, price, variant, EDD, Add to bag) stays visible
    without a tap; only the spec grid (dimensions/care/batch) hides behind one. */
 .modal .details-toggle{width:100%;display:flex;justify-content:space-between;align-items:center;background:none;border:0;border-top:1px solid var(--line);padding:14px 0 0;margin-top:2px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);cursor:pointer;font-family:inherit}
-.modal .details-toggle svg{width:14px;height:14px;stroke:var(--ink-soft);fill:none;stroke-width:1.8;transition:transform .25s}
+.modal .details-toggle svg{width:14px;height:14px;stroke:var(--ink-soft);fill:none;stroke-width:1.6;transition:transform .25s}
 .modal .details-toggle[aria-expanded="true"] svg{transform:rotate(180deg)}
 .modal .details-panel{max-height:0;overflow:hidden;transition:max-height .3s ease}
 .modal .details-panel.is-open{max-height:260px}
 .modal .spec{display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;font-size:12.5px;color:var(--grey);padding-top:14px}
 .modal .spec b{display:block;color:var(--ink);font-weight:500}
 .modal .close{position:absolute;top:12px;right:12px;width:40px;height:40px;border-radius:50%;background:var(--off);display:grid;place-items:center;z-index:2}
-.modal .close svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.5}
+.modal .close svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.6}
 /* Clicking the quick-view photo opens the full lightbox (zoom/pan) — the button is a plain,
    full-bleed transparent overlay on top of the image, not a visible control of its own. */
 .qv-zoom-trigger{position:absolute;inset:0;border:0;padding:0;margin:0;background:none;cursor:zoom-in;display:block;width:100%;height:100%;z-index:1}
@@ -715,7 +725,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
 /* ---------- Toast ---------- */
 .toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);background:var(--deep);color:var(--bone);padding:12px 18px;font-size:13px;opacity:0;pointer-events:none;transition:opacity var(--t-med),transform var(--t-med) var(--ease-out);z-index:95;display:flex;gap:10px;align-items:center}
 .toast.is-on{opacity:1;transform:translate(-50%,0)}
-.toast svg{width:14px;height:14px;stroke:var(--caramel);fill:none;stroke-width:2}
+.toast svg{width:14px;height:14px;stroke:var(--caramel);fill:none;stroke-width:1.6}
 
 /* ---------- Responsive ---------- */
 @media (max-width:1100px){
@@ -773,15 +783,18 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
      the existing .scrim. Desktop is untouched (still the centered 2-column dialog). */
   .modal{align-items:flex-end;padding:0}
   .modal .dialog{grid-template-columns:1fr;width:100%;max-width:100%;max-height:82vh;border-radius:20px 20px 0 0;margin-top:auto}
-  /* Gallery is shorter than before (was min-height:300px, i.e. close to a full 3:4 box) — a
-     fixed height with letterboxing on either side of the photo, matching a reference mockup
-     that shrank the gallery specifically to make room so name/description/price/variant all sit
-     in the first view without scrolling. */
-  /* SUPERSEDED — 20% shorter again (220px -> 176px), explicit ask: "reduce the product tile
-     size please... reduced by 20%." */
-  .modal .media{height:176px;min-height:0;background:var(--off)}
-  .modal .media .ph{position:absolute;inset:0 auto 0 16px;width:auto;aspect-ratio:3/4;border-radius:6px}
-  .modal .qv-thumbs{left:32px}
+  /* SUPERSEDED — the gallery was shrunk twice (300px -> 220px -> 176px) and letterboxed
+     (a narrow, left-anchored 3:4 box floating in a cream void) to make room for
+     name/description/price/variant to all sit in the first view without scrolling — explicitly
+     reversed: "the product image should be scaled more, right now it's really bad." A full-bleed
+     `object-fit:cover` image (inheriting the base `.modal .media .ph{inset:0}` rule, no mobile
+     override needed) reads far better than a small letterboxed crop, and it's fine for
+     "Product details" (the collapsed accordion at the very bottom of the body) to end up below
+     the fold, requiring a scroll — that was the actual fix for the cramped feeling, not fitting
+     everything above the fold at the cost of a tiny image. *Reason: explicit "the gallery
+     carousel in mobile... too small... the product image should be scaled more... move product
+     detail out of the view when scrolled, it can be visible but not like this."* */
+  .modal .media{height:min(46vh,340px);min-height:0}
   .mf-row .product-card{flex-basis:clamp(160px,32vw,220px)}
   /* grp-row cards stay smaller than Shop by Texture's on mobile too — the category-split
      panel is narrower and stacked below a banner image, so a large card here pushes the
@@ -812,7 +825,10 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
   .track{grid-auto-columns:78%}
   .sec-head{flex-direction:column;align-items:flex-start;gap:16px}
   .sec-head .num{margin-right:12px}
-  .cs-panel{padding:18px 15px;gap:9px}
+  /* Gap widened (9px -> 18px) — the "All of..." CTA row was sitting almost flush against the
+     group circles below it on mobile, reported as "too close." *Reason: explicit "ensure the
+     spacing between the CTA text in the subcategory section... is natural enough."* */
+  .cs-panel{padding:18px 15px;gap:18px}
   /* Trimmed to help the category-split sections fit one mobile viewport now that the banner
      and product cards are both bigger — the heading was already at its desktop clamp's floor
      (22px), which isn't small enough on its own at this width. */
@@ -830,7 +846,9 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
      the label can wrap under a small circle instead of forcing the row wider than the screen). */
   .cs-groups{gap:6px;flex-wrap:nowrap}
   .grp-btn{flex:1 1 0;min-width:0}
-  .grp-media{width:32px;height:32px;margin:0 auto}
+  /* Widened 32px -> 44px — reported as "too small" on mobile. *Reason: explicit "in mobile
+     version firstly increase the size of the group circles please." */
+  .grp-media{width:44px;height:44px;margin:0 auto}
   .grp-label{font-size:9.5px;line-height:1.2;white-space:normal;letter-spacing:.04em}
   .product-card .wish{opacity:1;transform:none}
   .fgrid-foot{grid-template-columns:1fr 1fr}
@@ -1231,7 +1249,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
 </section>
 
 <!-- 7. HOSTING & BAR (banner-left, SKU grid-right, colored panel) -->
-<section class="category-split on-white" id="hosting" aria-labelledby="hostTitle">
+<section class="category-split on-colored" id="hosting" aria-labelledby="hostTitle">
   <div class="cs-grid">
     <div class="cs-visual reveal">
       <img class="ph img-cover" src="assets/img/sub-cocktail-sets.jpg" alt="Fableroom croco-print leather bar tools styled in use">
@@ -1495,7 +1513,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
           <h2 class="display" id="furnTitle">The leather version of what you already chose.</h2>
           <p class="cs-sub">Seating, side tables, cushions, mirrors.</p>
         </div>
-        <a class="link-arrow pill reveal" href="#">All of Furniture <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="link-arrow reveal" href="#">All of Furniture <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
       <div class="cs-groups reveal" data-delay="1" role="tablist" aria-label="Browse Furniture by group">
         <button class="grp-btn" type="button" data-group="seating" data-heading="Seating" data-desc="Dining chairs and lounge seating, in olive waxy leather." aria-selected="true"><span class="grp-media"><img src="assets/img/sub-dining-chairs.jpg" alt="" loading="lazy"></span><span class="grp-label">Seating</span></button>
@@ -1660,7 +1678,7 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
 <section class="category-split on-white" id="accessories" aria-labelledby="accTitle">
   <div class="cs-grid">
     <div class="cs-visual reveal">
-      <img class="ph img-cover" src="assets/img/accessories-banner.jpg" alt="Leather desktop organiser set in croco-print leather">
+      <img class="ph img-cover" src="assets/img/accessories-tile.jpg" alt="Burgundy leather jewellery case held in hand">
     </div>
     <div class="cs-panel">
       <div class="cs-head-row">
@@ -1971,7 +1989,6 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
       </button>
       <button class="car-nav qv-nav prev" id="qvPrev" type="button" aria-label="Previous image" hidden><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
       <button class="car-nav qv-nav next" id="qvNext" type="button" aria-label="Next image" hidden><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
-      <div class="qv-thumbs" id="qvThumbs" aria-label="Product image"></div>
     </div>
     <div class="body">
       <span class="eyebrow" id="qvMat">Croco print</span>
@@ -1990,12 +2007,12 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
         </div>
         <div class="swatch-name" style="margin-top:8px">Colour: <b data-swatch-name>Caramel</b></div>
       </div>
-      <div class="edd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="6" width="15" height="12" rx="1"/><path d="M16 10h4l3 3v5h-7z"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/></svg><span>Delivered by <b id="qvEdd">–</b></span></div>
+      <div class="edd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1" y="6" width="15" height="12" rx="1"/><path d="M16 10h4l3 3v5h-7z"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/></svg><span>Delivered by <b id="qvEdd">–</b></span></div>
       <div class="cta-row">
         <button class="wish" aria-pressed="false" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg></button>
         <button class="btn btn-dark" id="qvAdd" data-add>Add to bag</button>
       </div>
-      <button class="details-toggle" type="button" aria-expanded="false" data-qv-details-toggle>Product details<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 9l6 6 6-6"/></svg></button>
+      <button class="details-toggle" type="button" aria-expanded="false" data-qv-details-toggle>Product details<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 9l6 6 6-6"/></svg></button>
       <div class="details-panel" data-qv-details-panel>
         <div class="spec">
           <div><b>Made in</b>India, in our workshop</div>
@@ -2261,21 +2278,11 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
      everywhere today — the prev/next arrows and thumbs are built to scale to more images once
      they exist, not a bug that they're hidden now. */
   let qvImages = [], qvIndex = 0, qvName = '';
-  function qvBuildThumbs() {
-    const thumbs = $('#qvThumbs'); thumbs.innerHTML = '';
-    qvImages.forEach((src, i) => {
-      const t = document.createElement('button'); t.type = 'button'; t.setAttribute('aria-label', `${qvName} — image ${i + 1}`);
-      t.innerHTML = `<img src="${src}" alt="">`;
-      t.addEventListener('click', () => qvSetImage(i));
-      thumbs.appendChild(t);
-    });
-  }
   function qvSetImage(i) {
     if (!qvImages.length) return;
     qvIndex = (i + qvImages.length) % qvImages.length;
     const src = qvImages[qvIndex];
     $('#qvImg').src = src; $('#qvImg').alt = qvName;
-    $$('#qvThumbs button').forEach((t, idx) => t.classList.toggle('is-active', idx === qvIndex));
     const hasMultiple = qvImages.length > 1;
     $('#qvPrev').hidden = !hasMultiple; $('#qvNext').hidden = !hasMultiple;
     if (lightbox.classList.contains('is-open')) lbShow(qvIndex);
@@ -2287,7 +2294,6 @@ footer .dd-menu button:hover{background:rgba(217,210,191,.06)}
     $('#qvTitle').textContent = card.dataset.product; $('#qvPrice').textContent = card.dataset.price; $('#qvDesc').textContent = card.dataset.desc; $('#qvMat').textContent = card.dataset.material;
     const list = card.dataset.images ? card.dataset.images.split(',').map(s => s.trim()).filter(Boolean) : (card.dataset.img ? [card.dataset.img] : []);
     qvImages = list;
-    qvBuildThumbs();
     qvSetImage(0);
     $('#qvAdd').textContent = 'Add to bag'; $('#qvAdd').classList.remove('is-added');
     /* Estimated delivery date — computed as "today + a rolling handling/shipping window", not a
